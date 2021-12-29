@@ -8,7 +8,18 @@ import mkdocs_obsidian as obs
 BASEDIR = obs.__path__[0]
 env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
 
-
+def check_url(blog_path):
+    try:
+        blog_path = Path(blog_path).expanduser()
+    except RuntimeError:
+        blog_path = Path(blog_path)
+    mkdocs = Path(f"{blog_path}/mkdocs.yml")
+    with open(mkdocs, 'r', encoding="utf-8") as mk:
+        for i in mk:
+            if 'site_url:' in i:
+                web = i.replace('site_url:','')
+                return web
+    return False
 def create_env():
     print(f"Creating environnement in {env_path}")
     env = open(env_path, "w", encoding="utf-8")
@@ -20,10 +31,9 @@ def create_env():
         vault = str(input("Please provide your obsidian vault path : "))
     while blog == "":
         blog = str(input("Please provide the blog repository path : "))
-        while blog_link == "":
-            blog_link = str(
-                input("Please provide the blog link (as https://yourblog.github.io) : ")
-            )
+        blog_link = check_url(blog)
+        if not blog_link:
+            blog_link = str(input('Please, provide the URL of your blog : '))
         share = str(input("Choose your share key name (default: share) : "))
         if share == "":
             share = "share"
