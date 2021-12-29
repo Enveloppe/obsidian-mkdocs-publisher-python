@@ -1,2 +1,3 @@
 [tool.semantic_release]
 version_variable ='setup.py:version'
+branch='main'
