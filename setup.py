@@ -39,4 +39,4 @@ setup(
     entry_points={
         "console_scripts": ["obs2mk=mkdocs_obsidian.__main__:main"],
     },
-    )
+)

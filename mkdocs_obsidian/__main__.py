@@ -53,14 +53,14 @@ def main():
         "--D",
         help="Force conversion - only work if path not specified",
         action="store_true",
-        )
+    )
     group_f.add_argument(
         "--filepath",
         "--f",
         help="Filepath of the file you want to convert",
         action="store",
         required=False,
-        )
+    )
     args = parser.parse_args()
     ori = args.filepath
     delopt = False

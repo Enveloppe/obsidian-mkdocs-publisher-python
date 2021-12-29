@@ -116,7 +116,9 @@ def admonition_trad(file_data):
             else:
                 first_block = first_block.group()
             if adm == "b":
-                first_block = "\n!!! " + first_block.replace('ad-', '') + " place_title_here"
+                first_block = (
+                    "\n!!! " + first_block.replace("ad-", "") + " place_title_here"
+                )
             else:
                 first_block = re.search(
                     "[!?]{3}\+? ad-(\w+) (.*)", file_data[ad_start]
@@ -139,7 +141,7 @@ def admonition_trad(file_data):
                     file_data[ad_start] = file_data[ad_start].replace("!!!", "???+")
                     file_data[i] = ""
                 elif adm == "b" and "title:" in file_data[i]:
-                    title = '"'+ file_data[i].replace("title:", "").strip() + '"'
+                    title = '"' + file_data[i].replace("title:", "").strip() + '"'
                     if title == "":
                         title = '""'
                     file_data[ad_start] = file_data[ad_start].replace(

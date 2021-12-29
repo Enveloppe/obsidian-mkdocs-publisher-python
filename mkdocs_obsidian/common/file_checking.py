@@ -9,15 +9,17 @@ from mkdocs_obsidian.common import convert_all as exclude
 from mkdocs_obsidian.common import config as settings
 from mkdocs_obsidian.common import metadata as mt
 from mkdocs_obsidian.common import conversion as convert
+
 BASEDIR = settings.BASEDIR
 post = settings.post
 vault = settings.vault
+
 
 def delete_not_exist():
     vault_file = []
     info = []
     excluded = []
-    important_folder = ['assets','css', 'js', 'logo', 'script']
+    important_folder = ["assets", "css", "js", "logo", "script"]
     for i, j, k in os.walk(vault):
         for ki in k:
             vault_file.append(os.path.basename(ki))
@@ -26,8 +28,8 @@ def delete_not_exist():
     for file in glob.iglob(f"{BASEDIR}/docs/**", recursive=True):
         if not (any(i in file for i in important_folder)):
             if os.path.basename(file) != "index.md" and (
-                    os.path.basename(file) not in vault_file
-                    or os.path.basename(file) in excluded
+                os.path.basename(file) not in vault_file
+                or os.path.basename(file) in excluded
             ):  # or if file in file_excluded
                 try:
                     os.remove(Path(file))
@@ -36,12 +38,13 @@ def delete_not_exist():
                     pass
     return info
 
+
 def diff_file(file, folder, contents, update=0):
-    filename=os.path.basename(file)
+    filename = os.path.basename(file)
     if check_file(filename, folder) == "EXIST":
         if update == 1:
             return False
-        note=Path(f"{folder}/{filename}")
+        note = Path(f"{folder}/{filename}")
         retro_old = retro(note)
         meta_old = frontmatter.load(note)
         try:
@@ -53,8 +56,8 @@ def diff_file(file, folder, contents, update=0):
         meta_new = front_temp.metadata
 
         if new_version == retro_old and sorted(meta_old.keys()) == sorted(
-                meta_new.keys()
-                ):
+            meta_new.keys()
+        ):
             return False
         else:
             return True

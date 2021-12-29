@@ -10,6 +10,7 @@ from mkdocs_obsidian.common import config, file_checking as check, conversion as
 BASEDIR = config.BASEDIR
 vault = config.vault
 
+
 def exclude_folder(filepath):
     config_folder = Path(f"{BASEDIR}/exclude_folder.yml")
     if os.path.exists(config_folder):
@@ -22,6 +23,7 @@ def exclude_folder(filepath):
         return any(file in filepath for file in folder)
     return False
 
+
 def dest(filepath, folder):
     file_name = os.path.basename(filepath)
     dest = Path(f"{folder}/{file_name}")
@@ -31,7 +33,7 @@ def dest(filepath, folder):
 def search_share(option=0, stop_share=1):
     filespush = []
     check_file = False
-    clipKey = 'notes'
+    clipKey = "notes"
     share = config.share
     for sub, dirs, files in os.walk(Path(vault)):
         for file in files:
@@ -47,7 +49,7 @@ def search_share(option=0, stop_share=1):
                         clipKey = yaml_front["category"]
                     if share in yaml_front.keys() and yaml_front[share] is True:
                         folder = check.create_folder(clipKey, 0)
-                        if option == 0: #preserve
+                        if option == 0:  # preserve
                             if (
                                 "update" in yaml_front.keys()
                                 and yaml_front["update"] is False
@@ -57,16 +59,20 @@ def search_share(option=0, stop_share=1):
                                 update = 0
                             contents = convert.file_convert(filepath, folder)
                             if check.diff_file(file, folder, contents, update):
-                                check_file = convert.file_write(filepath, contents, folder)
+                                check_file = convert.file_write(
+                                    filepath, contents, folder
+                                )
                             else:
                                 check_file = False
-                        elif option == 1: #force deletions
+                        elif option == 1:  # force deletions
                             contents = convert.file_convert(filepath, folder)
                             check_file = convert.file_write(filepath, contents, folder)
                         msg_folder = os.path.basename(folder)
                         destination = dest(filepath, folder)
                         if check_file:
-                            filespush.append( f"Added : {os.path.basename(destination).replace('.md', '')} in [{msg_folder}]")
+                            filespush.append(
+                                f"Added : {os.path.basename(destination).replace('.md', '')} in [{msg_folder}]"
+                            )
                     else:
                         if stop_share == 1:
                             folder = check.create_folder(clipKey, 1)
@@ -83,6 +89,7 @@ def search_share(option=0, stop_share=1):
                     pass
     return filespush, clipKey
 
+
 def convert_all(delopt=False, git=False, stop_share=0):
     if git:
         git_info = "NO PUSH"
@@ -93,11 +100,9 @@ def convert_all(delopt=False, git=False, stop_share=0):
         print(
             f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}\n- FORCE DELETIONS"
         )
-        new_files,  clipKey = search_share(1, stop_share)
+        new_files, clipKey = search_share(1, stop_share)
     else:
-        print(
-            f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}\n"
-        )
+        print(f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}\n")
         new_files, clipKey = search_share(0, stop_share)
     if len(new_files) > 0:
         add = ""
