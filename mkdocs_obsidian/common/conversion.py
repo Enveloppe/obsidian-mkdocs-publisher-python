@@ -190,7 +190,7 @@ def file_convert(file, folder, option=0):
             # Remove embed files (and link to them)
             elif re.search("!\[{2}(.*)\]{2}", final_text):
                 embed = re.search("!\[{2}(.*)\]{2}", final_text)
-                embed = embed.group.split("]")
+                embed = embed.group().split("]")
                 for i in embed:
                     if not re.search("(png)|(jpg)|(gif)|(jpeg)", i):
                         remove = i.replace("!", "")
