@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.2 (2021-12-30)
+### Fix
+* **metadata:** Fix metadata update ([`f2978e8`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/f2978e8f3024907b05dce06bf14d9a5e86b6dfe9))
+
+### Documentation
+* **readme:** Update readme ([`1826093`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/182609300b5d94688564d831d219985842660f6a))
+
 ## v0.2.1 (2021-12-30)
 ### Fix
 * **conversion:** Clean bloc citation ([`02eb69a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/02eb69a94e5f0d9d35db0677afae1a14d6f4e0a7))
