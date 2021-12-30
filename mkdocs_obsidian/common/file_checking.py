@@ -44,6 +44,8 @@ def diff_file(file, folder, contents, update=0):
     if check_file(filename, folder) == "EXIST":
         if update == 1:
             return False
+        if filename.replace('.md', '') == os.path.basename(folder):
+            filename = 'index.md'
         note = Path(f"{folder}/{filename}")
         retro_old = retro(note)
         meta_old = frontmatter.load(note)
@@ -95,6 +97,9 @@ def create_folder(category, share=0):
 
 def check_file(filepath, folder):
     file = os.path.basename(filepath)
+    folder_check = os.path.basename(folder)
+    if file.replace('.md', '') == folder_check:
+        file= 'index.md'
     result = [
         os.path.basename(y)
         for x in os.walk(Path(folder))

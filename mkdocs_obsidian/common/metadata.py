@@ -2,6 +2,7 @@ import os
 import re
 from datetime import datetime
 from pathlib import Path
+import urllib.parse as url
 
 import frontmatter
 from mkdocs_obsidian.common import config
@@ -35,7 +36,9 @@ def update_frontmatter(file, folder, share=0, link=1):
         filename = filename.replace(".md", "")
         if filename == os.path.basename(folder):
             filename = ''
+        path_url=url.quote(f"{folder}/{filename}")
         clip = f"{web}{folder}/{filename}"
+        clip = url.quote(clip)
         meta["link"] = clip
         update = frontmatter.dumps(meta, sort_keys=False)
         meta = frontmatter.loads(update)

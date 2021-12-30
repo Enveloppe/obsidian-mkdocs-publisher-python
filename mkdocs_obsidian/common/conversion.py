@@ -5,6 +5,7 @@ import unidecode
 import frontmatter
 import sys
 import shutil
+import urllib.parse as url
 
 from mkdocs_obsidian.common import (
     file_checking as check,
@@ -45,7 +46,9 @@ def clipboard(filepath, folder):
     folder_key = os.path.basename(folder)
     if filename == folder:
         filename = ''
-    clip = f"{config.web}{folder_key}/{filename}"
+    paste = url.quote(f"{folder_key}/{filename}")
+    clip = f"{config.web}{paste}"
+
     if sys.platform == "ios":
         try:
             import pasteboard  # work with pyto
