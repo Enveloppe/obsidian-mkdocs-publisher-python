@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.8 (2021-12-30)
+### Fix
+* **link:** Fix link generation ([`31d6153`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/31d61539fb41bec2c33c874963f3a4b5eed76e74))
+
 ## v0.2.7 (2021-12-30)
 ### Fix
 * **folder_note:** Fix index check file ([`33d85d1`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/33d85d1e565766c4ef6823e4e9517a0e20f56a1f))
