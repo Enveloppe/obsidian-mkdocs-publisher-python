@@ -26,7 +26,7 @@ def delete_not_exist():
                 excluded.append(os.path.basename(ki))
     for file in glob.iglob(f"{BASEDIR}/docs/**", recursive=True):
         if not (any(i in file for i in important_folder)):
-            if os.path.basename(file) != "index.md" and (
+            if (os.path.basename(file) != "index.md" and os.path.basename(file) != "CNAME") and (
                 os.path.basename(file) not in vault_file
                 or os.path.basename(file) in excluded
             ):  # or if file in file_excluded
