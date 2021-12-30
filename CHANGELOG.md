@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.3 (2021-12-30)
+### Fix
+* **env:** Fix environnement ([`411ecbb`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/411ecbbdfcca5346d06a3d118c597c10044d200a))
+
 ## v0.2.2 (2021-12-30)
 ### Fix
 * **metadata:** Fix metadata update ([`f2978e8`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/f2978e8f3024907b05dce06bf14d9a5e86b6dfe9))
