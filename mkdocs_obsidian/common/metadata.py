@@ -37,8 +37,7 @@ def update_frontmatter(file, folder, share=0, link=1):
         if filename == os.path.basename(folder):
             filename = ''
         path_url=url.quote(f"{folder}/{filename}")
-        clip = f"{web}{folder}/{filename}"
-        clip = url.quote(clip)
+        clip = f"{web}{path_url}"
         meta["link"] = clip
         update = frontmatter.dumps(meta, sort_keys=False)
         meta = frontmatter.loads(update)

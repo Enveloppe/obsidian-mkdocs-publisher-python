@@ -48,7 +48,6 @@ def clipboard(filepath, folder):
         filename = ''
     paste = url.quote(f"{folder_key}/{filename}")
     clip = f"{config.web}{paste}"
-
     if sys.platform == "ios":
         try:
             import pasteboard  # work with pyto
