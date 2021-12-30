@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.4 (2021-12-30)
+### Fix
+* **image:** Fix image not found ([`f781efc`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/f781efcdce9dd1205311e0e58c8a9e9d4ada6aa7))
+* **ci:** Prevent CNAME deletion ([`cd77be0`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/cd77be03b52099546e78fd4c03ce651d88842240))
+
 ## v0.2.3 (2021-12-30)
 ### Fix
 * **env:** Fix environnement ([`411ecbb`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/411ecbbdfcca5346d06a3d118c597c10044d200a))
