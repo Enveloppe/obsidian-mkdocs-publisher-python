@@ -1,3 +1,9 @@
+[![GitHub license](https://img.shields.io/github/license/Mara-Li/YAFPA-python)](https://github.com/Mara-Li/YAFPA-python)
+[![PyPI](https://img.shields.io/pypi/v/YAFPA)](https://pypi.org/project/yafpa/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/YAFPA)
+![PyPI - Status](https://img.shields.io/pypi/status/YAFPA)
+![](https://img.shields.io/badge/Auxiliary%20Tool-Obsidian-blueviolet)
+
 # Mkdocs Obsidian
 Mkdocs Obsidian is an association between a python script and a Material mkdocs template to get a personal wiki site based on your Obsidian Vault.
 
@@ -43,7 +49,7 @@ The script will care about some things you can forgot :
 - Moving your image in assets ;
 - Change the admonition from the plugin to material admonition (mainly for codeblocks)
 - Remove Obsidian comment (`%% text %%`) 
-- **Create a folder structure** based on the `category` key. 
+- **Create a folder structure** based on the `category` key. Without it, the note will be created in `docs/notes`. 
 It will also add, in the **original file** a link to the blog. Using [metacopy](https://github.com/Mara-Li/obsidian-metacopy) you can quick copy this link. 
 ⚠️If the script crash for any reason at the moment where the script update the frontmatter, you can lost some file. If you don't want to have your YAML updated, your can use the key `--meta`.
 
@@ -73,7 +79,11 @@ You can reconfigure the option with `obs2mk --config`.
 
 By default, the script will remove all file that doesn't exist in the vault, and file where you remove the share (`share: false`, or removed the key). You can keep all these file with ``--k``. 
 
-
+### Limitation
+- **Nested admonition doesn't work for the moment.** I don't use it a lot, but if you want, you could improve the script or create a mkdocs plugin to care of that. 
+- The script will not delete the file and folder if you change the `category` key. Beware of this. 
+- Share "all" can be long on big vault. 
+- File with same name can have some problem while scanning, because I don't keep your folder structure. Please, beware of this ! Don't forget you can use `title` if you want a specific name (and this name already exist). 
 
 ### Share one file
 To share **only** one file : `obs2mk --f FILEPATH`. It will :
@@ -143,14 +153,6 @@ You can use :
 - [Customizable Sidebar](https://github.com/phibr0/obsidian-customizable-sidebar)
 - [Obsidian Customizable Menu](https://github.com/kzhovn/obsidian-customizable-menu)
 To have a button to share your file directly in Obsidian !
-
-
-## Limitation
-- **Nested admonition doesn't work for the moment.** I don't use it a lot, but if you want, you could improve the script or create a mkdocs plugin to care of that. 
-- The script will not delete the file and folder if you change the `category` key. Beware of this. 
-- Share "all" can be long on big vault. 
-- File with same name can have some problem while scanning, because I don't keep your folder structure. Please, beware of this ! Don't forget you can use `title` if you want a specific name (and this name already exist). 
-
 # Frontmatter and option
 ## Script
 
