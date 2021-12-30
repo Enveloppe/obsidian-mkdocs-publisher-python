@@ -21,7 +21,7 @@ def get_image(image):
     for sub, dirs, files in os.walk(vault):
         for file in files:
             filepath = sub + os.sep + file
-            if unidecode.unidecode(image) in unidecode.unidecode(file):
+            if unidecode.unidecode(file) in unidecode.unidecode(image):
                 return filepath
     return False
 
@@ -36,7 +36,7 @@ def copy_image(final_text):
                 final_text = os.path.basename(final_text.split("|")[0])
                 image_path = get_image(final_text)
                 if image_path:
-                    shutil.copyfile(image_path, f"{config.img}/{final_text}")
+                    shutil.copyfile(image_path, Path(f"{config.img}/{final_text.strip()}"))
 
 
 def clipboard(filepath, folder):
@@ -81,8 +81,8 @@ def file_write(file, contents, folder, option=0, meta_update=0):
         check.delete_file(file, folder)
         return False
     else:
-        if file_name == os.path.basename(folder):
-            file_name = "index"
+        if os.path.splitext(file_name)[0] == os.path.basename(folder):
+            file_name = "index.md"
         new_notes = open(f"{folder}/{file_name}", "w", encoding="utf-8")
         for line in contents:
             new_notes.write(line)
