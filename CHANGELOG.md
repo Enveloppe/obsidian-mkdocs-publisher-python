@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.5 (2021-12-30)
+### Fix
+* **ci:** Fix index / CNAME deletion ([`c7b8cd2`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c7b8cd2e9f9dcd89b36a2fbc4f2733ff0b58246c))
+
 ## v0.2.4 (2021-12-30)
 ### Fix
 * **image:** Fix image not found ([`f781efc`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/f781efcdce9dd1205311e0e58c8a9e9d4ada6aa7))
