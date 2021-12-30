@@ -195,6 +195,8 @@ def file_convert(file, folder, option=0):
                     if not re.search("(png)|(jpg)|(gif)|(jpeg)", i):
                         remove = i.replace("!", "")
                         final_text = final_text.replace(i, remove)
+            elif final_text == '```\n':
+                final_text = final_text + '\n'
             final.append(final_text)
     meta_list = [f"{k}: {v}  \n" for k, v in meta.metadata.items()]
     meta_list.insert(0, "---  \n")
