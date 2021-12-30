@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.6 (2021-12-30)
+### Fix
+* **link:** Fix link generation for folder note ([`ebbef14`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ebbef14b5eb98df03faadf1483b1e44530d5fcdb))
+
 ## v0.2.5 (2021-12-30)
 ### Fix
 * **ci:** Fix index / CNAME deletion ([`c7b8cd2`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c7b8cd2e9f9dcd89b36a2fbc4f2733ff0b58246c))
