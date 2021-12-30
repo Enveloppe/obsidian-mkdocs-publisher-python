@@ -199,6 +199,11 @@ def file_convert(file, folder, option=0):
                         final_text = final_text.replace(i, remove)
             elif final_text == '```\n':
                 final_text = final_text + '\n'
+            elif re.search('\^[A-Za-z0-9]+$', final_text):
+                final_text = re.sub('\^[A-Za-z0-9]+$','', final_text).strip()
+            elif re.search('#\^[A-Za-z0-9]+\]{2}', final_text):
+                final_text = re.sub('#\^[A-Za-z0-9]+', '', final_text).strip()
+
             final.append(final_text)
     meta_list = [f"{k}: {v}  \n" for k, v in meta.metadata.items()]
     meta_list.insert(0, "---  \n")

@@ -150,6 +150,7 @@ To have a button to share your file directly in Obsidian !
 - The script will not delete the file and folder if you change the `category` key. Beware of this. 
 - Share "all" can be long on big vault. 
 - File with same name can have some problem while scanning, because I don't keep your folder structure. Please, beware of this ! Don't forget you can use `title` if you want a specific name (and this name already exist). 
+- Embed file, part and citation doesn't work. The script will clean that !
 
 # Frontmatter and option
 ## Script
