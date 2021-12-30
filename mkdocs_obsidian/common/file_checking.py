@@ -46,6 +46,7 @@ def diff_file(file, folder, contents, update=0):
         note = Path(f"{folder}/{filename}")
         retro_old = retro(note)
         meta_old = frontmatter.load(note)
+        meta_old = meta_old.metadata
         meta_old.pop('link', None)
         try:
             front_temp = frontmatter.loads("".join(contents))

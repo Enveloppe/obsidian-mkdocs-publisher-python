@@ -71,7 +71,7 @@ def clipboard(filepath, folder):
             )
 
 
-def file_write(file, contents, folder, option=0, meta=0):
+def file_write(file, contents, folder, option=0, meta_update=0):
     file_name = os.path.basename(file)
     meta = frontmatter.load(file)
     share = config.share
@@ -87,7 +87,7 @@ def file_write(file, contents, folder, option=0, meta=0):
         for line in contents:
             new_notes.write(line)
         new_notes.close()
-        if meta == 0:
+        if meta_update == 0:
             if option == 1:
                 if share not in meta.keys() or meta[share] is False:
                     meta[share] = True

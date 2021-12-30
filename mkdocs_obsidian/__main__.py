@@ -70,6 +70,9 @@ def main():
     )
     args = parser.parse_args()
     ori = args.filepath
+    meta_update = 1
+    if not args.meta:
+        meta_update= 0
     delopt = False
     if args.force:
         delopt = True
@@ -93,12 +96,12 @@ def main():
         stop_share = 0
     if ori:
         if os.path.exists(ori):  # Share ONE
-            one.convert_one(ori, ng, args.meta)
+            one.convert_one(ori, ng, meta_update)
         else:
             print(f"Error : {ori} doesn't exist.")
             return
     else:
-        all.convert_all(delopt, ng, stop_share, args.meta)
+        all.convert_all(delopt, ng, stop_share, meta_update)
 
 
 if __name__ == "__main__":
