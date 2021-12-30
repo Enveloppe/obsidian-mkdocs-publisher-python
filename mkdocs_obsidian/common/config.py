@@ -34,7 +34,7 @@ def create_env():
         vault = str(input("Please provide your obsidian vault path : "))
     while blog == "":
         blog = str(input("Please provide the blog repository path : "))
-        blog_link = check_url(blog)
+        blog_link = check_url(blog).strip()
         if not blog_link:
             blog_link = str(input("Please, provide the URL of your blog : "))
         share = str(input("Choose your share key name (default: share) : "))
