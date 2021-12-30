@@ -42,8 +42,9 @@ def copy_image(final_text):
 def clipboard(filepath, folder):
     filename = os.path.basename(filepath)
     filename = filename.replace(".md", "")
-    filename = filename.replace(" ", "-")
-    folder_key = os.path.basename(folder).replace("_", "")
+    folder_key = os.path.basename(folder)
+    if filename == folder:
+        filename = ''
     clip = f"{config.web}{folder_key}/{filename}"
     if sys.platform == "ios":
         try:
