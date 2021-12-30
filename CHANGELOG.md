@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.1 (2021-12-30)
+### Fix
+* **conversion:** Clean bloc citation ([`02eb69a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/02eb69a94e5f0d9d35db0677afae1a14d6f4e0a7))
+
+### Documentation
+* **readme:** Add more limitation + update TOC ([`fd4367a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/fd4367aed4788085574b9f052da6e790baae3f2a))
+
 ## v0.2.0 (2021-12-30)
 ### Feature
 * **option:** Add no update metadata ([`7bf3497`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/7bf34975f8ccf417964bc5713b8c36caa3942d2b))
