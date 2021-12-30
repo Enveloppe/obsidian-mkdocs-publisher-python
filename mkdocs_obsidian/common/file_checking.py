@@ -8,7 +8,6 @@ from unidecode import unidecode
 from mkdocs_obsidian.common import convert_all as exclude
 from mkdocs_obsidian.common import config as settings
 from mkdocs_obsidian.common import metadata as mt
-from mkdocs_obsidian.common import conversion as convert
 
 BASEDIR = settings.BASEDIR
 post = settings.post
@@ -47,6 +46,7 @@ def diff_file(file, folder, contents, update=0):
         note = Path(f"{folder}/{filename}")
         retro_old = retro(note)
         meta_old = frontmatter.load(note)
+        meta_old.pop('link', None)
         try:
             front_temp = frontmatter.loads("".join(contents))
         except yaml.parser.ParserError:
@@ -54,7 +54,7 @@ def diff_file(file, folder, contents, update=0):
             return False  # skip
         new_version = retro(contents, 1)
         meta_new = front_temp.metadata
-
+        meta_new.pop('link', None)
         if new_version == retro_old and sorted(meta_old.keys()) == sorted(
             meta_new.keys()
         ):
