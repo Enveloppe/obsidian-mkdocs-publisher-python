@@ -20,7 +20,7 @@ def exclude_folder(filepath):
             except yaml.YAMLError as exc:
                 print(exc)
                 exit(1)
-        return any(file in filepath for file in folder)
+        return any(str(Path(file)) in filepath for file in folder)
     return False
 
 
@@ -30,7 +30,7 @@ def dest(filepath, folder):
     return str(dest)
 
 
-def search_share(option=0, stop_share=1):
+def search_share(option=0, stop_share=1, meta=0):
     filespush = []
     check_file = False
     clipKey = "notes"
@@ -60,13 +60,13 @@ def search_share(option=0, stop_share=1):
                             contents = convert.file_convert(filepath, folder)
                             if check.diff_file(file, folder, contents, update):
                                 check_file = convert.file_write(
-                                    filepath, contents, folder
+                                    filepath, contents, folder, meta
                                 )
                             else:
                                 check_file = False
                         elif option == 1:  # force deletions
                             contents = convert.file_convert(filepath, folder)
-                            check_file = convert.file_write(filepath, contents, folder)
+                            check_file = convert.file_write(filepath, contents, folder, meta)
                         msg_folder = os.path.basename(folder)
                         destination = dest(filepath, folder)
                         if check_file:
@@ -90,7 +90,7 @@ def search_share(option=0, stop_share=1):
     return filespush, clipKey
 
 
-def convert_all(delopt=False, git=False, stop_share=0):
+def convert_all(delopt=False, git=False, stop_share=0, meta=0):
     if git:
         git_info = "NO PUSH"
     else:
@@ -100,10 +100,10 @@ def convert_all(delopt=False, git=False, stop_share=0):
         print(
             f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}\n- FORCE DELETIONS"
         )
-        new_files, clipKey = search_share(1, stop_share)
+        new_files, clipKey = search_share(1, stop_share, meta)
     else:
         print(f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}\n")
-        new_files, clipKey = search_share(0, stop_share)
+        new_files, clipKey = search_share(0, stop_share, meta)
     if len(new_files) > 0:
         add = ""
         rm = ""

@@ -11,7 +11,7 @@ from mkdocs_obsidian.common import (
 )
 
 
-def convert_one(ori, git):
+def convert_one(ori, git, meta):
     file_name = os.path.basename(ori).upper()
     yaml_front = frontmatter.load(ori)
     priv = Path(gl.post)
@@ -20,7 +20,7 @@ def convert_one(ori, git):
         priv = check.create_folder(yaml_front["category"])
         clipKey = yaml_front["category"]
     contents = convert.file_convert(ori, priv, 1)
-    checkFile = convert.file_write(ori, contents, priv)
+    checkFile = convert.file_write(ori, contents, priv, 1, meta)
     if checkFile and not git:
         COMMIT = f"Pushed {file_name.lower()} to blog"
         gl.git_push(COMMIT)

@@ -71,7 +71,7 @@ def clipboard(filepath, folder):
             )
 
 
-def file_write(file, contents, folder):
+def file_write(file, contents, folder, option=0, meta=0):
     file_name = os.path.basename(file)
     meta = frontmatter.load(file)
     share = config.share
@@ -87,6 +87,17 @@ def file_write(file, contents, folder):
         for line in contents:
             new_notes.write(line)
         new_notes.close()
+        if meta == 0:
+            if option == 1:
+                if share not in meta.keys() or meta[share] is False:
+                    meta[share] = True
+                    update = frontmatter.dumps(meta)
+                    meta = frontmatter.loads(update)
+                    mt.update_frontmatter(file, folder, 1)
+                else:
+                    mt.update_frontmatter(file, folder, 0)
+            else:
+                mt.update_frontmatter(file, folder, 0)
         return True
 
 
@@ -144,16 +155,7 @@ def file_convert(file, folder, option=0):
     meta = frontmatter.load(file)
     lines = meta.content.splitlines(True)
     share = config.share
-    if option == 1:
-        if share not in meta.keys() or meta[share] is False:
-            meta[share] = True
-            update = frontmatter.dumps(meta)
-            meta = frontmatter.loads(update)
-            mt.update_frontmatter(file, folder, 1)
-        else:
-            mt.update_frontmatter(file, folder, 0)
-    else:
-        mt.update_frontmatter(file, folder, 0)
+    if option != 1:
         if share not in meta.keys() or meta[share] is False:
             return final
     lines = adm.admonition_trad(lines)

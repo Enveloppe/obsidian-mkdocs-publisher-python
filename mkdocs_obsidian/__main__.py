@@ -38,6 +38,13 @@ def main():
         "--git", "--g", "--G", help="No commit and no push to git", action="store_true"
     )
     parser.add_argument(
+        "--meta",
+        "--m",
+        "--M",
+        help="Don't update the frontmatter",
+        action="store_true"
+        )
+    parser.add_argument(
         "--keep",
         "--k",
         "--K",
@@ -86,12 +93,12 @@ def main():
         stop_share = 0
     if ori:
         if os.path.exists(ori):  # Share ONE
-            one.convert_one(ori, ng)
+            one.convert_one(ori, ng, args.meta)
         else:
             print(f"Error : {ori} doesn't exist.")
             return
     else:
-        all.convert_all(delopt, ng, stop_share)
+        all.convert_all(delopt, ng, stop_share, args.meta)
 
 
 if __name__ == "__main__":
