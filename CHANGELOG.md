@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.7 (2021-12-30)
+### Fix
+* **folder_note:** Fix index check file ([`33d85d1`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/33d85d1e565766c4ef6823e4e9517a0e20f56a1f))
+
 ## v0.2.6 (2021-12-30)
 ### Fix
 * **link:** Fix link generation for folder note ([`ebbef14`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ebbef14b5eb98df03faadf1483b1e44530d5fcdb))
