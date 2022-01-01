@@ -114,5 +114,5 @@ def git_push(COMMIT):
         print(f"[{datetime.now().strftime('%H:%M:%S')}] {COMMIT} successfully 🎉")
     except ImportError:
         print(
-            f"[{datetime.now().strftime('%H:%M:%S')}] Please, use another way to push your change 😶"
+            f"[{datetime.now().strftime('%H:%M:%S')}] {COMMIT} changed\nPlease, use another way to push your change 😶"
         )

@@ -41,7 +41,7 @@ def main():
         "--meta",
         "--m",
         "--M",
-        help="Don't update the frontmatter",
+        help="Update the frontmatter",
         action="store_true"
         )
     parser.add_argument(
@@ -71,7 +71,7 @@ def main():
     args = parser.parse_args()
     ori = args.filepath
     meta_update = 1
-    if not args.meta:
+    if args.meta:
         meta_update= 0
     delopt = False
     if args.force:
