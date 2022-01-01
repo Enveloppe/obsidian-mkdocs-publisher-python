@@ -7,6 +7,7 @@
 # Mkdocs Obsidian
 Mkdocs Obsidian is an association between a python script and a Material mkdocs template to get a personal wiki site based on your Obsidian Vault.
 
+
 [Show Case](https://mara-li.github.io/mkdocs_obsidian_template/)  
 [My blog (fr)](https://www.mara-li.fr/)
 
@@ -18,8 +19,6 @@ Mkdocs Obsidian is an association between a python script and a Material mkdocs 
 ![](screenshot/image_3.png)  
 
 </details>
-
-
 
 ## Pre-requiries
 - [Python](https://www.python.org/) and Pip
@@ -67,9 +66,18 @@ The script will care about some things you can forgot :
 - Moving your image in assets ;
 - Change the admonition from the plugin to material admonition (mainly for codeblocks)
 - Remove Obsidian comment (`%% text %%`) 
-- **Create a folder structure** based on the `category` key. Without it, the note will be created in `docs/notes`. 
-It will also add, in the **original file** a link to the blog. Using [metacopy](https://github.com/Mara-Li/obsidian-metacopy) you can quick copy this link. 
-⚠️If the script crash for any reason at the moment where the script update the frontmatter, you can lost some file. If you don't want to have your YAML updated, your can use the key `--meta`.
+- **Create a folder structure** based on the `category` key. Without it, the note will be created in `docs/notes`.   
+
+If you use the `--meta` option, it will also add, in the **original file** a link to the blog. Using [metacopy](https://github.com/Mara-Li/obsidian-metacopy) you can quick copy this link. 
+> To create a link, you need to configure :
+> 1. `category` in `key`
+> 2. Add your `set_url` in `base link`
+> 3. Add `category` in `key link`
+> 
+> As that : ![](screenshot/metacopy.png)
+
+
+⚠️ If the script crash for any reason at the moment where the script update the frontmatter, you can lost some file. 
 
 ## Usage
 ```powershell
@@ -80,7 +88,7 @@ Create file in docs and relative folder, move image in assets, convert admonitio
 optional arguments:
   -h, --help            show this help message and exit
   --git, --g, --G       No commit and no push to git
-  --meta, --m, --M      Don't update the frontmatter
+  --meta, --m, --M      Update the frontmatter
   --keep, --k, --K      Keep deleted file from vault and removed shared file
   --config, --c, --C    Edit the config file
   --force, --d, --D     Force conversion - only work if path not specified
