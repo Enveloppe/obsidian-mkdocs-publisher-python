@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.9 (2022-01-01)
+### Fix
+* **link:** Generate link key (frontmatter) only on option ([`66129cd`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/66129cd44f0a167f88afe2747cfdec2137ce1d15))
+
+### Documentation
+* **screen:** Add screenshot blog ([`2551bf0`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2551bf0919f970955b7f155bfa58f2d63d8bd5f0))
+* **screen:** Add screenshot blog ([`9dafb8d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/9dafb8deb397f61d29d17302d864147bd2335869))
+* **screen:** Add screenshot blog ([`5bd2ca6`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/5bd2ca6c3a88b335d18f63319cfea473b044d71e))
+* **readme:** Update screenshot ([`f71c7a4`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/f71c7a49e2a3b81a5ce0bc54dd3221e9dacaa85f))
+* **readme:** Update readme ([`8b75553`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/8b75553957becd79a4158c89a5ff031e4888b4f6))
+
 ## v0.2.8 (2021-12-30)
 ### Fix
 * **link:** Fix link generation ([`31d6153`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/31d61539fb41bec2c33c874963f3a4b5eed76e74))
