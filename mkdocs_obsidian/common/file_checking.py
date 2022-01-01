@@ -27,7 +27,7 @@ def delete_not_exist():
                 excluded.append(os.path.basename(ki))
     for file in glob.iglob(f"{BASEDIR}/docs/**", recursive=True):
         if not (any(i in file for i in important_folder)):
-            if not re.search('(index|CNAME)', os.path.basename(file)) and (
+            if not re.search("(index|CNAME)", os.path.basename(file)) and (
                 os.path.basename(file) not in vault_file
                 or os.path.basename(file) in excluded
             ):  # or if file in file_excluded
@@ -44,13 +44,13 @@ def diff_file(file, folder, contents, update=0):
     if check_file(filename, folder) == "EXIST":
         if update == 1:
             return False
-        if filename.replace('.md', '') == os.path.basename(folder):
-            filename = 'index.md'
+        if filename.replace(".md", "") == os.path.basename(folder):
+            filename = "index.md"
         note = Path(f"{folder}/{filename}")
         retro_old = retro(note)
         meta_old = frontmatter.load(note)
         meta_old = meta_old.metadata
-        meta_old.pop('link', None)
+        meta_old.pop("link", None)
         try:
             front_temp = frontmatter.loads("".join(contents))
         except yaml.parser.ParserError:
@@ -58,7 +58,7 @@ def diff_file(file, folder, contents, update=0):
             return False  # skip
         new_version = retro(contents, 1)
         meta_new = front_temp.metadata
-        meta_new.pop('link', None)
+        meta_new.pop("link", None)
         if new_version == retro_old and sorted(meta_old.keys()) == sorted(
             meta_new.keys()
         ):
@@ -98,8 +98,8 @@ def create_folder(category, share=0):
 def check_file(filepath, folder):
     file = os.path.basename(filepath)
     folder_check = os.path.basename(folder)
-    if file.replace('.md', '') == folder_check:
-        file= 'index.md'
+    if file.replace(".md", "") == folder_check:
+        file = "index.md"
     result = [
         os.path.basename(y)
         for x in os.walk(Path(folder))

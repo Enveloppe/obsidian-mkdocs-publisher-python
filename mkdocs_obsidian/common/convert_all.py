@@ -66,7 +66,9 @@ def search_share(option=0, stop_share=1, meta=0):
                                 check_file = False
                         elif option == 1:  # force deletions
                             contents = convert.file_convert(filepath, folder)
-                            check_file = convert.file_write(filepath, contents, folder, meta)
+                            check_file = convert.file_write(
+                                filepath, contents, folder, meta
+                            )
                         msg_folder = os.path.basename(folder)
                         destination = dest(filepath, folder)
                         if check_file:

@@ -37,7 +37,9 @@ def copy_image(final_text):
                 final_text = os.path.basename(final_text.split("|")[0])
                 image_path = get_image(final_text)
                 if image_path:
-                    shutil.copyfile(image_path, Path(f"{config.img}/{final_text.strip()}"))
+                    shutil.copyfile(
+                        image_path, Path(f"{config.img}/{final_text.strip()}")
+                    )
 
 
 def clipboard(filepath, folder):
@@ -45,7 +47,7 @@ def clipboard(filepath, folder):
     filename = filename.replace(".md", "")
     folder_key = os.path.basename(folder)
     if filename == folder:
-        filename = ''
+        filename = ""
     paste = url.quote(f"{folder_key}/{filename}")
     clip = f"{config.web}{paste}"
     if sys.platform == "ios":
@@ -200,12 +202,12 @@ def file_convert(file, folder, option=0):
                     if not re.search("(png)|(jpg)|(gif)|(jpeg)", i):
                         remove = i.replace("!", "")
                         final_text = final_text.replace(i, remove)
-            elif final_text == '```\n':
-                final_text = final_text + '\n'
-            elif re.search('\^[A-Za-z0-9]+$', final_text):
-                final_text = re.sub('\^[A-Za-z0-9]+$','', final_text).strip()
-            elif re.search('#\^[A-Za-z0-9]+\]{2}', final_text):
-                final_text = re.sub('#\^[A-Za-z0-9]+', '', final_text).strip()
+            elif final_text == "```\n":
+                final_text = final_text + "\n"
+            elif re.search("\^[A-Za-z0-9]+$", final_text):
+                final_text = re.sub("\^[A-Za-z0-9]+$", "", final_text).strip()
+            elif re.search("#\^[A-Za-z0-9]+\]{2}", final_text):
+                final_text = re.sub("#\^[A-Za-z0-9]+", "", final_text).strip()
 
             final.append(final_text)
     meta_list = [f"{k}: {v}  \n" for k, v in meta.metadata.items()]
