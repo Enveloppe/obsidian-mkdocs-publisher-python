@@ -11,6 +11,15 @@ Mkdocs Obsidian is an association between a python script and a Material mkdocs 
 [My blog (fr)](https://www.mara-li.fr/)
 
 
+<details><summary> Screenshot </summary>
+
+![](screenshot/image_1.png)  
+![](screenshot/image_2.png)  
+![](screenshot/image_3.png)  
+
+</details>
+
+
 
 ## Pre-requiries
 - [Python](https://www.python.org/) and Pip
