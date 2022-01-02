@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.10 (2022-01-02)
+### Fix
+* **requirements:** Install pasteboard only if ios ([`6204e67`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6204e675f0cb148390ff7f37981bb9d37ab3247d))
+* **checking:** Fix delete not exist ([`b660a14`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b660a143b62fa91edad204fd7cae8228dc938bdc))
+* **config:** Fix indentation error ([`d01bd25`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d01bd2595feb94601d798500efca37bd904656cb))
+
+### Documentation
+* **readme:** Update docs for the changement of meta option ([`2793168`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2793168c500fb5642e3ec5fee462dfee0238f876))
+* **readme:** Update docs for the changement of meta option ([`6521e3e`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6521e3e9e8d958a366a887be9abd491f2d47a17d))
+* **readme:** Update docs for the changement of meta option ([`ae4c132`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ae4c132289b83a690c9e557355d282793280f951))
+
 ## v0.2.9 (2022-01-01)
 ### Fix
 * **link:** Generate link key (frontmatter) only on option ([`66129cd`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/66129cd44f0a167f88afe2747cfdec2137ce1d15))
