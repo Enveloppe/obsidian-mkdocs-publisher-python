@@ -10,17 +10,20 @@ env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
 
 
 def check_url(blog_path):
+    web = ""
     try:
         blog_path = Path(blog_path).expanduser()
     except RuntimeError:
         blog_path = Path(blog_path)
     mkdocs = Path(f"{blog_path}/mkdocs.yml")
-    with open(mkdocs, "r", encoding="utf-8") as mk:
-        for i in mk:
-            if "site_url:" in i:
-                web = i.replace("site_url:", "")
-                return web
-    return False
+    try:
+        with open(mkdocs, "r", encoding="utf-8") as mk:
+            for i in mk:
+                if "site_url:" in i:
+                    web = i.replace("site_url:", "")
+    except FileNotFoundError:
+        pass
+    return web
 
 
 def create_env():
@@ -28,23 +31,21 @@ def create_env():
     env = open(env_path, "w", encoding="utf-8")
     vault = ""
     blog = ""
-    blog_link = ""
-    share = "share"
     while vault == "":
         vault = str(input("Please provide your obsidian vault path : "))
     while blog == "":
         blog = str(input("Please provide the blog repository path : "))
-        blog_link = check_url(blog).strip()
-        if not blog_link:
-            blog_link = str(input("Please, provide the URL of your blog : "))
-        share = str(input("Choose your share key name (default: share) : "))
-        if share == "":
-            share = "share"
-        env.write(f"vault={vault}\n")
-        env.write(f"blog_path={blog}\n")
-        env.write(f"blog={blog_link}\n")
-        env.write(f"share={share}\n")
-        env.close()
+    blog_link = check_url(blog).strip()
+    if blog_link == "":
+        blog_link = str(input("Please, provide the URL of your blog : "))
+    share = str(input("Choose your share key name (default: share) : "))
+    if share == "":
+        share = "share"
+    env.write(f"vault={vault}\n")
+    env.write(f"blog_path={blog}\n")
+    env.write(f"blog={blog_link}\n")
+    env.write(f"share={share}\n")
+    env.close()
 
 
 if not os.path.isfile(env_path):
