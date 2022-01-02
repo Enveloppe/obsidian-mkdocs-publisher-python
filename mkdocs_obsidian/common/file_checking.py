@@ -20,21 +20,25 @@ def delete_not_exist():
     info = []
     excluded = []
     important_folder = ["assets", "css", "js", "logo", "script"]
+    docs = Path(f"{BASEDIR}/docs/**")
     for i, j, k in os.walk(vault):
         for ki in k:
             vault_file.append(os.path.basename(ki))
             if exclude.exclude_folder(i + os.sep + ki):
                 excluded.append(os.path.basename(ki))
-    for file in glob.iglob(f"{BASEDIR}/docs/**", recursive=True):
+    for file in glob.iglob(str(docs), recursive=True):
         if not (any(i in file for i in important_folder)):
             if not re.search("(index|CNAME)", os.path.basename(file)) and (
                 os.path.basename(file) not in vault_file
                 or os.path.basename(file) in excluded
             ):  # or if file in file_excluded
                 try:
-                    os.remove(Path(file))
-                    info.append(os.path.basename(file))
+                    if os.path.isfile(Path(file)):
+                        os.remove(Path(file))
+                        info.append(os.path.basename(file))
                 except PermissionError:
+                    pass
+                except IsADirectoryError:
                     pass
     return info
 
