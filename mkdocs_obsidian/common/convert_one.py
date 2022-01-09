@@ -19,7 +19,7 @@ def convert_one(ori, git, meta):
     if "category" in yaml_front.keys():
         priv = check.create_folder(yaml_front["category"])
         clipKey = yaml_front["category"]
-    contents = convert.file_convert(ori, priv, 1)
+    contents = convert.file_convert(ori, 1)
     checkFile = convert.file_write(ori, contents, priv, 1, meta)
     if checkFile and not git:
         COMMIT = f"Pushed {file_name.lower()} to blog"
