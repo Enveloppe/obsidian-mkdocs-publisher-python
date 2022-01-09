@@ -57,7 +57,7 @@ def search_share(option=0, stop_share=1, meta=0):
                                 update = 1
                             else:
                                 update = 0
-                            contents = convert.file_convert(filepath, folder)
+                            contents = convert.file_convert(filepath)
                             if check.diff_file(file, folder, contents, update):
                                 check_file = convert.file_write(
                                     filepath, contents, folder, meta
@@ -65,7 +65,7 @@ def search_share(option=0, stop_share=1, meta=0):
                             else:
                                 check_file = False
                         elif option == 1:  # force deletions
-                            contents = convert.file_convert(filepath, folder)
+                            contents = convert.file_convert(filepath)
                             check_file = convert.file_write(
                                 filepath, contents, folder, meta
                             )
@@ -75,15 +75,17 @@ def search_share(option=0, stop_share=1, meta=0):
                             filespush.append(
                                 f"Added : {os.path.basename(destination).replace('.md', '')} in [{msg_folder}]"
                             )
-                    else:
-                        if stop_share == 1:
-                            folder = check.create_folder(clipKey, 1)
-                            if check.delete_file(filepath, folder):
-                                msg_folder = os.path.basename(folder)
-                                destination = dest(filepath, folder)
-                                filespush.append(
-                                    f"Removed : {os.path.basename(destination).replace('.md', '')} from [{msg_folder}]"
-                                )
+                    elif stop_share == 1:
+                        folder = check.create_folder(clipKey, 1)
+                        file_name = os.path.basename(filepath).replace('.md', '')
+                        if file_name == os.path.basename(folder):
+                            filepath = filepath.replace(file_name, 'index')
+                        if check.delete_file(filepath, folder, meta):
+                            msg_folder = os.path.basename(folder)
+                            destination = dest(filepath, folder)
+                            filespush.append(
+                                f"Removed : {os.path.basename(destination).replace('.md', '')} from [{msg_folder}]"
+                            )
                 except (
                     yaml.scanner.ScannerError,
                     yaml.constructor.ConstructorError,

@@ -28,13 +28,17 @@ def delete_not_exist():
                 excluded.append(os.path.basename(ki))
     for file in glob.iglob(str(docs), recursive=True):
         if not (any(i in file for i in important_folder)):
-            if not re.search("(index|CNAME)", os.path.basename(file)) and (
+            if not re.search("(README|index|CNAME)", os.path.basename(file)) and (
                 os.path.basename(file) not in vault_file
                 or os.path.basename(file) in excluded
             ):  # or if file in file_excluded
                 try:
                     if os.path.isfile(Path(file)):
                         os.remove(Path(file))
+                        folder = os.path.dirname(Path(file))
+                        if len(os.listdir(folder)) == 0:
+                            #Delete folder
+                            os.rmdir(folder)
                         info.append(os.path.basename(file))
                 except PermissionError:
                     pass
@@ -115,7 +119,7 @@ def check_file(filepath, folder):
         return "NE"
 
 
-def delete_file(filepath, folder):
+def delete_file(filepath, folder, meta_update=1):
     path = Path(folder)
     try:
         for file in os.listdir(path):
@@ -123,8 +127,11 @@ def delete_file(filepath, folder):
             filecheck = unidecode(os.path.basename(file))
             if filecheck == filename:
                 os.remove(Path(f"{path}/{file}"))
-                mt.update_frontmatter(filepath, folder, 0, 0)
+                if meta_update == 0:
+                    mt.update_frontmatter(filepath, folder, 0, 0)
                 return True
+        if len(os.listdir(path)) == 0:
+            os.rmdir(path)
     except FileNotFoundError:
         pass
     return False
