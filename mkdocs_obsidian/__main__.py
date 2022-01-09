@@ -38,7 +38,7 @@ def main():
         "--git", "--g", "--G", help="No commit and no push to git", action="store_true"
     )
     parser.add_argument(
-        "--meta", "--m", "--M", help="Update the frontmatter", action="store_true"
+        "--meta", "--m", "--M", help="Update the frontmatter with link", action="store_true"
     )
     parser.add_argument(
         "--keep",
