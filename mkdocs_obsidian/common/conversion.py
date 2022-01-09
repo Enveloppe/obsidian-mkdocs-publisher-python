@@ -76,14 +76,14 @@ def clipboard(filepath, folder):
             )
 
 
-def file_write(file, contents, folder, option=0, meta_update=0):
+def file_write(file, contents, folder, option=0, meta_update=1):
     file_name = os.path.basename(file)
     meta = frontmatter.load(file)
     share = config.share
     if contents == "":
         return False
     elif not share in meta or meta[share] == False:
-        check.delete_file(file, folder)
+        check.delete_file(file, folder, meta_update)
         return False
     else:
         if os.path.splitext(file_name)[0] == os.path.basename(folder):
@@ -96,8 +96,6 @@ def file_write(file, contents, folder, option=0, meta_update=0):
             if option == 1:
                 if share not in meta.keys() or meta[share] is False:
                     meta[share] = True
-                    update = frontmatter.dumps(meta)
-                    meta = frontmatter.loads(update)
                     mt.update_frontmatter(file, folder, 1)
                 else:
                     mt.update_frontmatter(file, folder, 0)
@@ -152,11 +150,8 @@ def convert_hashtags(final_text):
     return final_text
 
 
-def file_convert(file, folder, option=0):
+def file_convert(file, option=0):
     final = []
-    path_folder = str(folder).replace(f"{BASEDIR}", "")
-    path_folder = path_folder.replace(os.sep, "")
-    path_folder = path_folder.replace("_", "")
     meta = frontmatter.load(file)
     lines = meta.content.splitlines(True)
     share = config.share
