@@ -2,17 +2,6 @@
 
 <!--next-version-placeholder-->
 
-## v0.2.11 (2022-01-09)
-### Fix
-* **folder_note:** Fix deleted index file + delete empty folder ([`52e9307`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/52e930752012ec1c1a6dd6e2fc0b45bd8c216b60))
-
-### Documentation
-* **readme:** Update readme with note for foldernote ([`b6abc2d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b6abc2d974846cd61f05b1c75032bf58dbc74766))
-* **help:** Update help for metadata option ([`28d058a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/28d058af8c8645d243e1fedbc50f789352a60d62))
-* **readme:** Edit demo.gif ([`4727128`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/47271288c1159b76173456463f0b312b33764ea2))
-* **readme:** Update image ([`b103a29`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b103a292ba3eeb23e09b9b29d77aeb3b7d866b20))
-* **readme:** Add readme info ([`4c52472`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/4c52472ed4e61b5508d70410821940e1224cdc1c))
-
 ## v0.2.10 (2022-01-02)
 ### Fix
 * **requirements:** Install pasteboard only if ios ([`6204e67`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6204e675f0cb148390ff7f37981bb9d37ab3247d))
