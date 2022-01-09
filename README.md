@@ -69,14 +69,13 @@ The script will care about some things you can forget :
 - Moving your image in assets ;
 - Change the admonition from the plugin to material admonition (mainly for codeblocks)
 - Remove Obsidian comment (`%% text %%`) 
-- **Create a folder structure** based on the `category` key. Without it, the note will be created in `docs/notes`.   
+- **Create a folder structure** based on the `category` key. Without it, the note will be created in `docs/notes`.
 
 If you use the `--meta` option, it will also add, in the **original file** a link to the blog. 
 
 ⚠️ If the script crash for any reason at the moment where the script updates the frontmatter, you can lose some file. 
 
 ### Metacopy
-
 Using [metacopy](https://github.com/Mara-Li/obsidian-metacopy) you can quickly copy a link to a shared page, without using this option (so, yes, the script does not edit your source file !). 
 To create a link, you need to configure :
  1. `category` in `key`
@@ -103,7 +102,7 @@ Create file in docs and relative folder, move image in assets, convert admonitio
 optional arguments:
   -h, --help            show this help message and exit
   --git, --g, --G       No commit and no push to git
-  --meta, --m, --M      Update the frontmatter
+  --meta, --m, --M      Add the note's link to the frontmatter
   --keep, --k, --K      Keep deleted file from vault and removed shared file
   --config, --c, --C    Edit the config file
   --force, --d, --D     Force conversion - only work if path not specified
@@ -118,7 +117,11 @@ This file will be in your `site_package` folder.
 
 You can reconfigure the option with `obs2mk --config`.
 
-By default, the script will remove all file that doesn't exist in the vault, and file where you remove the share (`share: false`, or removed the key). You can keep all these file with `--k`. 
+By default, the script will remove all file that doesn't exist in the vault, and file where you remove the share (`share: false`, or removed the key). You can keep all these file with `--k`. Empty folder will be also removed in this process.  
+
+> A little note about "Folder Note": If the file has the same name as the last part of `category`, it will be renamed `index` during conversion.  
+> However, this prevents the file from being deleted if its source is deleted from your vault: in this case, you have to delete it manually. 
+> Git Note : If a folder is empty, it will be "erased" in git. 
 
 ### Share one file
 To share **only** one file : `obs2mk --f FILEPATH`. It will :
