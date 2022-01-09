@@ -13,7 +13,6 @@
 * **readme:** Update image ([`b103a29`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b103a292ba3eeb23e09b9b29d77aeb3b7d866b20))
 * **readme:** Add readme info ([`4c52472`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/4c52472ed4e61b5508d70410821940e1224cdc1c))
 
-
 ## v0.2.10 (2022-01-02)
 ### Fix
 * **requirements:** Install pasteboard only if ios ([`6204e67`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6204e675f0cb148390ff7f37981bb9d37ab3247d))
