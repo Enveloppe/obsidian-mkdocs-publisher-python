@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.0 (2022-01-10)
+### Feature
+* **conversion:** Added a new check for conversion, based on modification time ([`aba3502`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/aba3502d945d31512f113b274d0816a9ffd40ae1))
+
+### Fix
+* **conversion:** Optimization ([`22be2c4`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/22be2c4d6cefea6c027c572eae13decd40665ef3))
+
+### Documentation
+* **readme:** Update with more information ([`3e6aa7c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3e6aa7c5de27cf87c91020e2e1b3955a996ceccb))
+
 ## v0.2.11 (2022-01-09)
 ### Fix
 * **folder_note:** Fix deleted index file + delete empty folder ([`52e9307`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/52e930752012ec1c1a6dd6e2fc0b45bd8c216b60))
