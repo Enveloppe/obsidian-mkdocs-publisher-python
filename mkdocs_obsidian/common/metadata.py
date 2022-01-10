@@ -1,6 +1,5 @@
 import os
 import re
-from datetime import datetime
 from pathlib import Path
 import urllib.parse as url
 
@@ -11,7 +10,14 @@ BASEDIR = Path(config.BASEDIR)
 web = config.web
 
 
-def update_frontmatter(file, folder, share=0, link=1):
+def update_frontmatter(file, link=1):
+    """
+    If link = 0, update the frontmatter with new publish URL
+    Also, update the share state if convert_one.
+    :param file: str
+    :param link: int
+    :return: None
+    """
     metadata = open(file, "r", encoding="utf8")
     meta = frontmatter.load(metadata)
     metadata.close()

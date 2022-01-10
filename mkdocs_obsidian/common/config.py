@@ -1,4 +1,6 @@
 from pathlib import Path
+import sys
+import glob
 import os
 from datetime import datetime
 from dotenv import dotenv_values
@@ -10,6 +12,11 @@ env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
 
 
 def check_url(blog_path):
+    """
+    check if the url is in the config file and return it
+    :param blog_path: Path
+    :return: URL
+    """
     web = ""
     try:
         blog_path = Path(blog_path).expanduser()
@@ -27,6 +34,14 @@ def check_url(blog_path):
 
 
 def create_env():
+    """
+    Create environment variable with:
+        - vault = Path to the obsidian vault ;
+        - blog = Path to the publish folder
+        - blog_link = Publish url
+        - share = Metadata key for sharing file
+    :return: None
+    """
     print(f"Creating environnement in {env_path}")
     env = open(env_path, "w", encoding="utf-8")
     vault = ""
@@ -70,7 +85,7 @@ try:
     web = env["blog"]
     share = env["share"]
 except KeyError:
-    with open(env_path) as f:
+    with open(env_path, "r", encoding="utf-8") as f:
         vault_str = "".join(f.readlines(1)).replace("vault=", "").rstrip()
         basedir_str = "".join(f.readlines(2)).replace("blog_path=", "").rstrip()
 
@@ -80,7 +95,7 @@ except KeyError:
         share = "".join(f.readlines(4)).replace("share=", "")
     if len(vault_str) == 0 or len(basedir_str) == 0 or len(web) == 0:
         print("Please provide a valid path for all config items")
-        exit(1)
+        sys.exit(1)
 except RuntimeError:
     BASEDIR = Path(env["blog_path"])
     vault = Path(env["vault"])
@@ -92,7 +107,7 @@ try:
     BASEDIR = BASEDIR.expanduser()
 except RuntimeError:
     print("Please, provid a valid path for all config item.")
-    exit(1)
+    sys.exit(1)
 
 if len(share) == 0:
     share = "share"
@@ -101,9 +116,19 @@ post = Path(f"{BASEDIR}/docs/notes")
 img = Path(f"{BASEDIR}/docs/assets/img/")
 img.mkdir(exist_ok=True)
 post.mkdir(exist_ok=True)
+vault_file = [
+    x
+    for x in glob.iglob(str(vault) + os.sep + "**", recursive=True)
+    if os.path.isfile(x)
+]
 
 
 def git_push(COMMIT):
+    """
+    git push the modified files
+    :param COMMIT: str
+    :return: None
+    """
     try:
         import git
 

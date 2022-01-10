@@ -1,33 +1,39 @@
+import datetime
 import glob
 import os
 import re
 from pathlib import Path
-import yaml
+
 import frontmatter
+import yaml
 from unidecode import unidecode
-import datetime
-from mkdocs_obsidian.common import convert_all as exclude
+
 from mkdocs_obsidian.common import config as settings
+from mkdocs_obsidian.common import convert_all as exclude
 from mkdocs_obsidian.common import metadata as mt
 
 BASEDIR = settings.BASEDIR
 post = settings.post
 vault = settings.vault
+vault_iter = settings.vault_file
 
 
 def delete_not_exist():
+    """
+    Removes files that have been deleted from the vault
+    :return: A list of deleted files
+    """
     vault_file = []
     info = []
     excluded = []
     important_folder = ["assets", "css", "js", "logo", "script"]
     docs = Path(f"{BASEDIR}/docs/**")
-    for i, j, k in os.walk(vault):
-        for ki in k:
-            vault_file.append(os.path.basename(ki))
-            if exclude.exclude_folder(i + os.sep + ki):
-                excluded.append(os.path.basename(ki))
+    for note in vault_iter:
+        vault_file.append(os.path.basename(note))
+        if exclude.exclude_folder(note):
+            excluded.append(os.path.basename(note))
     for file in glob.iglob(str(docs), recursive=True):
-        if not (any(i in file for i in important_folder)):
+        if not any(i in file for i in important_folder):
             if not re.search("(README|index|CNAME)", os.path.basename(file)) and (
                 os.path.basename(file) not in vault_file
                 or os.path.basename(file) in excluded
@@ -37,7 +43,7 @@ def delete_not_exist():
                         os.remove(Path(file))
                         folder = os.path.dirname(Path(file))
                         if len(os.listdir(folder)) == 0:
-                            #Delete folder
+                            # Delete folder
                             os.rmdir(folder)
                         info.append(os.path.basename(file))
                 except PermissionError:
@@ -48,6 +54,15 @@ def delete_not_exist():
 
 
 def diff_file(file, folder, contents, update=0):
+    """
+    Check the difference between file in vault and file in publish.
+    Check if the new converted file = the file on publish.
+    :param file: str path
+    :param folder: str path
+    :param contents: list
+    :param update: boolean
+    :return: boolean
+    """
     filename = os.path.basename(file)
     if check_file(filename, folder) == "EXIST":
         if update == 1:
@@ -78,6 +93,12 @@ def diff_file(file, folder, contents, update=0):
 
 
 def retro(filepath, opt=0):
+    """
+    Remove metadata from note
+    :param filepath: str or list
+    :param opt: boolean
+    :return: list
+    """
     notes = []
     if opt == 0:
         metadata = frontmatter.load(filepath)
@@ -88,8 +109,14 @@ def retro(filepath, opt=0):
         notes.append(n)
     return notes
 
+
 def create_folder(category, share=0):
-    # category form = 'folder/folder/folder'
+    """
+    create a folder based on the category key as 'folder1/folder2/.../'
+    :param category: string
+    :param share: boolean
+    :return: folder path
+    """
     if category != "":
         folder = Path(f"{BASEDIR}/docs/{category}")
         try:
@@ -101,43 +128,66 @@ def create_folder(category, share=0):
         folder = Path(post)
     return folder
 
+
 def modification_time(filepath, folder, update):
+    """
+    check the modification time : return true if file modified since the last push.
+    :param filepath: str
+    :param folder: str
+    :param update: boolean
+    :return: boolean
+    """
     if update == 0:
         return True
     filename = os.path.basename(filepath)
-    filepath=Path(filepath)
+    filepath = Path(filepath)
     note = Path(f"{folder}/{filename}")
-    old_time=datetime.datetime.fromtimestamp(note.stat().st_mtime)
+    old_time = datetime.datetime.fromtimestamp(note.stat().st_mtime)
     new_time = datetime.datetime.fromtimestamp(filepath.stat().st_mtime)
     if new_time > old_time:
         return True
     return False
 
+
 def skip_update(filepath, folder, update):
-    filepath=Path(filepath)
+    """
+    check if file exist + update is false
+    :param filepath: str path
+    :param folder: str path
+    :param update: boolean
+    :return: boolean
+    """
+    filepath = Path(filepath)
     if update == 1 and check_file(filepath, folder) == "EXIST":
         return True
-    else:
-        return False
+    return False
 
 
 def check_file(filepath, folder):
+    """
+    check if the requested file exist or not in publish.
+    :param filepath: str file path
+    :param folder: str folder path
+    :return: "EXIST" or "NE"
+    """
     file = os.path.basename(filepath)
     folder_check = os.path.basename(folder)
     if file.replace(".md", "") == folder_check:
         file = "index.md"
-    result = [
-        os.path.basename(y)
-        for x in os.walk(Path(folder))
-        for y in glob.glob(os.path.join(x[0], "*.md"))
-    ]
-    if file in result:
+    publish = Path(f"{folder}/{file}")
+    if os.path.isfile(publish):
         return "EXIST"
-    else:
-        return "NE"
+    return "NE"
 
 
 def delete_file(filepath, folder, meta_update=1):
+    """
+    Delete the requested file
+    :param filepath: str path
+    :param folder: str folder
+    :param meta_update: boolean
+    :return: boolean
+    """
     path = Path(folder)
     try:
         for file in os.listdir(path):
@@ -146,7 +196,7 @@ def delete_file(filepath, folder, meta_update=1):
             if filecheck == filename:
                 os.remove(Path(f"{path}/{file}"))
                 if meta_update == 0:
-                    mt.update_frontmatter(filepath, folder, 0, 0)
+                    mt.update_frontmatter(filepath, 0)
                 return True
         if len(os.listdir(path)) == 0:
             os.rmdir(path)
