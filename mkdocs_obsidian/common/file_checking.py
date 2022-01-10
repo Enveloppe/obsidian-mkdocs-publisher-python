@@ -5,7 +5,7 @@ from pathlib import Path
 import yaml
 import frontmatter
 from unidecode import unidecode
-
+import datetime
 from mkdocs_obsidian.common import convert_all as exclude
 from mkdocs_obsidian.common import config as settings
 from mkdocs_obsidian.common import metadata as mt
@@ -88,7 +88,6 @@ def retro(filepath, opt=0):
         notes.append(n)
     return notes
 
-
 def create_folder(category, share=0):
     # category form = 'folder/folder/folder'
     if category != "":
@@ -102,6 +101,17 @@ def create_folder(category, share=0):
         folder = Path(post)
     return folder
 
+def modification_time(filepath, folder, update):
+    if update == 0:
+        return True
+    filename = os.path.basename(filepath)
+    filepath=Path(filepath)
+    note = Path(f"{folder}/{filename}")
+    old_time=datetime.datetime.fromtimestamp(note.stat().st_mtime)
+    new_time = datetime.datetime.fromtimestamp(filepath.stat().st_mtime)
+    if new_time > old_time:
+        return True
+    return False
 
 def check_file(filepath, folder):
     file = os.path.basename(filepath)

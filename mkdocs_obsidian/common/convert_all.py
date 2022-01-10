@@ -49,6 +49,7 @@ def search_share(option=0, stop_share=1, meta=0):
                         clipKey = yaml_front["category"]
                     if share in yaml_front.keys() and yaml_front[share] is True:
                         folder = check.create_folder(clipKey, 0)
+
                         if option == 0:  # preserve
                             if (
                                 "update" in yaml_front.keys()
@@ -57,11 +58,14 @@ def search_share(option=0, stop_share=1, meta=0):
                                 update = 1
                             else:
                                 update = 0
-                            contents = convert.file_convert(filepath)
-                            if check.diff_file(file, folder, contents, update):
-                                check_file = convert.file_write(
-                                    filepath, contents, folder, meta
-                                )
+                            if check.modification_time(filepath, folder, update):
+                                contents = convert.file_convert(filepath)
+                                if check.diff_file(file, folder, contents, update):
+                                    check_file = convert.file_write(
+                                        filepath, contents, folder, meta
+                                    )
+                                else:
+                                    check_file = False
                             else:
                                 check_file = False
                         elif option == 1:  # force deletions
