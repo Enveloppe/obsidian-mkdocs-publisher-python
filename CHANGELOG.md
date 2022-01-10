@@ -2,12 +2,6 @@
 
 <!--next-version-placeholder-->
 
-## v1.0.0 (2022-01-10)
-
-
-## v0.3.1 (2022-01-10)
-
-
 ## v0.3.0 (2022-01-10)
 ### Feature
 * **conversion:** Added a new check for conversion, based on modification time ([`aba3502`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/aba3502d945d31512f113b274d0816a9ffd40ae1))
