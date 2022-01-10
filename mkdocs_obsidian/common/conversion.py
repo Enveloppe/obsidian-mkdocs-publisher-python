@@ -1,11 +1,13 @@
 import os
 import re
-from pathlib import Path
-import unidecode
-import frontmatter
-import sys
 import shutil
+import sys
 import urllib.parse as url
+import glob
+from pathlib import Path
+
+import frontmatter
+import unidecode
 
 from mkdocs_obsidian.common import (
     file_checking as check,
@@ -16,18 +18,29 @@ from mkdocs_obsidian.common import (
 
 BASEDIR = Path(config.BASEDIR)
 vault = Path(config.vault)
+vault_file = config.vault_file
 
 
 def get_image(image):
-    for sub, dirs, files in os.walk(vault):
-        for file in files:
-            filepath = sub + os.sep + file
-            if unidecode.unidecode(file) in unidecode.unidecode(image):
-                return filepath
+    """
+    Check if the image exists in the vault
+    :param image: str
+    :return: bool or filepath to image
+    """
+    for filepath in vault_file:
+        if unidecode.unidecode(os.path.basename(filepath)) in unidecode.unidecode(
+            image
+        ):
+            return filepath
     return False
 
 
 def copy_image(final_text):
+    """
+    Copy the image if exist
+    :param final_text: str
+    :return: None
+    """
     list = final_text.split("!")
     if len(list) > 0:
         for i in list:
@@ -43,6 +56,12 @@ def copy_image(final_text):
 
 
 def clipboard(filepath, folder):
+    """
+    Copy file URL to clipboard
+    :param filepath: str
+    :param folder: str
+    :return: None
+    """
     filename = os.path.basename(filepath)
     filename = filename.replace(".md", "")
     folder_key = os.path.basename(folder)
@@ -77,47 +96,60 @@ def clipboard(filepath, folder):
 
 
 def file_write(file, contents, folder, option=0, meta_update=1):
+    """
+        - Delete file if stoped sharing
+        - Write file if share = true
+        - Update frontmatter if meta_update = 0
+    :param file: str
+    :param contents: list[str]
+    :param folder: pathlib
+    :param option: int(bool)
+    :param meta_update: int(bool)
+    :return: bool
+    """
     file_name = os.path.basename(file)
     meta = frontmatter.load(file)
     share = config.share
     if contents == "":
         return False
-    elif not share in meta or meta[share] == False:
+    if not share in meta or meta[share] is False:
         check.delete_file(file, folder, meta_update)
         return False
-    else:
-        if os.path.splitext(file_name)[0] == os.path.basename(folder):
-            file_name = "index.md"
-        new_notes = open(f"{folder}/{file_name}", "w", encoding="utf-8")
+    if os.path.splitext(file_name)[0] == os.path.basename(folder):
+        file_name = "index.md"
+    with open(f"{folder}/{file_name}", "w", encoding="utf-8") as new_notes:
         for line in contents:
             new_notes.write(line)
-        new_notes.close()
-        if meta_update == 0:
-            if option == 1:
-                if share not in meta.keys() or meta[share] is False:
-                    meta[share] = True
-                    mt.update_frontmatter(file, folder, 1)
-                else:
-                    mt.update_frontmatter(file, folder, 0)
-            else:
-                mt.update_frontmatter(file, folder, 0)
-        return True
+    if meta_update == 0:
+        if option == 1 and share not in meta.keys() or meta[share] is False:
+            meta[share] = True
+            mt.update_frontmatter(file, 1)
+        else:
+            mt.update_frontmatter(file, 0)
+    return True
 
 
 def read_custom():
-    css = open(
-        Path(f"{BASEDIR}/docs/assets/css/custom_attributes.css"), "r", encoding="utf-8"
-    )
+    """
+    read custom css
+    :return: list[str]
+    """
     id = []
-    css_data = css.readlines()
-    for i in css_data:
-        if i.startswith("#"):
-            id.append(i.replace("{\n", "").strip())
-    css.close()
+    with open(
+        Path(f"{BASEDIR}/docs/assets/css/custom_attributes.css"), "r", encoding="utf-8"
+    ) as css:
+        for i in css.readlines():
+            if i.startswith("#"):
+                id.append(i.replace("{\n", "").strip())
     return id
 
 
 def convert_hashtags(final_text):
+    """
+    Convert configured hashtags with IAL CSS from custom.css
+    :param final_text: str
+    :return: str
+    """
     css = read_custom()
     token = re.findall("#\w+", final_text)
     token = list(set(token))
@@ -151,6 +183,12 @@ def convert_hashtags(final_text):
 
 
 def file_convert(file, option=0):
+    """
+    Read the file and convert each line based on regex condition.
+    :param file: str
+    :param option: int(bool)
+    :return: list[str]
+    """
     final = []
     meta = frontmatter.load(file)
     lines = meta.content.splitlines(True)
@@ -164,10 +202,14 @@ def file_convert(file, option=0):
         if not final_text.strip().endswith("%%") and not final_text.strip().startswith(
             "%%"
         ):
+            # Skip obsidian comments
+            # Check and copy image
             copy_image(final_text)
 
             if not "`" in final_text:
-                final_text = re.sub("\%{2}(.*)\%{2}", "", final_text)
+                final_text = re.sub(
+                    "\%{2}(.*)\%{2}", "", final_text
+                )  # remove obsidian comments
             if (
                 re.search(r"\\U\w+", final_text) and not "Users" in final_text
             ):  # Fix emoji if bug because of frontmatter
@@ -182,8 +224,8 @@ def file_convert(file, option=0):
                 final_text = re.sub(r"\\U\w+", convert_emojiz, final_text)
             if re.search("#\w+", final_text) and not re.search(
                 "(`|\[{2}|\()(.*)#(.*)(`|\]{2}|\))", final_text
-            ):
-                # Hashtags
+            ):  # search hashtags not in link
+                # Convert hashtags
                 final_text = convert_hashtags(final_text)
             elif re.fullmatch(
                 "\\\\", final_text.strip()
@@ -198,7 +240,9 @@ def file_convert(file, option=0):
                         remove = i.replace("!", "")
                         final_text = final_text.replace(i, remove)
             elif final_text == "```\n":
+                # fix code newlines for material mkdocs
                 final_text = final_text + "\n"
+            # remove inline block citation
             elif re.search("\^[A-Za-z0-9]+$", final_text):
                 final_text = re.sub("\^[A-Za-z0-9]+$", "", final_text).strip()
             elif re.search("#\^[A-Za-z0-9]+\]{2}", final_text):

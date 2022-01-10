@@ -9,9 +9,15 @@ BASEDIR = config.BASEDIR
 
 
 def code_blocks(start_list, end_list):
+    """
+    Check all code blocks in the contents
+    :param start_list: list[int]
+    :param end_list: list[int]
+    :return: list[tupe[int, int]]
+    """
     start_bug = []
     end_bug = []
-    bug = [(x, y) for x, y in zip_longest(start_list, end_list, fillvalue=-1)]
+    bug = list(zip_longest(start_list, end_list, fillvalue=-1))
     for i in bug:
         if i[0] > i[1]:
             start_bug.append(i[0])
@@ -32,6 +38,11 @@ def code_blocks(start_list, end_list):
 
 
 def admonition_trad(file_data):
+    """
+    Change all admonition to material admonition
+    :param file_data: list[str]
+    :return: list[str]
+    """
     code_index = 0
     code_dict = {}
     start_list = []
@@ -95,13 +106,12 @@ def admonition_trad(file_data):
         code = {code_index: (i, j)}
         code_index = code_index + 1
         code_dict.update(code)
-    offset_for_title = 0
-    for ad, ln in code_dict.items():
+    for ln in code_dict.values():
         ad_start = ln[0]
         ad_end = ln[1]
-        type = re.search("[`!?]{3}\+?( ?)ad-\w+", file_data[ad_start])
-        if type:
-            type = re.sub("[`!?]{3}\+?( ?)ad-", "", type.group())
+        ad_type = re.search("[`!?]{3}\+?( ?)ad-\w+", file_data[ad_start])
+        if ad_type:
+            ad_type = re.sub("[`!?]{3}\+?( ?)ad-", "", ad_type.group())
             adm = "b"
             if re.search("[!?]{3} ad-(\w+) (.*)", file_data[ad_start]):
                 title = re.search("[!?]{3}\+? ad-(\w+) (.*)", file_data[ad_start])
@@ -110,8 +120,8 @@ def admonition_trad(file_data):
             first_block = re.search("ad-(\w+)", file_data[ad_start])
             if first_block:
                 file_data[ad_end] = "\n"
-            adm_type_code = first_block.group().replace("ad-", "")
-            if adm_type_code not in adm_list:
+            adm_ad_type_code = first_block.group().replace("ad-", "")
+            if adm_ad_type_code not in adm_list:
                 first_block = "note"
             else:
                 first_block = first_block.group()
@@ -127,12 +137,9 @@ def admonition_trad(file_data):
                 title_block = '"' + title + '"'
                 first_block = first_block.replace(title, title_block)
 
-            num_lines = lambda x: x.count("\n")
-
             file_data[ad_start] = re.sub(
                 "[`!?]{3}( ?)ad-(.*)", first_block, file_data[ad_start]
             )
-
             for i in range(ad_start, ad_end):
                 if adm == "b" and file_data[i] == "collapse: open":
                     file_data[ad_start] = file_data[ad_start].replace("!!!", "???")
