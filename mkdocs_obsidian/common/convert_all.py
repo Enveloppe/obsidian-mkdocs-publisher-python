@@ -58,7 +58,9 @@ def search_share(option=0, stop_share=1, meta=0):
                                 update = 1
                             else:
                                 update = 0
-                            if check.modification_time(filepath, folder, update):
+                            if check.skip_update(filepath, folder, update) or not check.modification_time(filepath, folder, update):
+                                check_file = False
+                            else:
                                 contents = convert.file_convert(filepath)
                                 if check.diff_file(file, folder, contents, update):
                                     check_file = convert.file_write(
@@ -66,8 +68,6 @@ def search_share(option=0, stop_share=1, meta=0):
                                     )
                                 else:
                                     check_file = False
-                            else:
-                                check_file = False
                         elif option == 1:  # force deletions
                             contents = convert.file_convert(filepath)
                             check_file = convert.file_write(

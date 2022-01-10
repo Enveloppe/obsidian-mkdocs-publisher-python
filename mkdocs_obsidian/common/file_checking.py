@@ -113,6 +113,14 @@ def modification_time(filepath, folder, update):
         return True
     return False
 
+def skip_update(filepath, folder, update):
+    filepath=Path(filepath)
+    if update == 1 and check_file(filepath, folder) == "EXIST":
+        return True
+    else:
+        return False
+
+
 def check_file(filepath, folder):
     file = os.path.basename(filepath)
     folder_check = os.path.basename(folder)
