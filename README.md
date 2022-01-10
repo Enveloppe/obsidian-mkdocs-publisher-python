@@ -132,8 +132,10 @@ This option will pull the file, regardless of what is the `share` state.
 ### Share “all” files
 You can share multiple documents using the `share: true` key, in frontmatter. The script will scan your entire vault and automatically convert the file with this key.
 There is two options :
-- By default, the script will compare with the older version and write only if changement are detected.
+- By default, the script will compare with the older version and write only if changement are detected, based on the content of the file and the last modified time. 
 - Using `--force` will force the re-writing. 
+
+You can force to skip the update with `update: false` in the frontmatter : the file, no matter what, will not be updated. 
 
 ## Customization
 There are some files to customize the script :
@@ -200,19 +202,17 @@ You can use :
 - [Customizable Sidebar](https://github.com/phibr0/obsidian-customizable-sidebar)
 - [Obsidian Customizable Menu](https://github.com/kzhovn/obsidian-customizable-menu)
 To have a button to share your file directly in Obsidian !
+
 # Frontmatter and option
 ## Script
-
 The script need one key, to share the file. You can configure the key in the configuration of the script.
-
 If you want a folder structure in `docs`, you need to use the `category` keys, with the form of `path/path`. You can also block a file to update with `update: false`.
-
 Note : With `awesome-pages` you can hide folder from navigation. To hide a file, just use `hidden` in `category` (as `category: hidden`). Links, image will work without problem. 
 
 ## Mkdocs
 Material give you the possibility to add SEO tags with :
 - `description`  
-- `title` (will change too the title in the navigation)
+- `title` (will change also the title in the navigation)
 - `image`: Add an image (don't forget the format) / Need to be a relative link.
 
 ## Template
@@ -225,3 +225,5 @@ description:
 category:
 ---
 ```
+
+
