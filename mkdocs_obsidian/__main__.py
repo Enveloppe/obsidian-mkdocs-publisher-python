@@ -17,6 +17,7 @@ from mkdocs_obsidian.common import (
     file_checking as check,
 )
 
+
 def search_shortcuts(file):
     """
     Search a specific file in vault, using shortcuts on IOS
@@ -27,6 +28,7 @@ def search_shortcuts(file):
         if os.path.basename(md) == os.path.basename(file):
             return md
 
+
 def mobile_shortcuts(shortcuts=False, file="0"):
     """
     Main function using on mobile
@@ -36,7 +38,7 @@ def mobile_shortcuts(shortcuts=False, file="0"):
     """
     delopt = False
     git = True
-    if shortcuts and file != '0':
+    if shortcuts and file != "0":
         file = search_shortcuts(file)
     if file == "--c":
         setup.create_env()
