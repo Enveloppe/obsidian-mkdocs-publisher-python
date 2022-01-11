@@ -39,12 +39,13 @@ def mobile_shortcuts(shortcuts=False, file="0"):
     """
     delopt = False
     git = True
-    if shortcuts and file != "0":
+    if shortcuts and (file != "0" or file != "--c"):
         file = search_shortcuts(file)
         if not file:
             print("File not found.")
             sys.exit(1)
-    if file == "--c":
+        one.convert_one(file, delopt, git)
+    elif file == "--c":
         setup.create_env()
     elif file != "0" and os.path.exists(file):
         one.convert_one(file, delopt, git)
