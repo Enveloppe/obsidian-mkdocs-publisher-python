@@ -142,10 +142,11 @@ def modification_time(filepath, folder, update):
     filename = os.path.basename(filepath)
     filepath = Path(filepath)
     note = Path(f"{folder}/{filename}")
-    old_time = datetime.datetime.fromtimestamp(note.stat().st_mtime)
-    new_time = datetime.datetime.fromtimestamp(filepath.stat().st_mtime)
-    if new_time > old_time:
-        return True
+    if os.path.isfile(note):
+        old_time = datetime.datetime.fromtimestamp(note.stat().st_mtime)
+        new_time = datetime.datetime.fromtimestamp(filepath.stat().st_mtime)
+        if new_time > old_time:
+            return True
     return False
 
 
