@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.1 (2022-01-11)
+### Fix
+* **mobile:** Add error ([`c0949fd`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c0949fd8bbfdaa4ccf8fc005e8e0cf0671dba921))
+
 ## v1.1.0 (2022-01-11)
 ### Feature
 * **mobile:** Upgrade mobile shortcuts ([`b0bf426`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b0bf426ab9585e9f1c0322bdcc16b96c11757c47))
