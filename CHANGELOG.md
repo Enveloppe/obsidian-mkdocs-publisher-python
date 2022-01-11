@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.4 (2022-01-11)
+### Fix
+* **checking:** Check if file exists before compare modif time ([`334566d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/334566d95def55ba96c68b05324fb0b01c4a1a73))
+* **mobile:** Fix arguments (store_true) ([`6d6f26b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6d6f26bfdf87a573ce7e042a546fdcfd0997ff8c))
+
 ## v1.1.3 (2022-01-11)
 ### Fix
 * **mobile:** Fix mobile shortcuts ([`03ceb0a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/03ceb0a233f940b0671f6624fd6f00ab32f427cc))
