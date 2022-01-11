@@ -66,7 +66,7 @@ def main():
         "--git", "--g", "--G", help="No commit and no push to git", action="store_true"
     )
     parser.add_argument(
-        "--mobile", "--shortcuts", "--s", "--S", help="Use mobile shortcuts fonction."
+        "--mobile", "--shortcuts", "--s", "--S", help="Use mobile shortcuts fonction.", action="store_true"
     )
     parser.add_argument(
         "--meta",
@@ -100,6 +100,9 @@ def main():
         required=False,
     )
     args = parser.parse_args()
+    if args.config:
+        setup.create_env()
+        sys.exit(1)
     ori = args.filepath
     if args.mobile:
         mobile_shortcuts(True, ori)
@@ -111,9 +114,7 @@ def main():
     if args.force:
         delopt = True
     ng = args.git
-    if args.config:
-        setup.create_env()
-        return
+
 
     if not args.keep:
         info = check.delete_not_exist()
