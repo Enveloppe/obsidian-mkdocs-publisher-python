@@ -65,6 +65,9 @@ def main():
         "--git", "--g", "--G", help="No commit and no push to git", action="store_true"
     )
     parser.add_argument(
+        "--mobile", "--shortcuts", "--s", "--S", help="Use mobile shortcuts fonction."
+    )
+    parser.add_argument(
         "--meta",
         "--m",
         "--M",
@@ -97,6 +100,9 @@ def main():
     )
     args = parser.parse_args()
     ori = args.filepath
+    if args.mobile:
+        mobile_shortcuts(True, ori)
+        sys.exit(1)
     meta_update = 1
     if args.meta:
         meta_update = 0
