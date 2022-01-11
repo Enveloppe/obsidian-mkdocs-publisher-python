@@ -22,11 +22,12 @@ def search_shortcuts(file):
     """
     Search a specific file in vault, using shortcuts on IOS
     :param file: str (filepath)
-    :return: str (filepath)
+    :return: str (filepath) / False
     """
     for md in setup.vault_file:
         if os.path.basename(md) == os.path.basename(file):
             return md
+    return False
 
 
 def mobile_shortcuts(shortcuts=False, file="0"):
@@ -40,6 +41,9 @@ def mobile_shortcuts(shortcuts=False, file="0"):
     git = True
     if shortcuts and file != "0":
         file = search_shortcuts(file)
+        if not file:
+            print("File not found.")
+            sys.exit(1)
     if file == "--c":
         setup.create_env()
     elif file != "0" and os.path.exists(file):
