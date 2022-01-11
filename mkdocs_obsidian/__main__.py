@@ -17,10 +17,27 @@ from mkdocs_obsidian.common import (
     file_checking as check,
 )
 
+def search_shortcuts(file):
+    """
+    Search a specific file in vault, using shortcuts on IOS
+    :param file: str (filepath)
+    :return: str (filepath)
+    """
+    for md in setup.vault_file:
+        if os.path.basename(md) == os.path.basename(file):
+            return md
 
-def mobile_shortcuts(file="0"):
+def mobile_shortcuts(shortcuts=False, file="0"):
+    """
+    Main function using on mobile
+    :param shortcuts: bool (default: False)
+    :param file: String (file path)
+    :return: None
+    """
     delopt = False
     git = True
+    if shortcuts and file != '0':
+        file = search_shortcuts(file)
     if file == "--c":
         setup.create_env()
     elif file != "0" and os.path.exists(file):
@@ -30,6 +47,10 @@ def mobile_shortcuts(file="0"):
 
 
 def main():
+    """
+    Main function using in CLI
+    :return: None
+    """
     parser = argparse.ArgumentParser(
         description="Create file in docs and relative folder, move image in assets, convert admonition code_blocks, add links and push."
     )
