@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.2 (2022-01-11)
+### Fix
+* **mobile:** Add option to run mobile in CLI ([`e7d4df5`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e7d4df5ba08fa1fa6c686e9f5fdcba6448839e01))
+
 ## v1.1.1 (2022-01-11)
 ### Fix
 * **mobile:** Add error ([`c0949fd`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c0949fd8bbfdaa4ccf8fc005e8e0cf0671dba921))
