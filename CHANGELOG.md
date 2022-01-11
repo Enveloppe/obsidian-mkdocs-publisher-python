@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.3 (2022-01-11)
+### Fix
+* **mobile:** Fix mobile shortcuts ([`03ceb0a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/03ceb0a233f940b0671f6624fd6f00ab32f427cc))
+
 ## v1.1.2 (2022-01-11)
 ### Fix
 * **mobile:** Add option to run mobile in CLI ([`e7d4df5`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e7d4df5ba08fa1fa6c686e9f5fdcba6448839e01))
