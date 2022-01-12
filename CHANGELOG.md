@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.5 (2022-01-12)
+### Fix
+* **mobile:** Fix share one file ([`9728df7`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/9728df71a93d916c10f56dd17b02bc5c76705577))
+
+### Documentation
+* **readme:** Refactoring for a better reading ([`9da6563`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/9da656329efe8a8b78757c86a71f05df1ba47be2))
+
 ## v1.1.4 (2022-01-11)
 ### Fix
 * **checking:** Check if file exists before compare modif time ([`334566d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/334566d95def55ba96c68b05324fb0b01c4a1a73))
