@@ -1,3 +1,4 @@
+import os.path
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -48,12 +49,11 @@ def create_env():
     :return: None
     """
     print(f"Creating environnement in {env_path}")
-    env = open(env_path, "w", encoding="utf-8")
     vault = ""
     blog = ""
-    while vault == "":
+    while vault == "" or not os.path.isdir(vault):
         vault = str(input("Please provide your obsidian vault path : "))
-    while blog == "":
+    while blog == "" or not os.path.isfile(blog):
         blog = str(input("Please provide the blog repository path : "))
     blog_link = check_url(blog).strip()
     if blog_link == "":
@@ -61,11 +61,15 @@ def create_env():
     share = str(input("Choose your share key name (default: share) : "))
     if share == "":
         share = "share"
-    env.write(f"vault={vault}\n")
-    env.write(f"blog_path={blog}\n")
-    env.write(f"blog={blog_link}\n")
-    env.write(f"share={share}\n")
-    env.close()
+    with open(env_path, "w", encoding="utf-8") as env:
+        env.write(f"vault={vault}\n")
+        env.write(f"blog_path={blog}\n")
+        env.write(f"blog={blog_link}\n")
+        env.write(f"share={share}\n")
+    post = Path(f"{BASEDIR}/docs/notes")
+    img = Path(f"{BASEDIR}/docs/assets/img/")
+    img.mkdir(exist_ok=True)
+    post.mkdir(exist_ok=True)
     sys.exit("Environment created.")
 
 

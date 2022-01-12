@@ -68,13 +68,8 @@ if len(share) == 0:
 path = Path(f"{BASEDIR}/.git")  # GIT SHARED
 post = Path(f"{BASEDIR}/docs/notes")
 img = Path(f"{BASEDIR}/docs/assets/img/")
-try:
-    img.mkdir(exist_ok=True)
-    post.mkdir(exist_ok=True)
-    vault_file = [
-        x
-        for x in glob.iglob(str(vault) + os.sep + "**", recursive=True)
-        if os.path.isfile(x)
-    ]
-except FileNotFoundError:
-    config.create_env()
+vault_file = [
+    x
+    for x in glob.iglob(str(vault) + os.sep + "**", recursive=True)
+    if os.path.isfile(x)
+]
