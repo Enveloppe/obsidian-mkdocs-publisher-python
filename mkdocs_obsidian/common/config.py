@@ -7,11 +7,12 @@ import mkdocs_obsidian as obs
 BASEDIR = obs.__path__[0]
 try:
     import pyto
-    BASEDIR=Path(BASEDIR)
-    BASEDIR=BASEDIR.parent.absolute()
+
+    BASEDIR = Path(BASEDIR)
+    BASEDIR = BASEDIR.parent.absolute()
 except ModuleNotFoundError:
     pass
-    
+
 env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
 
 
@@ -65,9 +66,7 @@ def create_env():
     env.write(f"blog={blog_link}\n")
     env.write(f"share={share}\n")
     env.close()
-    sys.exit('Environment created.')
-
-
+    sys.exit("Environment created.")
 
 
 def git_push(COMMIT):

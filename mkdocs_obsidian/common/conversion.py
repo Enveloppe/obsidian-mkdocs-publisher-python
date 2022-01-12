@@ -13,7 +13,7 @@ from mkdocs_obsidian.common import (
     global_value as config,
     metadata as mt,
     admonition as adm,
-    )
+)
 
 BASEDIR = Path(config.BASEDIR)
 vault = Path(config.vault)

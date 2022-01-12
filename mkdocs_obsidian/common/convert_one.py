@@ -9,7 +9,7 @@ from mkdocs_obsidian.common import (
     file_checking as check,
     conversion as convert,
     config as setup,
-    global_value as value
+    global_value as value,
 )
 
 

@@ -21,7 +21,7 @@ env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
 if not os.path.isfile(env_path):
     config.create_env()
 else:
-    with open(env_path, encoding='utf-8') as f:
+    with open(env_path, encoding="utf-8") as f:
         components = f.read().splitlines()
         if len(components) == 0:
             config.create_env()
@@ -78,5 +78,3 @@ try:
     ]
 except FileNotFoundError:
     config.create_env()
-
-

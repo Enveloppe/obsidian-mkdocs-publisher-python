@@ -55,7 +55,6 @@ def mobile_shortcuts(file="0"):
         one.convert_one(file, True, 0)
 
 
-
 def main():
     """
     Main function using in CLI

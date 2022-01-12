@@ -9,6 +9,7 @@ from mkdocs_obsidian.common import global_value as config
 BASEDIR = Path(config.BASEDIR)
 web = config.web
 
+
 def update_frontmatter(file, link=1):
     """
     If link = 0, update the frontmatter with new publish URL
