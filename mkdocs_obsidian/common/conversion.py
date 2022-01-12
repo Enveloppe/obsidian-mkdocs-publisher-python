@@ -94,7 +94,7 @@ def clipboard(filepath, folder):
             )
 
 
-def file_write(file, contents, folder, option=0, meta_update=1):
+def file_write(file, contents, folder, preserve=0, meta_update=1):
     """
         - Delete file if stoped sharing
         - Write file if share = true
@@ -102,7 +102,7 @@ def file_write(file, contents, folder, option=0, meta_update=1):
     :param file: str
     :param contents: list[str]
     :param folder: pathlib
-    :param option: int(bool)
+    :param preserve: int(bool)
     :param meta_update: int(bool)
     :return: bool
     """
@@ -111,7 +111,7 @@ def file_write(file, contents, folder, option=0, meta_update=1):
     share = config.share
     if contents == "":
         return False
-    if meta_update == 1 and not meta.get(share):
+    if preserve == 1 and not meta.get(share):
         check.delete_file(file, folder, meta_update)
         return False
     if os.path.splitext(file_name)[0] == os.path.basename(folder):
@@ -120,7 +120,7 @@ def file_write(file, contents, folder, option=0, meta_update=1):
         for line in contents:
             new_notes.write(line)
     if meta_update == 0:
-        if option == 1 and share not in meta.keys() or meta[share] is False:
+        if preserve == 1 and not meta.get(share):
             meta[share] = True
             mt.update_frontmatter(file, 1)
         else:

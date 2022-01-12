@@ -33,7 +33,7 @@ def search_shortcuts(file):
     return False
 
 
-def mobile_shortcuts(file="0"):
+def mobile_shortcuts(file="0", meta_update=0):
     """
     Main function using on mobile
     :param file: String (file path)
@@ -47,12 +47,12 @@ def mobile_shortcuts(file="0"):
         if not file:
             print("File not found.")
             sys.exit()
-        one.convert_one(file, True, 0)
+        one.convert_one(file, True, meta_update)
     elif file == "--c":
         setup.create_env()
         sys.exit()
     elif file != "0" and os.path.exists(file):
-        one.convert_one(file, True, 0)
+        one.convert_one(file, True, meta_update)
 
 
 def main():
@@ -135,7 +135,7 @@ def main():
         stop_share = 0
     if ori:
         if args.mobile:
-            mobile_shortcuts(ori)
+            mobile_shortcuts(ori, meta_update)
             sys.exit()
         elif os.path.exists(ori):  # Share ONE
             one.convert_one(ori, ng, meta_update)
@@ -144,7 +144,7 @@ def main():
             sys.exit()
     else:
         if args.mobile:
-            mobile_shortcuts()
+            mobile_shortcuts("0", meta_update)
             sys.exit()
         all.convert_all(delopt, ng, stop_share, meta_update)
 
