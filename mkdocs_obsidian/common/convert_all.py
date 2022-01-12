@@ -2,15 +2,14 @@ import os
 import sys
 from datetime import datetime
 from pathlib import Path
-import glob
 import frontmatter
 import yaml
 
-from mkdocs_obsidian.common import config, file_checking as check, conversion as convert
+from mkdocs_obsidian.common import config, global_value as gl, file_checking as check, conversion as convert
 
-BASEDIR = config.BASEDIR
-vault = config.vault
-vault_file = config.vault_file
+BASEDIR = gl.BASEDIR
+vault = gl.vault
+vault_file = gl.vault_file
 
 
 def exclude_folder(filepath):

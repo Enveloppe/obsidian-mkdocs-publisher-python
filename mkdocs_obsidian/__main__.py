@@ -12,6 +12,7 @@ except AttributeError:
 
 from mkdocs_obsidian.common import (
     config as setup,
+    global_value as value,
     convert_all as all,
     convert_one as one,
     file_checking as check,
@@ -26,7 +27,7 @@ def search_shortcuts(file):
     """
     if not file.endswith(".md"):
         file = file + ".md"
-    for md in setup.vault_file:
+    for md in value.vault_file:
         if os.path.basename(md) == os.path.basename(file):
             return md
     return False
@@ -38,7 +39,7 @@ def mobile_shortcuts(file="0"):
     :param file: String (file path)
     :return: None
     """
-    if file == "0": 
+    if file == "0":
         all.convert_all(git=False)
     elif not os.path.exists(file):
         file = search_shortcuts(file)

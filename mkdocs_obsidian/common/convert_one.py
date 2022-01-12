@@ -8,7 +8,8 @@ import frontmatter
 from mkdocs_obsidian.common import (
     file_checking as check,
     conversion as convert,
-    config as gl,
+    config as setup,
+    global_value as value
 )
 
 
@@ -22,7 +23,7 @@ def convert_one(ori, git, meta):
     """
     file_name = os.path.basename(ori).upper()
     yaml_front = frontmatter.load(ori)
-    priv = Path(gl.post)
+    priv = Path(value.post)
     clipkey = "notes"
     if "category" in yaml_front.keys():
         priv = check.create_folder(yaml_front["category"])
@@ -31,7 +32,7 @@ def convert_one(ori, git, meta):
     checkfile = convert.file_write(ori, contents, priv, 1, meta)
     if checkfile and not git:
         commit = f"Pushed {file_name.lower()} to blog"
-        gl.git_push(commit)
+        setup.git_push(commit)
         convert.clipboard(ori, clipkey)
     elif checkfile and git:
         print(

@@ -3,7 +3,6 @@ import re
 import shutil
 import sys
 import urllib.parse as url
-import glob
 from pathlib import Path
 
 import frontmatter
@@ -11,10 +10,10 @@ import unidecode
 
 from mkdocs_obsidian.common import (
     file_checking as check,
-    config,
+    global_value as config,
     metadata as mt,
     admonition as adm,
-)
+    )
 
 BASEDIR = Path(config.BASEDIR)
 vault = Path(config.vault)
@@ -41,9 +40,9 @@ def copy_image(final_text):
     :param final_text: str
     :return: None
     """
-    list = final_text.split("!")
-    if len(list) > 0:
-        for i in list:
+    list_text = final_text.split("!")
+    if len(list_text) > 0:
+        for i in list_text:
             link = re.search("(\[{2}|\().*\.(png|jpg|jpeg|gif)", i)
             if link:
                 final_text = re.sub("(!|\(|(%20)|\[|\]|\))", "", i)
@@ -134,14 +133,14 @@ def read_custom():
     read custom css
     :return: list[str]
     """
-    id = []
+    id_css = []
     with open(
         Path(f"{BASEDIR}/docs/assets/css/custom_attributes.css"), "r", encoding="utf-8"
     ) as css:
         for i in css.readlines():
             if i.startswith("#"):
-                id.append(i.replace("{\n", "").strip())
-    return id
+                id_css.append(i.replace("{\n", "").strip())
+    return id_css
 
 
 def convert_hashtags(final_text):

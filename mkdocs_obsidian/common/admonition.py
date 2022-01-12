@@ -3,7 +3,7 @@ import re
 from itertools import zip_longest
 from pathlib import Path
 import yaml
-from mkdocs_obsidian.common import config
+from mkdocs_obsidian.common import global_value as config
 
 BASEDIR = config.BASEDIR
 

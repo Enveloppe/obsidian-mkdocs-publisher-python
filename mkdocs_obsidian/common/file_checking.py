@@ -8,7 +8,7 @@ import frontmatter
 import yaml
 from unidecode import unidecode
 
-from mkdocs_obsidian.common import config as settings
+from mkdocs_obsidian.common import global_value as settings
 from mkdocs_obsidian.common import convert_all as exclude
 from mkdocs_obsidian.common import metadata as mt
 
