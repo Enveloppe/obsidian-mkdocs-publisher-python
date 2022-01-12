@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.7 (2022-01-12)
+### Fix
+* **conversion:** Fix preserve/force ([`4409321`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/440932122bd47bc776940b73aaeed1bb4c73184e))
+* **one:** Fix preserve/force doesn't working with one ([`601e706`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/601e7067132477b88bada165010e2c3d3295359b))
+* **config:** Fix global value environment ([`1f895cc`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1f895cc2a92298dc315d6b951e90a9c782c006e2))
+* **all:** Fix global value environment ([`4cc1d08`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/4cc1d08245df75b63e5a5b4b796347a05dc08d79))
+* **config:** Fix #2 ([`ce911f8`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ce911f81126be1f8392d5962ad3b0afb2877f18a))
+
+### Documentation
+* **readme:** Add more info about config path ([`2b4d867`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2b4d8674b3d74d66b0aee738b856f4d772562bba))
+
 ## v1.1.6 (2022-01-12)
 ### Fix
 * **mobile:** Fix some little bug on mobile ([`c90c17a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c90c17a451d5bb8afcd763c9e34434e4cfb2d975))
