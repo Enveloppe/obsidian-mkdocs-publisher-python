@@ -111,7 +111,7 @@ def file_write(file, contents, folder, preserve=0, meta_update=1):
     share = config.share
     if contents == "":
         return False
-    if preserve == 1 and not meta.get(share):
+    if preserve == 0 and not meta.get(share):
         check.delete_file(file, folder, meta_update)
         return False
     if os.path.splitext(file_name)[0] == os.path.basename(folder):
