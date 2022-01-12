@@ -24,6 +24,8 @@ def search_shortcuts(file):
     :param file: str (filepath)
     :return: str (filepath) / False
     """
+    if not file.endswith(".md"):
+        file = file + ".md"
     for md in setup.vault_file:
         if os.path.basename(md) == os.path.basename(file):
             return md
@@ -36,8 +38,11 @@ def mobile_shortcuts(file="0"):
     :param file: String (file path)
     :return: None
     """
-    if not os.path.exists(file):
+    if file == "0": 
+        all.convert_all(git=False)
+    elif not os.path.exists(file):
         file = search_shortcuts(file)
+        print(file)
         if not file:
             print("File not found.")
             sys.exit()
@@ -47,8 +52,7 @@ def mobile_shortcuts(file="0"):
         sys.exit()
     elif file != "0" and os.path.exists(file):
         one.convert_one(file, True, 0)
-    else:
-        all.convert_all(git=False)
+
 
 
 def main():
@@ -108,9 +112,6 @@ def main():
         setup.create_env()
         sys.exit()
     ori = args.filepath
-    if args.mobile:
-        mobile_shortcuts(ori)
-        sys.exit()
     meta_update = 1
     if args.meta:
         meta_update = 0
@@ -133,12 +134,18 @@ def main():
     else:
         stop_share = 0
     if ori:
-        if os.path.exists(ori):  # Share ONE
+        if args.mobile:
+            mobile_shortcuts(ori)
+            sys.exit()
+        elif os.path.exists(ori):  # Share ONE
             one.convert_one(ori, ng, meta_update)
         else:
             print(f"Error : {ori} doesn't exist.")
             sys.exit()
     else:
+        if args.mobile:
+            mobile_shortcuts()
+            sys.exit()
         all.convert_all(delopt, ng, stop_share, meta_update)
 
 
