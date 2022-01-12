@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.6 (2022-01-12)
+### Fix
+* **mobile:** Fix some little bug on mobile ([`c90c17a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c90c17a451d5bb8afcd763c9e34434e4cfb2d975))
+* **mobile:** Change the default env path in pyto ([`1227103`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/122710361ae97f4636a7cfe7e8926f1da4405d06))
+
 ## v1.1.5 (2022-01-12)
 ### Fix
 * **mobile:** Fix share one file ([`9728df7`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/9728df71a93d916c10f56dd17b02bc5c76705577))
