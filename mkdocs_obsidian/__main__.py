@@ -30,25 +30,23 @@ def search_shortcuts(file):
     return False
 
 
-def mobile_shortcuts(shortcuts=False, file="0"):
+def mobile_shortcuts(file="0"):
     """
     Main function using on mobile
-    :param shortcuts: bool (default: False)
     :param file: String (file path)
     :return: None
     """
-    delopt = False
-    git = True
-    if shortcuts and (file != "0" or file != "--c"):
+    if not os.path.exists(file):
         file = search_shortcuts(file)
         if not file:
             print("File not found.")
-            sys.exit(1)
-        one.convert_one(file, delopt, git)
+            sys.exit()
+        one.convert_one(file, True, 0)
     elif file == "--c":
         setup.create_env()
+        sys.exit()
     elif file != "0" and os.path.exists(file):
-        one.convert_one(file, delopt, git)
+        one.convert_one(file, True, 0)
     else:
         all.convert_all(git=False)
 
@@ -62,11 +60,17 @@ def main():
         description="Create file in docs and relative folder, move image in assets, convert admonition code_blocks, add links and push."
     )
     group_f = parser.add_mutually_exclusive_group()
-    parser.add_argument(
+    group_git = parser.add_mutually_exclusive_group()
+    group_git.add_argument(
         "--git", "--g", "--G", help="No commit and no push to git", action="store_true"
     )
-    parser.add_argument(
-        "--mobile", "--shortcuts", "--s", "--S", help="Use mobile shortcuts fonction.", action="store_true"
+    group_git.add_argument(
+        "--mobile",
+        "--shortcuts",
+        "--s",
+        "--S",
+        help="Use mobile shortcuts fonction without push.",
+        action="store_true",
     )
     parser.add_argument(
         "--meta",
@@ -102,11 +106,11 @@ def main():
     args = parser.parse_args()
     if args.config:
         setup.create_env()
-        sys.exit(1)
+        sys.exit()
     ori = args.filepath
     if args.mobile:
-        mobile_shortcuts(True, ori)
-        sys.exit(1)
+        mobile_shortcuts(ori)
+        sys.exit()
     meta_update = 1
     if args.meta:
         meta_update = 0
@@ -114,7 +118,6 @@ def main():
     if args.force:
         delopt = True
     ng = args.git
-
 
     if not args.keep:
         info = check.delete_not_exist()
@@ -134,7 +137,7 @@ def main():
             one.convert_one(ori, ng, meta_update)
         else:
             print(f"Error : {ori} doesn't exist.")
-            return
+            sys.exit()
     else:
         all.convert_all(delopt, ng, stop_share, meta_update)
 

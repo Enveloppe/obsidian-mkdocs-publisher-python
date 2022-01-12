@@ -1,4 +1,5 @@
 import os
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -36,3 +37,4 @@ def convert_one(ori, git, meta):
         print(
             f"[{datetime.now().strftime('%H:%M:%S')}] 🎉 Successfully converted {file_name.lower()}"
         )
+    sys.exit()

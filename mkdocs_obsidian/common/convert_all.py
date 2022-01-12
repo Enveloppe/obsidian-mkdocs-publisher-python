@@ -165,3 +165,4 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0):
             print(f"[{datetime.now().strftime('%H:%M:%S')}] {commit}")
     else:
         print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
+    sys.exit()
