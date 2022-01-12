@@ -5,7 +5,12 @@ from pathlib import Path
 import frontmatter
 import yaml
 
-from mkdocs_obsidian.common import config, global_value as gl, file_checking as check, conversion as convert
+from mkdocs_obsidian.common import (
+    config,
+    global_value as gl,
+    file_checking as check,
+    conversion as convert,
+)
 
 BASEDIR = gl.BASEDIR
 vault = gl.vault
@@ -53,7 +58,7 @@ def search_share(option=0, stop_share=1, meta=0):
     filespush = []
     check_file = False
     clipkey = "notes"
-    share = config.share
+    share = gl.share
     for filepath in vault_file:
         if (
             filepath.endswith(".md")
