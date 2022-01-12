@@ -47,12 +47,12 @@ def dest(filepath, folder):
     return str(dest)
 
 
-def search_share(option=0, stop_share=1, meta=0):
+def search_share(preserve=0, stop_share=1, meta=0):
     """
     Search file to publish
-    :param option: int
-    :param stop_share: int
-    :param meta: int
+    :param preserve: int (bool as 0/1)
+    :param stop_share: int (bool as 0/1)
+    :param meta: int (bool as 0/1)
     :return: tuple[list(str), str]
     """
     filespush = []
@@ -72,7 +72,7 @@ def search_share(option=0, stop_share=1, meta=0):
                 if share in yaml_front.keys() and yaml_front[share] is True:
                     folder = check.create_folder(clipkey, 0)
 
-                    if option == 0:  # preserve
+                    if preserve == 0:  # preserve
                         if (
                             "update" in yaml_front.keys()
                             and yaml_front["update"] is False
@@ -92,7 +92,7 @@ def search_share(option=0, stop_share=1, meta=0):
                                 )
                             else:
                                 check_file = False
-                    elif option == 1:  # force deletions
+                    elif preserve == 1:  # force deletions
                         contents = convert.file_convert(filepath)
                         check_file = convert.file_write(
                             filepath, contents, folder, meta
