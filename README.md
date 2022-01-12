@@ -99,7 +99,9 @@ optional arguments:
 At the first start of the script, it will ask you :
 - The **absolute path** of your vault and blog in your PC.
 - The key you want to use to share the file (default : `share`).
-This file will be in your `site_package` folder.
+
+This file will be in your `site_package/mkdocs_obsidian` folder.
+> On pyto, it will be directly in site_package
 
 You can reconfigure the option with `obs2mk --config`.
 
