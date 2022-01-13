@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.0 (2022-01-13)
+### Feature
+* **all:** Ignore share state ([`ac1c7a7`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ac1c7a7a58ce7d7d29f86288e432a40865664d67))
+
+### Documentation
+* **readme:** Add new option ([`c0715ad`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c0715ad452f46ef9ac4bf43c79360ee85308a774))
+
 ## v1.1.8 (2022-01-13)
 ### Fix
 * **config:** Urgent hot fix typo error ([`7ca6ff6`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/7ca6ff6bb0ee227287168e777e34437a79758127))
