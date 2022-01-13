@@ -1,3 +1,7 @@
+"""
+All function intended to check the file and their path.
+"""
+
 import datetime
 import glob
 import os
@@ -13,9 +17,9 @@ from mkdocs_obsidian.common import convert_all as exclude
 from mkdocs_obsidian.common import metadata as mt
 
 BASEDIR = settings.BASEDIR
-post = settings.post
-vault = settings.vault
-vault_iter = settings.vault_file
+POST = settings.POST
+VAULT = settings.VAULT
+VAULT_FILE = settings.VAULT_FILE
 
 
 def delete_not_exist():
@@ -28,7 +32,7 @@ def delete_not_exist():
     excluded = []
     important_folder = ["assets", "css", "js", "logo", "script"]
     docs = Path(f"{BASEDIR}/docs/**")
-    for note in vault_iter:
+    for note in VAULT_FILE:
         vault_file.append(os.path.basename(note))
         if exclude.exclude_folder(note):
             excluded.append(os.path.basename(note))
@@ -105,8 +109,8 @@ def retro(filepath, opt=0):
     else:
         metadata = frontmatter.loads("".join(filepath))
     file = metadata.content.split("\n")
-    for n in file:
-        notes.append(n)
+    for line in file:
+        notes.append(line)
     return notes
 
 
@@ -123,9 +127,9 @@ def create_folder(category, share=0):
             if share == 0:
                 folder.mkdir(parents=True, exist_ok=True)
         except OSError:
-            folder = Path(post)
+            folder = Path(POST)
     else:
-        folder = Path(post)
+        folder = Path(POST)
     return folder
 
 

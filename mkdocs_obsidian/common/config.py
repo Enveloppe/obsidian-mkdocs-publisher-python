@@ -1,3 +1,7 @@
+"""
+Function to create environment variables and push to git.
+"""
+
 import os.path
 import sys
 from datetime import datetime
@@ -73,10 +77,10 @@ def create_env():
     sys.exit("Environment created.")
 
 
-def git_push(COMMIT):
+def git_push(commit):
     """
     git push the modified files
-    :param COMMIT: str
+    :param commit: str
     :return: None
     """
     try:
@@ -84,11 +88,11 @@ def git_push(COMMIT):
 
         repo = git.Repo(Path(f"{BASEDIR}/.git"))
         repo.git.add(".")
-        repo.git.commit("-m", f"{COMMIT}")
+        repo.git.commit("-m", f"{commit}")
         origin = repo.remote("origin")
         origin.push()
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] {COMMIT} successfully 🎉")
+        print(f"[{datetime.now().strftime('%H:%M:%S')}] {commit} successfully 🎉")
     except ImportError:
         print(
-            f"[{datetime.now().strftime('%H:%M:%S')}] {COMMIT} changed\nPlease, use another way to push your change 😶"
+            f"[{datetime.now().strftime('%H:%M:%S')}] {commit} changed\nPlease, use another way to push your change 😶"
         )

@@ -1,3 +1,7 @@
+"""
+Convert all file in a vault folder.
+"""
+
 import os
 import sys
 from datetime import datetime
@@ -14,8 +18,9 @@ from mkdocs_obsidian.common import (
 )
 
 BASEDIR = gl.BASEDIR
-vault = gl.vault
-vault_file = gl.vault_file
+VAULT = gl.VAULT
+VAULT_FILE = gl.VAULT_FILE
+SHARE = gl.SHARE
 
 
 def exclude_folder(filepath):
@@ -44,8 +49,8 @@ def dest(filepath, folder):
     :return: str
     """
     file_name = os.path.basename(filepath)
-    dest = Path(f"{folder}/{file_name}")
-    return str(dest)
+    destination = Path(f"{folder}/{file_name}")
+    return str(destination)
 
 
 def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
@@ -60,8 +65,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
     filespush = []
     check_file = False
     clipkey = "notes"
-    share = gl.share
-    for filepath in vault_file:
+    for filepath in VAULT_FILE:
         if (
             filepath.endswith(".md")
             and "excalidraw" not in filepath
@@ -71,7 +75,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
                 yaml_front = frontmatter.load(filepath)
                 if "category" in yaml_front.keys():
                     clipkey = yaml_front["category"]
-                if yaml_front.get(share) or vault_share == 1:
+                if yaml_front.get(SHARE) or vault_share == 1:
                     folder = check.create_folder(clipkey, 0)
 
                     if preserve == 0:  # preserve
@@ -148,24 +152,24 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
         print(f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}{msg_info}")
         new_files, clipkey = search_share(0, stop_share, meta, vault_share)
     if len(new_files) > 0:
-        add = ""
-        rm = ""
-        for md in new_files:
-            if "removed" in md.lower():
-                rm = rm + "\n - " + md.replace("Removed : ", "")
-            elif "added" in md.lower():
-                add = add + "\n - " + md.replace("Added : ", "")
+        add_msg = ""
+        remove_msg = ""
+        for markdown_msg in new_files:
+            if "removed" in markdown_msg.lower():
+                remove_msg = remove_msg + "\n - " + markdown_msg.replace("Removed : ", "")
+            elif "added" in markdown_msg.lower():
+                add_msg = add_msg + "\n - " + markdown_msg.replace("Added : ", "")
 
-        if len(rm) > 0:
-            rm = f"🗑️ Removed from blog : {rm}"
-        if len(add) > 0:
-            add = f" 🎉 Added to blog : {add}\n\n"
-        commit = add + rm
+        if len(remove_msg) > 0:
+            remove_msg = f"🗑️ Removed from blog : {remove_msg}"
+        if len(add_msg) > 0:
+            add_msg = f" 🎉 Added to blog : {add_msg}\n\n"
+        commit = add_msg + remove_msg
         if git is False:
             if len(new_files) == 1:
                 commit = "".join(new_files)
-                md = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
-                convert.clipboard(md, clipkey)
+                markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
+                convert.clipboard(markdown_msg, clipkey)
             commit = f"Updated : \n {commit}"
             config.git_push(commit)
         else:

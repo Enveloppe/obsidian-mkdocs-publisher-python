@@ -1,3 +1,7 @@
+"""
+Update metadata in the file, if option is used.
+"""
+
 import os
 import re
 from pathlib import Path
@@ -7,7 +11,8 @@ import frontmatter
 from mkdocs_obsidian.common import global_value as config
 
 BASEDIR = Path(config.BASEDIR)
-web = config.web
+WEB = config.WEB
+SHARE = config.SHARE
 
 
 def update_frontmatter(file, link=1):
@@ -21,7 +26,6 @@ def update_frontmatter(file, link=1):
     metadata = open(file, "r", encoding="utf8")
     meta = frontmatter.load(metadata)
     metadata.close()
-    share = config.share
     folder = "notes"
     if "tag" in meta.keys():
         tag = meta["tag"]
@@ -43,7 +47,7 @@ def update_frontmatter(file, link=1):
         if filename == os.path.basename(folder):
             filename = ""
         path_url = url.quote(f"{folder}/{filename}")
-        clip = f"{web}{path_url}"
+        clip = f"{WEB}{path_url}"
         meta["link"] = clip
         update = frontmatter.dumps(meta, sort_keys=False)
         meta = frontmatter.loads(update)
@@ -51,10 +55,10 @@ def update_frontmatter(file, link=1):
             meta.metadata.pop("link", None)
         elif (
             link == 1
-            and share == 1
-            and (share not in meta.keys() or meta[share] == "false")
+            and SHARE == 1
+            and (not meta.get(SHARE))
         ):
-            meta[share] = "true"
+            meta[SHARE] = "true"
         if tag != "":
             meta["tag"] = tag
         update = frontmatter.dumps(meta, sort_keys=False)
@@ -73,4 +77,3 @@ def update_frontmatter(file, link=1):
             except UnicodeEncodeError:
                 pass
         f.write(update)
-    return

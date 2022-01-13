@@ -1,5 +1,10 @@
+"""
+A terrifing code to convert admonition code blocks to material code blocks.
+"""
+
 import os
 import re
+import sys
 from itertools import zip_longest
 from pathlib import Path
 import yaml
@@ -92,7 +97,7 @@ def admonition_trad(file_data):
                 custom = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
                 print(exc)
-                exit(1)
+                sys.exit(1)
     adm_list = adm_list + custom
     for i in range(0, len(file_data)):
         if re.search("[`?!]{3}( ?)\w+(.*)", file_data[i]):

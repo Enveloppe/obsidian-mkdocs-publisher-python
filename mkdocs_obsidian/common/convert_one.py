@@ -1,3 +1,7 @@
+"""
+Convert one file function.
+"""
+
 import os
 import sys
 from datetime import datetime
@@ -23,7 +27,7 @@ def convert_one(ori, git, meta):
     """
     file_name = os.path.basename(ori).upper()
     yaml_front = frontmatter.load(ori)
-    priv = Path(value.post)
+    priv = Path(value.POST)
     clipkey = "notes"
     if "category" in yaml_front.keys():
         priv = check.create_folder(yaml_front["category"])

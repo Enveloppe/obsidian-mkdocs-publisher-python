@@ -1,3 +1,7 @@
+"""
+Main program to convert file to material mkdocs.
+"""
+
 import os
 import re
 import shutil
@@ -16,17 +20,18 @@ from mkdocs_obsidian.common import (
 )
 
 BASEDIR = Path(config.BASEDIR)
-vault = Path(config.vault)
-vault_file = config.vault_file
+VAULT = Path(config.VAULT)
+VAULT_FILE = config.VAULT_FILE
+SHARE = config.SHARE
 
 
 def get_image(image):
     """
-    Check if the image exists in the vault
+    Check if the image exists in the VAULT
     :param image: str
     :return: bool or filepath to image
     """
-    for filepath in vault_file:
+    for filepath in VAULT_FILE:
         if unidecode.unidecode(os.path.basename(filepath)) in unidecode.unidecode(
             image
         ):
@@ -50,7 +55,7 @@ def copy_image(final_text):
                 image_path = get_image(final_text)
                 if image_path:
                     shutil.copyfile(
-                        image_path, Path(f"{config.img}/{final_text.strip()}")
+                        image_path, Path(f"{config.IMG}/{final_text.strip()}")
                     )
 
 
@@ -67,7 +72,7 @@ def clipboard(filepath, folder):
     if filename == folder:
         filename = ""
     paste = url.quote(f"{folder_key}/{filename}")
-    clip = f"{config.web}{paste}"
+    clip = f"{config.WEB}{paste}"
     if sys.platform == "ios":
         try:
             import pasteboard  # work with pyto
@@ -97,7 +102,7 @@ def clipboard(filepath, folder):
 def file_write(file, contents, folder, preserve=0, meta_update=1):
     """
         - Delete file if stoped sharing
-        - Write file if share = true
+        - Write file if SHARE = true
         - Update frontmatter if meta_update = 0
     :param file: str
     :param contents: list[str]
@@ -108,10 +113,9 @@ def file_write(file, contents, folder, preserve=0, meta_update=1):
     """
     file_name = os.path.basename(file)
     meta = frontmatter.load(file)
-    share = config.share
     if contents == "":
         return False
-    if preserve == 0 and not meta.get(share):
+    if preserve == 0 and not meta.get(SHARE):
         check.delete_file(file, folder, meta_update)
         return False
     if os.path.splitext(file_name)[0] == os.path.basename(folder):
@@ -120,8 +124,8 @@ def file_write(file, contents, folder, preserve=0, meta_update=1):
         for line in contents:
             new_notes.write(line)
     if meta_update == 0:
-        if preserve == 1 and not meta.get(share):
-            meta[share] = True
+        if preserve == 1 and not meta.get(SHARE):
+            meta[SHARE] = True
             mt.update_frontmatter(file, 1)
         else:
             mt.update_frontmatter(file, 0)
@@ -145,7 +149,7 @@ def read_custom():
 
 def convert_hashtags(final_text):
     """
-    Convert configured hashtags with IAL CSS from custom.css
+    Convert configured hashtags with ial CSS from custom.css
     :param final_text: str
     :return: str
     """
@@ -158,7 +162,7 @@ def convert_hashtags(final_text):
             if final_text.startswith("#"):
                 heading = re.findall("#", final_text)
                 heading = "".join(heading)
-                IAL = (
+                ial = (
                     heading
                     + " **"
                     + final_text.replace("#", "").strip()
@@ -167,17 +171,17 @@ def convert_hashtags(final_text):
                     + "}  \n"
                 )
             else:
-                IAL = "**" + final_text.strip() + "**{: " + token[i] + "}  \n"
-            final_text = final_text.replace(final_text, IAL)
+                ial = "**" + final_text.strip() + "**{: " + token[i] + "}  \n"
+            final_text = final_text.replace(final_text, ial)
         else:
-            IAL = (
+            ial = (
                 "**"
                 + token[i].replace("#", " ").strip()
                 + "**{: "
                 + token[i].strip()
                 + "}{: .hash}  \n"
             )
-            final_text = final_text.replace(token[i], IAL, 1)
+            final_text = final_text.replace(token[i], ial, 1)
     return final_text
 
 
@@ -191,12 +195,11 @@ def file_convert(file, force=0):
     final = []
     meta = frontmatter.load(file)
     lines = meta.content.splitlines(True)
-    share = config.share
-    if force != 1 and not meta.get(share):
+    if force != 1 and not meta.get(SHARE):
         return final
     lines = adm.admonition_trad(lines)
-    for ln in lines:
-        final_text = ln
+    for line in lines:
+        final_text = line
         if not final_text.strip().endswith("%%") and not final_text.strip().startswith(
             "%%"
         ):
