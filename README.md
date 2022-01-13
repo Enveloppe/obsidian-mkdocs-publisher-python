@@ -78,7 +78,7 @@ If you use the `--meta` option, it will also add, in the **original file** a lin
 ## Usage
 ```powershell
 usage: __main__.py [-h] [--git | --mobile] [--meta] [--keep] [--config]
-                   [--force | --filepath FILEPATH]
+                   [--force] [--filepath FILEPATH | --ignore]
 
 Create file in docs and relative folder, move image in assets, convert
 admonition code_blocks, add links and push.
@@ -94,6 +94,9 @@ optional arguments:
   --force, --d, --D     Force conversion - only work if path not specified
   --filepath FILEPATH, --f FILEPATH
                         Filepath of the file you want to convert
+  --ignore, --ignore-share, --no-share, --i, --vault
+                        Convert the entire vault without relying on share
+                        state.
 ```
 
 At the first start of the script, it will ask you :
@@ -125,8 +128,14 @@ There is two options :
 
 You can force to skip the update with `update: false` in the frontmatter : the file, no matter what, will not be updated. 
 
-## Mobile option
+#### Share the entire vault
 
+Using the command `--ignore` will ignore the `share` state : you can share your entire vault using that, whatever the state is. By default, it will not overwrite file already exist (and not different), so the `--force` option can also be used.
+
+`usage: __main__.py [-h] [--git | --mobile] [--meta] [--keep] [--config]
+                   [--force] [--ignore]`
+
+## Mobile option
 The mobile option is similar to the `git` option but with some nuance. When used to publish a single file, you can use only the file name, without the path.
 
 :warning: Be careful though, in case you have several files with the same name, the script will take the first file found. 
