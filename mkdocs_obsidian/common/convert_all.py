@@ -2,6 +2,7 @@ import os
 import sys
 from datetime import datetime
 from pathlib import Path
+
 import frontmatter
 import yaml
 
@@ -10,7 +11,7 @@ from mkdocs_obsidian.common import (
     global_value as gl,
     file_checking as check,
     conversion as convert,
-)
+    )
 
 BASEDIR = gl.BASEDIR
 vault = gl.vault
@@ -47,12 +48,13 @@ def dest(filepath, folder):
     return str(dest)
 
 
-def search_share(preserve=0, stop_share=1, meta=0):
+def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
     """
     Search file to publish
-    :param preserve: int (bool as 0/1)
-    :param stop_share: int (bool as 0/1)
-    :param meta: int (bool as 0/1)
+    :param preserve: int (bool)
+    :param stop_share: int (bool)
+    :param meta: int (bool)
+    :param vault_share int (bool)
     :return: tuple[list(str), str]
     """
     filespush = []
@@ -69,14 +71,11 @@ def search_share(preserve=0, stop_share=1, meta=0):
                 yaml_front = frontmatter.load(filepath)
                 if "category" in yaml_front.keys():
                     clipkey = yaml_front["category"]
-                if share in yaml_front.keys() and yaml_front[share] is True:
+                if yaml_front.get(share) or vault_share == 1:
                     folder = check.create_folder(clipkey, 0)
 
                     if preserve == 0:  # preserve
-                        if (
-                            "update" in yaml_front.keys()
-                            and yaml_front["update"] is False
-                        ):
+                        if yaml_front.get('update') is False:
                             update = 1
                         else:
                             update = 0
@@ -85,7 +84,7 @@ def search_share(preserve=0, stop_share=1, meta=0):
                         ) or not check.modification_time(filepath, folder, update):
                             check_file = False
                         else:
-                            contents = convert.file_convert(filepath)
+                            contents = convert.file_convert(filepath, vault_share)
                             if check.diff_file(filepath, folder, contents, update):
                                 check_file = convert.file_write(
                                     filepath, contents, folder, meta
@@ -93,7 +92,7 @@ def search_share(preserve=0, stop_share=1, meta=0):
                             else:
                                 check_file = False
                     elif preserve == 1:  # force deletions
-                        contents = convert.file_convert(filepath)
+                        contents = convert.file_convert(filepath, vault_share)
                         check_file = convert.file_write(
                             filepath, contents, folder, meta
                         )
@@ -122,13 +121,14 @@ def search_share(preserve=0, stop_share=1, meta=0):
     return filespush, clipkey
 
 
-def convert_all(delopt=False, git=False, stop_share=0, meta=0):
+def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
     """
     Main function to convert multiple file
     :param delopt: bool
     :param git: bool
     :param stop_share: int (bool)
     :param meta: int (bool)
+    :param vault_share: int (bool)
     :return: None
     """
     if git:
@@ -136,14 +136,17 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0):
     else:
         git_info = "PUSH"
     time_now = datetime.now().strftime("%H:%M:%S")
+    msg_info="\n"
+    if vault_share == 1:
+        msg_info = "\n- SHARE ENTIRE VAULT [IGNORE SHARE STATE]\n"
     if delopt:  # preserve
         print(
-            f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}\n- FORCE DELETIONS"
+            f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}\n- FORCE DELETIONS{msg_info}"
         )
-        new_files, clipkey = search_share(1, stop_share, meta)
+        new_files, clipkey = search_share(1, stop_share, meta, vault_share)
     else:
-        print(f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}\n")
-        new_files, clipkey = search_share(0, stop_share, meta)
+        print(f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}{msg_info}")
+        new_files, clipkey = search_share(0, stop_share, meta, vault_share)
     if len(new_files) > 0:
         add = ""
         rm = ""

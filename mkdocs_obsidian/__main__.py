@@ -33,18 +33,18 @@ def search_shortcuts(file):
     return False
 
 
-def mobile_shortcuts(file="0", meta_update=0):
+def mobile_shortcuts(file="0", meta_update=0, vault_share=0):
     """
     Main function using on mobile
     :param meta_update: int (bool)
     :param file: String (file path)
+    :param vault_share: int (bool)
     :return: None
     """
     if file == "0":
-        all.convert_all(git=False)
+        all.convert_all(False, False, 0, 0, vault_share)
     elif not os.path.exists(file):
         file = search_shortcuts(file)
-        print(file)
         if not file:
             print("File not found.")
             sys.exit()
@@ -64,7 +64,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Create file in docs and relative folder, move image in assets, convert admonition code_blocks, add links and push."
     )
-    group_f = parser.add_mutually_exclusive_group()
+    group_files = parser.add_mutually_exclusive_group()
     group_git = parser.add_mutually_exclusive_group()
     group_git.add_argument(
         "--git", "--g", "--G", help="No commit and no push to git", action="store_true"
@@ -94,20 +94,30 @@ def main():
     parser.add_argument(
         "--config", "--c", "--C", help="Edit the config file", action="store_true"
     )
-    group_f.add_argument(
+    parser.add_argument(
         "--force",
         "--d",
         "--D",
         help="Force conversion - only work if path not specified",
         action="store_true",
     )
-    group_f.add_argument(
+    group_files.add_argument(
         "--filepath",
         "--f",
         help="Filepath of the file you want to convert",
         action="store",
         required=False,
     )
+    group_files.add_argument(
+        "--ignore",
+        "--ignore-share",
+        "--no-share",
+        "--i",
+        "--vault",
+        help="Convert the entire vault without relying on share state.",
+        action="store_true",
+    )
+
     args = parser.parse_args()
     if args.config:
         setup.create_env()
@@ -120,7 +130,9 @@ def main():
     if args.force:
         delopt = True
     ng = args.git
-
+    share_vault = 0
+    if args.ignore:
+        share_vault = 1
     if not args.keep:
         info = check.delete_not_exist()
         if len(info) > 1:
@@ -147,7 +159,7 @@ def main():
         if args.mobile:
             mobile_shortcuts("0", meta_update)
             sys.exit()
-        all.convert_all(delopt, ng, stop_share, meta_update)
+        all.convert_all(delopt, ng, stop_share, meta_update, share_vault)
 
 
 if __name__ == "__main__":

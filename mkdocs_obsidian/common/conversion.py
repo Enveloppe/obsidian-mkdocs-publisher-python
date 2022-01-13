@@ -181,20 +181,19 @@ def convert_hashtags(final_text):
     return final_text
 
 
-def file_convert(file, option=0):
+def file_convert(file, force=0):
     """
     Read the file and convert each line based on regex condition.
     :param file: str
-    :param option: int(bool)
+    :param force: int(bool)
     :return: list[str]
     """
     final = []
     meta = frontmatter.load(file)
     lines = meta.content.splitlines(True)
     share = config.share
-    if option != 1:
-        if share not in meta.keys() or meta[share] is False:
-            return final
+    if force != 1 and not meta.get(share):
+        return final
     lines = adm.admonition_trad(lines)
     for ln in lines:
         final_text = ln
@@ -204,7 +203,6 @@ def file_convert(file, option=0):
             # Skip obsidian comments
             # Check and copy image
             copy_image(final_text)
-
             if not "`" in final_text:
                 final_text = re.sub(
                     "\%{2}(.*)\%{2}", "", final_text
