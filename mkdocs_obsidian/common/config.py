@@ -53,7 +53,7 @@ def create_env():
     blog = ""
     while vault == "" or not os.path.isdir(vault):
         vault = str(input("Please provide your obsidian vault path : "))
-    while blog == "" or not os.path.isfile(blog):
+    while blog == "" or not os.path.isdir(blog):
         blog = str(input("Please provide the blog repository path : "))
     blog_link = check_url(blog).strip()
     if blog_link == "":
