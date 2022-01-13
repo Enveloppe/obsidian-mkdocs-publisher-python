@@ -36,6 +36,7 @@ def search_shortcuts(file):
 def mobile_shortcuts(file="0", meta_update=0):
     """
     Main function using on mobile
+    :param meta_update: int (bool)
     :param file: String (file path)
     :return: None
     """
