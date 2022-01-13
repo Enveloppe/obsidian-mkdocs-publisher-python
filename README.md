@@ -77,7 +77,7 @@ If you use the `--meta` option, it will also add, in the **original file** a lin
 
 ## Usage
 ```powershell
-usage: __main__.py [-h] [--git | --mobile] [--meta] [--keep] [--config]
+usage: obs2mk [-h] [--git | --mobile] [--meta] [--keep] [--config]
                    [--force] [--filepath FILEPATH | --ignore]
 
 Create file in docs and relative folder, move image in assets, convert
@@ -132,7 +132,7 @@ You can force to skip the update with `update: false` in the frontmatter : the f
 
 Using the command `--ignore` will ignore the `share` state : you can share your entire vault using that, whatever the state is. By default, it will not overwrite file already exist (and not different), so the `--force` option can also be used.
 
-`usage: __main__.py [-h] [--git | --mobile] [--meta] [--keep] [--config]
+`usage: obs2mk [-h] [--git | --mobile] [--meta] [--keep] [--config]
                    [--force] [--ignore]`
 
 ## Mobile option
