@@ -2,18 +2,6 @@
 
 <!--next-version-placeholder-->
 
-## v1.2.0 (2022-01-13)
-### Feature
-* **all:** Ignore share state ([`ac1c7a7`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ac1c7a7a58ce7d7d29f86288e432a40865664d67))
-
-### Fix
-* **config:** Urgent hot fix typo error ([`7ca6ff6`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/7ca6ff6bb0ee227287168e777e34437a79758127))
-
-### Documentation
-* **readme:** Add new option ([`c0715ad`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c0715ad452f46ef9ac4bf43c79360ee85308a774))
-* **main:** Change variable name ([`f43c931`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/f43c931c5b1c128c8e42e6d5250d3d8ca17b078d))
-* **issue:** Add stale bot ([`6d7387b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6d7387bfd59e611b47eb493f69921ea2f35ba4e9))
-
 ## v1.1.7 (2022-01-12)
 ### Fix
 * **conversion:** Fix preserve/force ([`4409321`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/440932122bd47bc776940b73aaeed1bb4c73184e))
