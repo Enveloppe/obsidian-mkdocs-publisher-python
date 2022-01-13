@@ -11,7 +11,7 @@ from mkdocs_obsidian.common import (
     global_value as gl,
     file_checking as check,
     conversion as convert,
-    )
+)
 
 BASEDIR = gl.BASEDIR
 vault = gl.vault
@@ -75,7 +75,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
                     folder = check.create_folder(clipkey, 0)
 
                     if preserve == 0:  # preserve
-                        if yaml_front.get('update') is False:
+                        if yaml_front.get("update") is False:
                             update = 1
                         else:
                             update = 0
@@ -136,7 +136,7 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
     else:
         git_info = "PUSH"
     time_now = datetime.now().strftime("%H:%M:%S")
-    msg_info="\n"
+    msg_info = "\n"
     if vault_share == 1:
         msg_info = "\n- SHARE ENTIRE VAULT [IGNORE SHARE STATE]\n"
     if delopt:  # preserve
