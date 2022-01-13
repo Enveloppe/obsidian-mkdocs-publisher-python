@@ -145,6 +145,8 @@ This option can be used especially with the "Shortcuts" application on IOS, to s
 One file usage : `obs2mk --mobile --f "filename"`
 All file usage : `obs2mk --mobile`
 
+Mobile supports all previous option, including `--ignore`.
+
 ### IOS 
 Using :
 - [a-shell](https://holzschu.github.io/a-Shell_iOS/) (Free)
