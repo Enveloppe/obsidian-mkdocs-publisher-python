@@ -71,6 +71,7 @@ def create_env():
         env.write(f"blog_path={blog}\n")
         env.write(f"blog={blog_link}\n")
         env.write(f"share={share}\n")
+    BASEDIR = gl.BASEDIR
     post = Path(f"{BASEDIR}/docs/notes")
     img = Path(f"{BASEDIR}/docs/assets/img/")
     img.mkdir(exist_ok=True)
