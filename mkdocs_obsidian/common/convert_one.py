@@ -29,7 +29,7 @@ def convert_one(ori, git, meta):
     yaml_front = frontmatter.load(ori)
     priv = Path(value.POST)
     clipkey = "notes"
-    if yaml_front.get('category'):
+    if yaml_front.get("category"):
         priv = check.create_folder(yaml_front["category"])
         clipkey = yaml_front["category"]
     contents = convert.file_convert(ori, 1)

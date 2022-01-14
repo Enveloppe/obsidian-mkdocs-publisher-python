@@ -27,19 +27,18 @@ def update_frontmatter(file, link=1):
     meta = frontmatter.load(metadata)
     metadata.close()
     folder = "notes"
-    if "tag" in meta.keys():
+    if meta.get("tag"):
         tag = meta["tag"]
-    elif "tags" in meta.keys():
+    elif meta.get("tags"):
         tag = meta["tags"]
     else:
         tag = ""
     meta.metadata.pop("tag", None)
     meta.metadata.pop("tags", None)
-    if "category" in meta.metadata:
-        if meta.metadata["category"] != "":
-            folder = meta.metadata["category"]
-        else:
-            folder = "notes"
+    if meta.metadata.get("category"):
+        folder = meta.metadata["category"]
+    else:
+        folder = "notes"
 
     with open(file, "w", encoding="utf-8") as f:
         filename = os.path.basename(file)
@@ -53,11 +52,7 @@ def update_frontmatter(file, link=1):
         meta = frontmatter.loads(update)
         if link != 1:
             meta.metadata.pop("link", None)
-        elif (
-            link == 1
-            and SHARE == 1
-            and (not meta.get(SHARE))
-        ):
+        elif link == 1 and SHARE == 1 and (not meta.get(SHARE)):
             meta[SHARE] = "true"
         if tag != "":
             meta["tag"] = tag

@@ -73,8 +73,10 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
         ):
             try:
                 yaml_front = frontmatter.load(filepath)
-                if "category" in yaml_front.keys():
+                if yaml_front.get("category"):
                     clipkey = yaml_front["category"]
+                else:
+                    clipkey = "notes"
                 if yaml_front.get(SHARE) or vault_share == 1:
                     folder = check.create_folder(clipkey, 0)
 
@@ -156,7 +158,9 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
         remove_msg = ""
         for markdown_msg in new_files:
             if "removed" in markdown_msg.lower():
-                remove_msg = remove_msg + "\n - " + markdown_msg.replace("Removed : ", "")
+                remove_msg = (
+                    remove_msg + "\n - " + markdown_msg.replace("Removed : ", "")
+                )
             elif "added" in markdown_msg.lower():
                 add_msg = add_msg + "\n - " + markdown_msg.replace("Added : ", "")
 

@@ -11,7 +11,6 @@ import mkdocs_obsidian as obs
 from mkdocs_obsidian.common import global_value as gl
 
 
-
 def check_url(blog_path):
     """
     check if the url is in the config file and return it
@@ -87,6 +86,7 @@ def git_push(commit):
     """
     try:
         import git
+
         BASEDIR = gl.BASEDIR
         repo = git.Repo(Path(f"{BASEDIR}/.git"))
         repo.git.add(".")
