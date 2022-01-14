@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.3 (2022-01-14)
+### Fix
+* **hotfix:** BASEDIR for folder to create ([`cc153f6`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/cc153f61dc25dab80395ab5f3a7ce0e764999966))
+
 ## v1.2.2 (2022-01-14)
 ### Fix
 * **folder:** Fix folder/category ([`086829c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/086829c4a887768bac2a212241687a37178c2813))
