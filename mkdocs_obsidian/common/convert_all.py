@@ -119,11 +119,10 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
                         filespush.append(
                             f"Removed : {os.path.basename(destination).replace('.md', '')} from [{msg_folder}]"
                         )
-            except (
-                yaml.scanner.ScannerError,
-                yaml.constructor.ConstructorError,
-            ) as e:
-                pass
+            except yaml.YAMLError:
+                print(
+                    f"Error in {filepath} : Your YAML frontmatter doesn't seem valid! Use https://jsonformatter.org/yaml-validator to correct it!"
+                )
     return filespush, clipkey
 
 

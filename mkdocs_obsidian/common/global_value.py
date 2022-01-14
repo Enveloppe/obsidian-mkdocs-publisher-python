@@ -52,8 +52,7 @@ except KeyError:
         WEB = "".join(f.readlines(3)).replace("blog=", "")
         SHARE = "".join(f.readlines(4)).replace("share=", "")
     if len(vault_str) == 0 or len(basedir_str) == 0 or len(WEB) == 0:
-        print("Please provide a valid path for all config items")
-        sys.exit(1)
+        sys.exit("Please provide a valid path for all config items")
 except RuntimeError:
     BASEDIR = Path(env["blog_path"])
     VAULT = Path(env["vault"])
@@ -64,11 +63,11 @@ try:
     VAULT = VAULT.expanduser()
     BASEDIR = BASEDIR.expanduser()
 except RuntimeError:
-    print("Please, provid a valid path for all config item.")
-    sys.exit(1)
+    sys.exit("Please provide a valid path for all config items")
 
 if len(SHARE) == 0:
     SHARE = "share"
+
 POST = Path(f"{BASEDIR}/docs/notes")
 IMG = Path(f"{BASEDIR}/docs/assets/img/")
 VAULT_FILE = [

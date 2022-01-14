@@ -80,8 +80,10 @@ def diff_file(file, folder, contents, update=0):
         meta_old.pop("link", None)
         try:
             front_temp = frontmatter.loads("".join(contents))
-        except yaml.parser.ParserError:
-            print("ERROR : ", file)
+        except yaml.YAMLError:
+            print(
+                f"Error in {file} : Your YAML frontmatter doesn't seem valid! Use https://jsonformatter.org/yaml-validator to correct it!"
+            )
             return False  # skip
         new_version = retro(contents, 1)
         meta_new = front_temp.metadata
