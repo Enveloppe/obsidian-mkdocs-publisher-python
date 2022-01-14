@@ -82,7 +82,7 @@ def diff_file(file, folder, contents, update=0):
             front_temp = frontmatter.loads("".join(contents))
         except yaml.YAMLError:
             print(
-                f"Error in {file} : Your YAML frontmatter doesn't seem valid! Use https://jsonformatter.org/yaml-validator to correct it!"
+                f"Skip {file} : YAML Error"
             )
             return False  # skip
         new_version = retro(contents, 1)

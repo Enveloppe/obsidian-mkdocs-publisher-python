@@ -121,8 +121,10 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
                         )
             except yaml.YAMLError:
                 print(
-                    f"Error in {filepath} : Your YAML frontmatter doesn't seem valid! Use https://jsonformatter.org/yaml-validator to correct it!"
+                    f"Skip {filepath} because of YAML error.\n"
                 )
+            except Exception as e:
+                print(f'Skip {filepath} because of an unexpected error : {e}\n')
     return filespush, clipkey
 
 

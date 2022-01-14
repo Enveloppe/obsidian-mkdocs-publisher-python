@@ -53,9 +53,9 @@ def copy_image(final_text):
                 final_text = re.sub("(!|\(|(%20)|\[|\]|\))", "", i)
                 final_text = os.path.basename(final_text.split("|")[0])
                 image_path = get_image(final_text)
-                if image_path:
+                if image_path and os.path.isfile(image_path):
                     shutil.copyfile(
-                        image_path, Path(f"{config.IMG}/{final_text.strip()}")
+                        image_path, Path(f"{config.IMG}/{os.path.basename(image_path)}")
                     )
 
 
