@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.2 (2022-01-14)
+### Fix
+* **folder:** Fix folder/category ([`086829c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/086829c4a887768bac2a212241687a37178c2813))
+
 ## v1.2.1 (2022-01-14)
 ### Fix
 * **hotfix:** Hot fix git basedir ([`b527fef`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b527fefdd29e566d390d7101171ef449e70ee47e))
