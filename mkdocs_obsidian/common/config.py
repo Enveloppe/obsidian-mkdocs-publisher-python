@@ -8,17 +8,8 @@ from datetime import datetime
 from pathlib import Path
 
 import mkdocs_obsidian as obs
+from mkdocs_obsidian.common import global_value as gl
 
-BASEDIR = obs.__path__[0]
-try:
-    import pyto
-
-    BASEDIR = Path(BASEDIR)
-    BASEDIR = BASEDIR.parent.absolute()
-except ModuleNotFoundError:
-    pass
-
-env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
 
 
 def check_url(blog_path):
@@ -52,6 +43,17 @@ def create_env():
         - share = Metadata key for sharing file
     :return: None
     """
+    BASEDIR = obs.__path__[0]
+    try:
+        import pyto
+
+        BASEDIR = Path(BASEDIR)
+        BASEDIR = BASEDIR.parent.absolute()
+    except ModuleNotFoundError:
+        pass
+
+    env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
+
     print(f"Creating environnement in {env_path}")
     vault = ""
     blog = ""
@@ -85,7 +87,7 @@ def git_push(commit):
     """
     try:
         import git
-
+        BASEDIR = gl.BASEDIR
         repo = git.Repo(Path(f"{BASEDIR}/.git"))
         repo.git.add(".")
         repo.git.commit("-m", f"{commit}")

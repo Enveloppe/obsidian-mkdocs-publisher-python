@@ -120,7 +120,7 @@ def file_write(file, contents, folder, preserve=0, meta_update=1):
         return False
     if os.path.splitext(file_name)[0] == os.path.basename(folder):
         file_name = "index.md"
-    with open(f"{folder}/{file_name}", "w", encoding="utf-8") as new_notes:
+    with open(Path(f"{folder}/{file_name}"), "w", encoding="utf-8") as new_notes:
         for line in contents:
             new_notes.write(line)
     if meta_update == 0:
