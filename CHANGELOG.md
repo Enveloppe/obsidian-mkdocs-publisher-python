@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.4 (2022-01-14)
+### Fix
+* **yaml:** Catch all yaml error for file ([`c466ea8`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c466ea8a55f0accb4cb5f70a64e63e85f7d222ca))
+
 ## v1.2.3 (2022-01-14)
 ### Fix
 * **hotfix:** BASEDIR for folder to create ([`cc153f6`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/cc153f61dc25dab80395ab5f3a7ce0e764999966))
