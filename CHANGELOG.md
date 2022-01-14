@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.1 (2022-01-14)
+### Fix
+* **hotfix:** Hot fix git basedir ([`b527fef`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b527fefdd29e566d390d7101171ef449e70ee47e))
+
+### Documentation
+* **readme:** Add more info for mobile ([`afb0c9f`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/afb0c9f8164fad69904d97bba855959eaac5f147))
+* **readme:** Fix doc ([`451e772`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/451e77265b24092e3d30b1c115de952772ba538d))
+
 ## v1.2.0 (2022-01-13)
 ### Feature
 * **all:** Ignore share state ([`ac1c7a7`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ac1c7a7a58ce7d7d29f86288e432a40865664d67))
