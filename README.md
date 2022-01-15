@@ -261,3 +261,4 @@ category:
 ---
 ```
 
+If you have more question, don't forget to read the [Q&A](https://github.com/Mara-Li/mkdocs_obsidian_template/wiki/Q&A/) !
