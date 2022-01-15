@@ -81,9 +81,7 @@ def diff_file(file, folder, contents, update=0):
         try:
             front_temp = frontmatter.loads("".join(contents))
         except yaml.YAMLError:
-            print(
-                f"Skip {file} : YAML Error"
-            )
+            print(f"Skip {file} : YAML Error")
             return False  # skip
         new_version = retro(contents, 1)
         meta_new = front_temp.metadata
@@ -106,8 +104,13 @@ def retro(filepath, opt=0):
     :return: list
     """
     notes = []
+
     if opt == 0:
-        metadata = frontmatter.load(filepath)
+        try:
+            metadata = frontmatter.load(filepath)
+        except yaml.YAMLError:
+            os.remove(filepath)
+            return notes
     else:
         metadata = frontmatter.loads("".join(filepath))
     file = metadata.content.split("\n")

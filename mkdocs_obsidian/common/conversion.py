@@ -249,8 +249,11 @@ def file_convert(file, force=0):
                 final_text = re.sub("#\^[A-Za-z0-9]+", "", final_text).strip()
 
             final.append(final_text)
-    meta_list = [f"{k}: {v}  \n" for k, v in meta.metadata.items()]
-    meta_list.insert(0, "---  \n")
-    meta_list.insert(len(meta_list) + 1, "---  \n")
+    for k, v in meta.metadata.items():
+        if isinstance(v, str):
+            meta.metadata[k] = '"' + v + '"'
+    meta_list = [f"{k}: {v}\n" for k, v in meta.metadata.items()]
+    meta_list.insert(0, "---\n")
+    meta_list.insert(len(meta_list) + 1, "---\n")
     final = meta_list + final
     return final
