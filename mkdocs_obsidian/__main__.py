@@ -136,6 +136,7 @@ def main():
     if not args.keep:
         info = check.delete_not_exist()
         if len(info) > 1:
+            info[0] = "- " + info[0]
             info_str = "\n- ".join(info)
             print(
                 f'[{datetime.now().strftime("%H:%M:%S")}] 🗑️ Delete from blog:\n{info_str}'
