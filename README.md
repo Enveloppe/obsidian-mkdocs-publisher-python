@@ -25,6 +25,8 @@ Mkdocs Obsidian is an association between a python script and a Material mkdocs 
 
 ## Pre-requiries
 
+<details><summary><u><b>Requirements</u></b></summary>
+	
 - [Git](https://git-scm.com/)
 - [Python](https://www.python.org/) and Pip
 - [Mkdocs](https://www.mkdocs.org/getting-started/) : `pip install mkdocs`
@@ -34,6 +36,8 @@ Mkdocs Obsidian is an association between a python script and a Material mkdocs 
 - [mkdocs-obsidian](https://pypi.org/project/obs2mk/) : `pip install obs2mk`
 - [mkdocs-awesome-pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin) : `pip install mkdocs-awesome-pages-plugin`
 
+	</details>
+	
 You can install all package with `pip install -r requirements.txt`
 
 ## Get started
@@ -141,7 +145,10 @@ Using the command `--ignore` will ignore the `share` state : you can share your 
 `usage: obs2mk [-h] [--git | --mobile] [--meta] [--keep] [--config]
                    [--force] [--ignore]`
 
-## Mobile option
+### Mobile
+
+<details><summary><i>Read more</i></summary>
+	
 The mobile option is similar to the `git` option but with some nuance. When used to publish a single file, you can use only the file name, without the path.
 
 :warning: Be careful though, in case you have several files with the same name, the script will take the first file found. 
@@ -188,7 +195,7 @@ obs2mk --config
 ```
 
 After, in a-shell, you can use the same option as on a PC.
-
+</details>
 
 ## Customization
 There are some files to customize the script :
@@ -208,16 +215,16 @@ There are some files to customize the script :
 The script can work on any platform that support python. The script doesn't use Cpython, so don't worry about it for IOS.
 
 ### Obsidian
-→ Please use Wikilinks with “short links” (I BEG YOU)
-You can integrate the script within obsidian using the nice plugin [Obsidian ShellCommands](https://github.com/Taitava/obsidian-shellcommands).
+→ Please use Wikilinks with “short links” (I BEG YOU)  
 
+You can integrate the script within obsidian using the nice plugin [Obsidian ShellCommands](https://github.com/Taitava/obsidian-shellcommands).  
 You could create two commands :
 1. `share all` : `obs2mk`
 2. `share one` : `obs2mk --f {{file_path:absolute}}`
 
 You can use :
-- [Customizable Sidebar](https://github.com/phibr0/obsidian-customizable-sidebar)
-- [Obsidian Customizable Menu](https://github.com/kzhovn/obsidian-customizable-menu)
+- [Customizable Sidebar](https://github.com/phibr0/obsidian-customizable-sidebar)  
+- [Obsidian Customizable Menu](https://github.com/kzhovn/obsidian-customizable-menu)  
 To have a button to share your file directly in Obsidian !
 
 #### Metacopy
