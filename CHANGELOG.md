@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.5 (2022-01-14)
+### Fix
+* **error:** Catch all error in search all ([`1fd7cb1`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1fd7cb1caa3d757f1f2c3e40635130a3e4c3366b))
+
+### Documentation
+* **readme:** Add link to FAQ ([`44f8c8f`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/44f8c8f1380c8697f49c897496dfc02e0602f2c9))
+
 ## v1.2.4 (2022-01-14)
 ### Fix
 * **yaml:** Catch all yaml error for file ([`c466ea8`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c466ea8a55f0accb4cb5f70a64e63e85f7d222ca))
