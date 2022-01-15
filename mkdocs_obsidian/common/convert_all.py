@@ -73,6 +73,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
         ):
             try:
                 yaml_front = frontmatter.load(filepath)
+
                 if yaml_front.get("category"):
                     clipkey = yaml_front["category"]
                 else:
@@ -85,6 +86,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
                             update = 1
                         else:
                             update = 0
+
                         if check.skip_update(
                             filepath, folder, update
                         ) or not check.modification_time(filepath, folder, update):
@@ -120,11 +122,9 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
                             f"Removed : {os.path.basename(destination).replace('.md', '')} from [{msg_folder}]"
                         )
             except yaml.YAMLError:
-                print(
-                    f"Skip {filepath} because of YAML error.\n"
-                )
+                print(f"Skip {filepath} because of YAML error.\n")
             except Exception as e:
-                print(f'Skip {filepath} because of an unexpected error : {e}\n')
+                print(f"Skip {filepath} because of an unexpected error : {e}\n")
     return filespush, clipkey
 
 
