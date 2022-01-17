@@ -728,3 +728,5 @@ fabric.properties
 # Cython debug symbols
 
 /.pylintrc
+
+perf.txt
