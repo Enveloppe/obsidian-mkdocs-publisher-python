@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v1.3.1 (2022-01-17)
+### Documentation
+* **gitignore:** Add more file ([`34a1332`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/34a133291e37c30fc9a6015dc909a5216381390c))
+* **readme:** Add gif demo ([`3d01c28`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3d01c284737ed33d3e350ff1bc7845132761c1b6))
+
+### Performance
+* **all:** Minimize clipkey ([`5f61a4b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/5f61a4bec049c58b42329c9c21710cdee6b7905f))
+
 ## v1.3.0 (2022-01-17)
 ### Feature
 * Add Rich Python ([`d58b52a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d58b52a93b05f5ecb036a8ba4899b96a25fd1d43))
