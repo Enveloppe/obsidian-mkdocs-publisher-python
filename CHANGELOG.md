@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.6 (2022-01-15)
+### Fix
+* **all:** Repear YAML error if ":" in a YAML ([`57abc12`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/57abc12f26a684c2884b0dd0374b22a8036c35ab))
+
+### Documentation
+* **print:** Repear msg delete all file ([`6804ccf`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6804ccfeb96b8f9563749b846676f7f42f3bb87e))
+* **readme:** Adjust readme ([`ea11d71`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ea11d71aebae3be73118336137bed3822e017607))
+
 ## v1.2.5 (2022-01-14)
 ### Fix
 * **error:** Catch all error in search all ([`1fd7cb1`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1fd7cb1caa3d757f1f2c3e40635130a3e4c3366b))
