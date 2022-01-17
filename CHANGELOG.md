@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.3.0 (2022-01-17)
+### Feature
+* Add Rich Python ([`d58b52a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d58b52a93b05f5ecb036a8ba4899b96a25fd1d43))
+
 ## v1.2.6 (2022-01-15)
 ### Fix
 * **all:** Repear YAML error if ":" in a YAML ([`57abc12`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/57abc12f26a684c2884b0dd0374b22a8036c35ab))
