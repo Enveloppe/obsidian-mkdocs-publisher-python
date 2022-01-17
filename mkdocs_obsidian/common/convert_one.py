@@ -6,7 +6,7 @@ import os
 import sys
 from datetime import datetime
 from pathlib import Path
-
+from rich.console import Console
 import frontmatter
 import yaml
 
@@ -27,6 +27,7 @@ def convert_one(ori, git, meta):
     :return: None
     """
     file_name = os.path.basename(ori).upper()
+    console = Console()
     try:
         yaml_front = frontmatter.load(ori)
         priv = Path(value.POST)
@@ -41,8 +42,8 @@ def convert_one(ori, git, meta):
             setup.git_push(commit)
             convert.clipboard(ori, clipkey)
         elif checkfile and git:
-            print(
-                f"[{datetime.now().strftime('%H:%M:%S')}] 🎉 Successfully converted {file_name.lower()}"
+            console.print(
+                f"[{datetime.now().strftime('%H:%M:%S')}] 🎉 Successfully converted [u blue bold]{file_name.lower()}[/]"
             )
     except yaml.YAMLError:
         sys.exit(

@@ -9,7 +9,11 @@ from pathlib import Path
 
 import frontmatter
 import yaml
-
+from rich.progress import track
+from rich.rule import Rule
+from rich.markdown import Markdown
+from rich.console import Console
+from rich import print
 from mkdocs_obsidian.common import (
     config,
     global_value as gl,
@@ -65,7 +69,8 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
     filespush = []
     check_file = False
     clipkey = "notes"
-    for filepath in VAULT_FILE:
+    description = "[cyan u]Scanning\n"
+    for filepath in track(VAULT_FILE, description=description, total=len(VAULT_FILE)):
         if (
             filepath.endswith(".md")
             and "excalidraw" not in filepath
@@ -122,9 +127,11 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
                             f"Removed : {os.path.basename(destination).replace('.md', '')} from [{msg_folder}]"
                         )
             except yaml.YAMLError:
-                print(f"Skip {filepath} because of YAML error.\n")
+                print(f"Skip [u bold red]{filepath}[/] because of YAML error.\n")
             except Exception as e:
-                print(f"Skip {filepath} because of an unexpected error : {e}\n")
+                print(
+                    f"Skip [u bold red]{filepath}[/] because of an unexpected error : {e}\n"
+                )
     return filespush, clipkey
 
 
@@ -138,21 +145,41 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
     :param vault_share: int (bool)
     :return: None
     """
+    console = Console()
     if git:
-        git_info = "NO PUSH"
+        git_info = "*No push*  "
     else:
-        git_info = "PUSH"
+        git_info = "*Push*  "
     time_now = datetime.now().strftime("%H:%M:%S")
-    msg_info = "\n"
+    msg_info = ""
     if vault_share == 1:
-        msg_info = "\n- SHARE ENTIRE VAULT [IGNORE SHARE STATE]\n"
+        msg_info = "\n- *Share entire vault [ignore share]*"
     if delopt:  # preserve
-        print(
-            f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}\n- FORCE DELETIONS{msg_info}"
+        console.print(
+            Rule(
+                f"[[i not bold sky_blue2]{time_now}[/]] [deep_sky_blue3 bold]STARTING CONVERT[/] [[i sky_blue2]ALL[/]]",
+                align="center",
+                end="",
+                style="deep_sky_blue3",
+            ),
+            Markdown(f"- {git_info}\n- *Force deletion*{msg_info}", justify="full"),
+            end=" ",
+            new_line_start=True,
+            justify="full",
         )
         new_files, clipkey = search_share(1, stop_share, meta, vault_share)
     else:
-        print(f"[{time_now}] STARTING CONVERT [ALL] OPTIONS :\n- {git_info}{msg_info}")
+        console.print(
+            Rule(
+                f"[[i not bold sky_blue2]{time_now}[/]] [deep_sky_blue3 bold]STARTING CONVERT[/] [[i sky_blue2]ALL[/]]",
+                align="center",
+                end="",
+                style="deep_sky_blue3",
+            ),
+            Markdown(f"- {git_info}{msg_info}"),
+            " ",
+            new_line_start=True,
+        )
         new_files, clipkey = search_share(0, stop_share, meta, vault_share)
     if len(new_files) > 0:
         add_msg = ""
@@ -160,25 +187,36 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
         for markdown_msg in new_files:
             if "removed" in markdown_msg.lower():
                 remove_msg = (
-                    remove_msg + "\n - " + markdown_msg.replace("Removed : ", "")
+                    remove_msg + "\n- " + markdown_msg.replace("Removed : ", "")
                 )
             elif "added" in markdown_msg.lower():
-                add_msg = add_msg + "\n - " + markdown_msg.replace("Added : ", "")
-
+                add_msg = add_msg + "\n- " + markdown_msg.replace("Added : ", "")
+        remove_info = ""
+        add_info = ""
         if len(remove_msg) > 0:
-            remove_msg = f"🗑️ Removed from blog : {remove_msg}"
+            remove_info = "🗑 [u bold red]Removed from blog : "
         if len(add_msg) > 0:
-            add_msg = f" 🎉 Added to blog : {add_msg}\n\n"
+            add_info = "🎉 [u bold sky_blue2]Added to blog :"
         commit = add_msg + remove_msg
         if git is False:
             if len(new_files) == 1:
                 commit = "".join(new_files)
                 markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
                 convert.clipboard(markdown_msg, clipkey)
-            commit = f"Updated : \n {commit}"
+            commit = f"**Updated** : \n {commit}"
             config.git_push(commit)
         else:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] {commit}")
+            console.print(
+                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]] {add_info}",
+                Markdown(add_msg),
+                remove_info,
+                Markdown(remove_msg),
+                end=" ",
+            )
     else:
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
+        console.print(
+            f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]",
+            Markdown("*No modification 😶*"),
+            end=" ",
+        )
     sys.exit()

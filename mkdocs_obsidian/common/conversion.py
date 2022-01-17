@@ -3,9 +3,9 @@ Main program to convert file to material mkdocs.
 """
 
 import os
+import platform
 import re
 import shutil
-import sys
 import urllib.parse as url
 from pathlib import Path
 
@@ -73,7 +73,7 @@ def clipboard(filepath, folder):
         filename = ""
     paste = url.quote(f"{folder_key}/{filename}")
     clip = f"{config.WEB}{paste}"
-    if sys.platform == "ios":
+    if "iPhone" in platform.uname().machine or "iPad" in platform.uname().machine:
         try:
             import pasteboard  # work with pyto
 
@@ -99,24 +99,24 @@ def clipboard(filepath, folder):
             )
 
 
-def file_write(file, contents, folder, preserve=0, meta_update=1):
+def file_write(filepath, contents, folder, preserve=0, meta_update=1):
     """
         - Delete file if stoped sharing
         - Write file if SHARE = true
         - Update frontmatter if meta_update = 0
-    :param file: str
-    :param contents: list[str]
-    :param folder: pathlib
+    :param filepath: str file path
+    :param contents: File contents (list[str])
+    :param folder: folder path - pathlib
     :param preserve: int(bool)
     :param meta_update: int(bool)
     :return: bool
     """
-    file_name = os.path.basename(file)
-    meta = frontmatter.load(file)
+    file_name = os.path.basename(filepath)
+    meta = frontmatter.load(filepath)
     if contents == "":
         return False
     if preserve == 0 and not meta.get(SHARE):
-        check.delete_file(file, folder, meta_update)
+        check.delete_file(filepath, folder, meta_update)
         return False
     if os.path.splitext(file_name)[0] == os.path.basename(folder):
         file_name = "index.md"
@@ -126,9 +126,9 @@ def file_write(file, contents, folder, preserve=0, meta_update=1):
     if meta_update == 0:
         if preserve == 1 and not meta.get(SHARE):
             meta[SHARE] = True
-            mt.update_frontmatter(file, 1)
+            mt.update_frontmatter(filepath, 1)
         else:
-            mt.update_frontmatter(file, 0)
+            mt.update_frontmatter(filepath, 0)
     return True
 
 
@@ -185,15 +185,15 @@ def convert_hashtags(final_text):
     return final_text
 
 
-def file_convert(file, force=0):
+def file_convert(filepath, force=0):
     """
-    Read the file and convert each line based on regex condition.
-    :param file: str
-    :param force: int(bool)
-    :return: list[str]
+    Read the filepath and convert each line based on regex condition.
+    :param filepath: path to file (str)
+    :param force: deletion option (int)
+    :return: converted contents [list(str)]
     """
     final = []
-    meta = frontmatter.load(file)
+    meta = frontmatter.load(filepath)
     lines = meta.content.splitlines(True)
     if force != 1 and not meta.get(SHARE):
         return final
@@ -229,9 +229,9 @@ def file_convert(file, force=0):
                 final_text = convert_hashtags(final_text)
             elif re.fullmatch(
                 "\\\\", final_text.strip()
-            ):  # New line when using "\" in obsidian file
+            ):  # New line when using "\" in obsidian filepath
                 final_text = "\n"
-            # Remove embed files (and link to them)
+            # Remove embed filepaths (and link to them)
             elif re.search("!\[{2}(.*)\]{2}", final_text):
                 embed = re.search("!\[{2}(.*)\]{2}", final_text)
                 embed = embed.group().split("]")

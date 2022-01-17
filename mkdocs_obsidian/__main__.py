@@ -2,7 +2,9 @@ import argparse
 import os
 import sys
 from datetime import datetime
-
+from rich.markdown import Markdown
+from rich.console import Console
+from rich import print
 
 try:
     sys.stdin.reconfigure(encoding="utf-8")
@@ -27,7 +29,7 @@ def search_shortcuts(file):
     """
     if not file.endswith(".md"):
         file = file + ".md"
-    for md in value.vault_file:
+    for md in value.VAULT_FILE:
         if os.path.basename(md) == os.path.basename(file):
             return md
     return False
@@ -46,7 +48,7 @@ def mobile_shortcuts(file="0", meta_update=0, vault_share=0):
     elif not os.path.exists(file):
         file = search_shortcuts(file)
         if not file:
-            print("File not found.")
+            print("[u red]File not found.")
             sys.exit()
         one.convert_one(file, True, meta_update)
     elif file == "--c":
@@ -117,7 +119,7 @@ def main():
         help="Convert the entire vault without relying on share state.",
         action="store_true",
     )
-
+    console = Console()
     args = parser.parse_args()
     if args.config:
         setup.create_env()
@@ -138,12 +140,16 @@ def main():
         if len(info) > 1:
             info[0] = "- " + info[0]
             info_str = "\n- ".join(info)
-            print(
-                f'[{datetime.now().strftime("%H:%M:%S")}] 🗑️ Delete from blog:\n{info_str}'
+            console.print(
+                f'[[i not bold sky_blue2]{datetime.now().strftime("%H:%M:%S")}[/]] 🗑️[u red bold]Delete from blog :[/]',
+                Markdown(info_str),
+                end="",
             )
         elif len(info) == 1:
             info_str = info[0]
-            print(f'🗑️ Delete "{info_str}" from blog')
+            console.print(
+                f"🗑️ [u red bold] Delete[/] [bold red i] {info_str}[/] [u red bold]from blog[/]"
+            )
         stop_share = 1
     else:
         stop_share = 0
@@ -154,7 +160,7 @@ def main():
         elif os.path.exists(ori):  # Share ONE
             one.convert_one(ori, ng, meta_update)
         else:
-            print(f"Error : {ori} doesn't exist.")
+            print(f"[red bold]Error :[/] [u]{ori}[/] [red bold]doesn't exist.")
             sys.exit()
     else:
         if args.mobile:

@@ -6,6 +6,9 @@ import os.path
 import sys
 from datetime import datetime
 from pathlib import Path
+from rich.console import Console, Group
+from rich.markdown import Markdown
+from rich import print
 
 import mkdocs_obsidian as obs
 from mkdocs_obsidian.common import global_value as gl
@@ -85,6 +88,7 @@ def git_push(commit):
     :param commit: str
     :return: None
     """
+    console = Console()
     try:
         import git
 
@@ -94,8 +98,17 @@ def git_push(commit):
         repo.git.commit("-m", f"{commit}")
         origin = repo.remote("origin")
         origin.push()
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] {commit} successfully 🎉")
+        console.print(
+            f"[{datetime.now().strftime('%H:%M:%S')}]",
+            Markdown(commit),
+            "successfully 🎉",
+            end=" ",
+        )
+
     except ImportError:
-        print(
-            f"[{datetime.now().strftime('%H:%M:%S')}] {commit} changed\nPlease, use another way to push your change 😶"
+        console.print(
+            f"[{datetime.now().strftime('%H:%M:%S')}]",
+            Markdown(commit),
+            "changed\nPlease, use another way to push your change 😶",
+            end=" ",
         )

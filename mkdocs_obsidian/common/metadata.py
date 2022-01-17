@@ -15,18 +15,16 @@ WEB = config.WEB
 SHARE = config.SHARE
 
 
-def update_frontmatter(file, link=1):
+def update_frontmatter(filepath, link=1):
     """
     If link = 0, update the frontmatter with new publish URL
     Also, update the share state if convert_one.
-    :param file: str
-    :param link: int
+    :param filepath: path to file
+    :param link: option to add link or not
     :return: None
     """
-    metadata = open(file, "r", encoding="utf8")
-    meta = frontmatter.load(metadata)
-    metadata.close()
-    folder = "notes"
+    with open(filepath, "r", encoding="utf8") as metadata:
+        meta = frontmatter.load(metadata)
     if meta.get("tag"):
         tag = meta["tag"]
     elif meta.get("tags"):
@@ -40,8 +38,8 @@ def update_frontmatter(file, link=1):
     else:
         folder = "notes"
 
-    with open(file, "w", encoding="utf-8") as f:
-        filename = os.path.basename(file)
+    with open(filepath, "w", encoding="utf-8") as f:
+        filename = os.path.basename(filepath)
         filename = filename.replace(".md", "")
         if filename == os.path.basename(folder):
             filename = ""

@@ -45,7 +45,7 @@ def code_blocks(start_list, end_list):
 def admonition_trad(file_data):
     """
     Change all admonition to material admonition
-    :param file_data: list[str]
+    :param file_data: list[str] — Contents of the file
     :return: list[str]
     """
     code_index = 0

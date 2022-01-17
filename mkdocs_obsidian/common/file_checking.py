@@ -57,17 +57,17 @@ def delete_not_exist():
     return info
 
 
-def diff_file(file, folder, contents, update=0):
+def diff_file(filepath, folder, contents, update=0):
     """
     Check the difference between file in vault and file in publish.
     Check if the new converted file = the file on publish.
-    :param file: str path
+    :param filepath: str filepath
     :param folder: str path
     :param contents: list
     :param update: boolean
     :return: boolean
     """
-    filename = os.path.basename(file)
+    filename = os.path.basename(filepath)
     if check_file(filename, folder) == "EXIST":
         if update == 1:
             return False
@@ -81,7 +81,7 @@ def diff_file(file, folder, contents, update=0):
         try:
             front_temp = frontmatter.loads("".join(contents))
         except yaml.YAMLError:
-            print(f"Skip {file} : YAML Error")
+            print(f"Skip {filepath} : YAML Error")
             return False  # skip
         new_version = retro(contents, 1)
         meta_new = front_temp.metadata
