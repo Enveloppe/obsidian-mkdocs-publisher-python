@@ -147,13 +147,13 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
     """
     console = Console()
     if git:
-        git_info = "*No push*  "
+        git_info = "No push"
     else:
-        git_info = "*Push*  "
+        git_info = "Push"
     time_now = datetime.now().strftime("%H:%M:%S")
     msg_info = ""
     if vault_share == 1:
-        msg_info = "\n- *Share entire vault [ignore share]*"
+        msg_info = "\n- Share entire vault [**ignore share**]"
     if delopt:  # preserve
         console.print(
             Rule(
@@ -162,7 +162,7 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
                 end="",
                 style="deep_sky_blue3",
             ),
-            Markdown(f"- {git_info}\n- *Force deletion*{msg_info}", justify="full"),
+            Markdown(f"- {git_info}\n- Force deletion{msg_info}", justify="full"),
             end=" ",
             new_line_start=True,
             justify="full",
@@ -176,7 +176,7 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
                 end="",
                 style="deep_sky_blue3",
             ),
-            Markdown(f"- {git_info}{msg_info}"),
+            Markdown(f"- {git_info}\n{msg_info}"),
             " ",
             new_line_start=True,
         )
