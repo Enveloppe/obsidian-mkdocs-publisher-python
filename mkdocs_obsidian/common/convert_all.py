@@ -78,11 +78,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
         ):
             try:
                 yaml_front = frontmatter.load(filepath)
-
-                if yaml_front.get("category"):
-                    clipkey = yaml_front["category"]
-                else:
-                    clipkey = "notes"
+                clipkey = yaml_front.get("category", "notes")
                 if yaml_front.get(SHARE) or vault_share == 1:
                     folder = check.create_folder(clipkey, 0)
 
