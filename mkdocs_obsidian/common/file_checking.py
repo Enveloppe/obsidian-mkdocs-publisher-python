@@ -2,7 +2,6 @@
 All function intended to check the file and their path.
 """
 
-import datetime
 import glob
 import os
 import re
@@ -57,14 +56,14 @@ def delete_not_exist():
     return info
 
 
-def diff_file(filepath, folder, contents, update=0):
+def diff_file(filepath: str, folder: str, contents: list, update=0):
     """
     Check the difference between file in vault and file in publish.
     Check if the new converted file = the file on publish.
-    :param filepath: str filepath
-    :param folder: str path
-    :param contents: list
-    :param update: boolean
+    :param filepath: filepath
+    :param folder: folderpath
+    :param contents: Contents of the file to check
+    :param update: check if update is forced
     :return: boolean
     """
     filename = os.path.basename(filepath)
@@ -90,41 +89,39 @@ def diff_file(filepath, folder, contents, update=0):
             meta_new.keys()
         ):
             return False
-        else:
-            return True
-    else:
-        return True  # Si le fichier existe pas, il peut pas être identique
+        return True
+    return True  # Si le fichier existe pas, il peut pas être identique
 
 
-def retro(filepath, opt=0):
+def retro(file, opt=0):
     """
     Remove metadata from note
-    :param filepath: str or list
-    :param opt: boolean
-    :return: list
+    :param file: str or list
+    :param opt: if filepath is a list or a filepath
+    :return: the frontmatter of the note
     """
     notes = []
 
     if opt == 0:
         try:
-            metadata = frontmatter.load(filepath)
+            metadata = frontmatter.load(file)
         except yaml.YAMLError:
-            os.remove(filepath)
+            os.remove(file)
             return notes
     else:
-        metadata = frontmatter.loads("".join(filepath))
+        metadata = frontmatter.loads("".join(file))
     file = metadata.content.split("\n")
     for line in file:
         notes.append(line)
     return notes
 
 
-def create_folder(category, share=0):
+def create_folder(category: str, share=0):
     """
     create a folder based on the category key as 'folder1/folder2/.../'
     :param category: string
-    :param share: boolean
-    :return: folder path
+    :param share: status of the note
+    :return: folderpath (Path)
     """
     if category != "":
         folder = Path(f"{BASEDIR}/docs/{category}")
@@ -138,46 +135,37 @@ def create_folder(category, share=0):
     return folder
 
 
-def modification_time(filepath, folder, update):
+def modification_time(filepath: str, folder: str, update: int):
     """
     check the modification time : return true if file modified since the last push.
-    :param filepath: str
-    :param folder: str
-    :param update: boolean
+    :param filepath: file to check
+    :param folder: folder in the blog
+    :param update: skip check if 0 (force update)
     :return: boolean
     """
     if update == 0:
-        return True
+        return True  # Force update
     filename = os.path.basename(filepath)
     filepath = Path(filepath)
     note = Path(f"{folder}/{filename}")
     if os.path.isfile(note):
-        old_time = datetime.datetime.fromtimestamp(note.stat().st_mtime)
-        new_time = datetime.datetime.fromtimestamp(filepath.stat().st_mtime)
-        if new_time > old_time:
-            return True
-    return False
+        return filepath.stat().st_mtime > note.stat().st_mtime
+    return True  # file doesn't exist
 
 
-def skip_update(filepath, folder, update):
+def skip_update(filepath: str, folder: str, update: int):
     """
     check if file exist + update is false
-    :param filepath: str path
-    :param folder: str path
-    :param update: boolean
-    :return: boolean
     """
     filepath = Path(filepath)
-    if update == 1 and check_file(filepath, folder) == "EXIST":
-        return True
-    return False
+    return update == 1 and check_file(filepath, folder) == "EXIST"
 
 
-def check_file(filepath, folder):
+def check_file(filepath, folder: str):
     """
     check if the requested file exist or not in publish.
-    :param filepath: str file path
-    :param folder: str folder path
+    :param filepath: filepath
+    :param folder: folderpath in publish
     :return: "EXIST" or "NE"
     """
     file = os.path.basename(filepath)
@@ -190,12 +178,12 @@ def check_file(filepath, folder):
     return "NE"
 
 
-def delete_file(filepath, folder, meta_update=1):
+def delete_file(filepath: str, folder: str, meta_update=1) -> bool:
     """
     Delete the requested file
-    :param filepath: str path
-    :param folder: str folder
-    :param meta_update: boolean
+    :param filepath: filepath
+    :param folder: folder path
+    :param meta_update:  update the metadata if 0
     :return: boolean
     """
     path = Path(folder)
