@@ -6,7 +6,7 @@ import os.path
 import sys
 from datetime import datetime
 from pathlib import Path
-from rich.console import Console, Group
+from rich.console import Console
 from rich.markdown import Markdown
 from rich import print
 
@@ -14,10 +14,10 @@ import mkdocs_obsidian as obs
 from mkdocs_obsidian.common import global_value as gl
 
 
-def check_url(blog_path):
+def check_url(blog_path: str):
     """
     check if the url is in the config file and return it
-    :param blog_path: Path
+    :param blog_path: Publish absolute path
     :return: URL
     """
     web = ""
@@ -82,10 +82,10 @@ def create_env():
     sys.exit("Environment created.")
 
 
-def git_push(commit):
+def git_push(commit: str):
     """
-    git push the modified files
-    :param commit: str
+    git push the modified files and print a message result
+    :param commit: Commit information
     :return: None
     """
     console = Console()

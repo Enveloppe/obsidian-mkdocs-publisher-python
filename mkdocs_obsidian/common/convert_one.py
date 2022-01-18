@@ -18,12 +18,12 @@ from mkdocs_obsidian.common import (
 )
 
 
-def convert_one(ori, git, meta):
+def convert_one(ori, git: bool, meta: int):
     """
     Function to start the conversion of *one* specified file.
-    :param ori: str
-    :param git: bool
-    :param meta: int
+    :param ori: path to file to convert
+    :param git: if False, push to git
+    :param meta: If 1 update the metadata's source file
     :return: None
     """
     file_name = os.path.basename(ori).upper()

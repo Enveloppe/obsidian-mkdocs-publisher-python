@@ -17,10 +17,10 @@ SHARE = config.SHARE
 
 def update_frontmatter(filepath, link=1):
     """
-    If link = 0, update the frontmatter with new publish URL
+    If link = 1, update the frontmatter with new publish URL
     Also, update the share state if convert_one.
-    :param filepath: path to file
-    :param link: option to add link or not
+    :param filepath: path to source file
+    :param link: if 1 add link to the metadata
     :return: None
     """
     with open(filepath, "r", encoding="utf8") as metadata:

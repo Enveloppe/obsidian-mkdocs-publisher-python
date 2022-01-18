@@ -13,12 +13,12 @@ from mkdocs_obsidian.common import global_value as config
 BASEDIR = config.BASEDIR
 
 
-def code_blocks(start_list, end_list):
+def code_blocks(start_list: list, end_list: list):
     """
     Check all code blocks in the contents
-    :param start_list: list[int]
-    :param end_list: list[int]
-    :return: list[tupe[int, int]]
+    :param start_list: List of all started codeblocs
+    :param end_list: list of all ended code blocks
+    :return: merged list
     """
     start_bug = []
     end_bug = []
@@ -42,11 +42,11 @@ def code_blocks(start_list, end_list):
     return merged
 
 
-def admonition_trad(file_data):
+def admonition_trad(file_data: list):
     """
     Change all admonition to material admonition
-    :param file_data: list[str] — Contents of the file
-    :return: list[str]
+    :param file_data: Contents of the file
+    :return: Admonition Converted contents
     """
     code_index = 0
     code_dict = {}

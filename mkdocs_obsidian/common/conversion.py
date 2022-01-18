@@ -107,7 +107,7 @@ def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
     :param folder: folderpath in publish
     :param preserve: Change shared state in frontmatter if 1
     :param meta_update: Update frontmatter if meta_update = 0
-    :return: bool
+    :return: True if file is created, False otherwise
     """
     file_name = os.path.basename(filepath)
     meta = frontmatter.load(filepath)
@@ -133,7 +133,7 @@ def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
 def read_custom():
     """
     read custom css
-    :return: list[str]
+    :return: A list of the id in the CSS file
     """
     id_css = []
     with open(
@@ -145,10 +145,10 @@ def read_custom():
     return id_css
 
 
-def convert_hashtags(final_text):
+def convert_hashtags(final_text: str):
     """
     Convert configured hashtags with ial CSS from custom.css
-    :param final_text: str
+    :param final_text: A line of the contents to convert if contains hashtags
     :return: str
     """
     css = read_custom()
@@ -186,9 +186,9 @@ def convert_hashtags(final_text):
 def file_convert(filepath, force=0):
     """
     Read the filepath and convert each line based on regex condition.
-    :param filepath: path to file (str)
-    :param force: deletion option (int)
-    :return: converted contents [list(str)]
+    :param filepath: path to file
+    :param force: deletion option
+    :return: converted contents
     """
     final = []
     meta = frontmatter.load(filepath)
