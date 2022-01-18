@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v1.3.2 (2022-01-18)
+### Documentation
+* **docstring:** Update docstring ([`e334aa2`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e334aa2132da7c6ba88080733fa95957bec1e910))
+* **docstring:** Update docstring ([`c85a7a2`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c85a7a2378528f3ed24072345f9fc51d10677ec4))
+
+### Performance
+* **check:** +performance ([`150cd80`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/150cd80d1bfe7806de154e7ad8026a37bb4d138f))
+
 ## v1.3.1 (2022-01-17)
 ### Documentation
 * **gitignore:** Add more file ([`34a1332`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/34a133291e37c30fc9a6015dc909a5216381390c))
