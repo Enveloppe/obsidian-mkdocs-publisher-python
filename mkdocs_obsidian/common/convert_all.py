@@ -27,10 +27,10 @@ VAULT_FILE = gl.VAULT_FILE
 SHARE = gl.SHARE
 
 
-def exclude_folder(filepath):
+def exclude_folder(filepath: str):
     """
     Check if the file is in an excluded folder
-    :param filepath: str
+    :param filepath: file to check
     :return: boolean
     """
     config_folder = Path(f"{BASEDIR}/exclude_folder.yml")
@@ -45,11 +45,11 @@ def exclude_folder(filepath):
     return False
 
 
-def dest(filepath, folder):
+def dest(filepath: str, folder: str):
     """
     Return the path of the final file
-    :param filepath: str
-    :param folder: str
+    :param filepath: file to convert
+    :param folder: final folder
     :return: str
     """
     file_name = os.path.basename(filepath)
@@ -60,11 +60,11 @@ def dest(filepath, folder):
 def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
     """
     Search file to publish
-    :param preserve: int (bool)
-    :param stop_share: int (bool)
-    :param meta: int (bool)
-    :param vault_share int (bool)
-    :return: tuple[list(str), str]
+    :param preserve: if 1 force update
+    :param stop_share: remove stoped shared file if 1
+    :param meta: Update the metadata if 1
+    :param vault_share: If all the vault need to be shared
+    :return: Contents of the notes
     """
     filespush = []
     check_file = False
@@ -134,11 +134,11 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
 def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
     """
     Main function to convert multiple file
-    :param delopt: bool
-    :param git: bool
-    :param stop_share: int (bool)
-    :param meta: int (bool)
-    :param vault_share: int (bool)
+    :param delopt: Force deletion if True
+    :param git: Git push if True
+    :param stop_share: Delete stoped shared file if 0
+    :param meta: Update frontmatter if 1
+    :param vault_share: Share all file in vault if 1
     :return: None
     """
     console = Console()

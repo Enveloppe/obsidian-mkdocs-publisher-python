@@ -99,16 +99,14 @@ def clipboard(filepath, folder):
             )
 
 
-def file_write(filepath, contents, folder, preserve=0, meta_update=1):
+def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
     """
-        - Delete file if stoped sharing
-        - Write file if SHARE = true
-        - Update frontmatter if meta_update = 0
-    :param filepath: str file path
-    :param contents: File contents (list[str])
-    :param folder: folder path - pathlib
-    :param preserve: int(bool)
-    :param meta_update: int(bool)
+    Write the new converted file and update metadata if meta_update is 0
+    :param filepath: file to convert
+    :param contents: File contents
+    :param folder: folderpath in publish
+    :param preserve: Change shared state in frontmatter if 1
+    :param meta_update: Update frontmatter if meta_update = 0
     :return: bool
     """
     file_name = os.path.basename(filepath)
