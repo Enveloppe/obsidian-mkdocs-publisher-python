@@ -85,7 +85,8 @@ def clipboard(filepath, folder):
                 clipboard.set(clip)
             except ImportError:
                 print(
-                    "Please, report issue with your OS and configuration to check if it possible to use another clipboard manager"
+                    "Please, report issue with your OS and configuration to check if it"
+                    " possible to use another clipboard manager"
                 )
     else:
         try:
@@ -95,7 +96,8 @@ def clipboard(filepath, folder):
             pyperclip.copy(clip)
         except ImportError:
             print(
-                "Please, report issue with your OS and configuration to check if it possible to use another clipboard manager"
+                "Please, report issue with your OS and configuration to check if it"
+                " possible to use another clipboard manager"
             )
 
 

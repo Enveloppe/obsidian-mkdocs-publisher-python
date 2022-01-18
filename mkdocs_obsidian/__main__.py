@@ -64,7 +64,10 @@ def main():
     :return: None
     """
     parser = argparse.ArgumentParser(
-        description="Create file in docs and relative folder, move image in assets, convert admonition code_blocks, add links and push."
+        description=(
+            "Create file in docs and relative folder, move image in assets, convert"
+            " admonition code_blocks, add links and push."
+        )
     )
     group_files = parser.add_mutually_exclusive_group()
     group_git = parser.add_mutually_exclusive_group()
@@ -141,14 +144,16 @@ def main():
             info[0] = "- " + info[0]
             info_str = "\n- ".join(info)
             console.print(
-                f'[[i not bold sky_blue2]{datetime.now().strftime("%H:%M:%S")}[/]] 🗑️[u red bold]Delete from blog :[/]',
+                f'[[i not bold sky_blue2]{datetime.now().strftime("%H:%M:%S")}[/]] 🗑️[u'
+                " red bold]Delete from blog :[/]",
                 Markdown(info_str),
                 end="",
             )
         elif len(info) == 1:
             info_str = info[0]
             console.print(
-                f"🗑️ [u red bold] Delete[/] [bold red i] {info_str}[/] [u red bold]from blog[/]"
+                f"🗑️ [u red bold] Delete[/] [bold red i] {info_str}[/] [u red bold]from"
+                " blog[/]"
             )
         stop_share = 1
     else:

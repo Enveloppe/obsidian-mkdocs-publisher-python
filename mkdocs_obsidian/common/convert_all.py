@@ -109,7 +109,9 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
                     destination = dest(filepath, folder)
                     if check_file:
                         filespush.append(
-                            f"Added : {os.path.basename(destination).replace('.md', '')} in [{msg_folder}]"
+                            "Added :"
+                            f" {os.path.basename(destination).replace('.md', '')} in"
+                            f" [{msg_folder}]"
                         )
                 elif stop_share == 1:
                     folder = check.create_folder(clipkey, 1)
@@ -120,13 +122,16 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
                         msg_folder = os.path.basename(folder)
                         destination = dest(filepath, folder)
                         filespush.append(
-                            f"Removed : {os.path.basename(destination).replace('.md', '')} from [{msg_folder}]"
+                            "Removed :"
+                            f" {os.path.basename(destination).replace('.md', '')} from"
+                            f" [{msg_folder}]"
                         )
             except yaml.YAMLError:
                 print(f"Skip [u bold red]{filepath}[/] because of YAML error.\n")
             except Exception as e:
                 print(
-                    f"Skip [u bold red]{filepath}[/] because of an unexpected error : {e}\n"
+                    f"Skip [u bold red]{filepath}[/] because of an unexpected error :"
+                    f" {e}\n"
                 )
     return filespush, clipkey
 
@@ -153,7 +158,8 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
     if delopt:  # preserve
         console.print(
             Rule(
-                f"[[i not bold sky_blue2]{time_now}[/]] [deep_sky_blue3 bold]STARTING CONVERT[/] [[i sky_blue2]ALL[/]]",
+                f"[[i not bold sky_blue2]{time_now}[/]] [deep_sky_blue3 bold]STARTING"
+                " CONVERT[/] [[i sky_blue2]ALL[/]]",
                 align="center",
                 end="",
                 style="deep_sky_blue3",
@@ -167,7 +173,8 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
     else:
         console.print(
             Rule(
-                f"[[i not bold sky_blue2]{time_now}[/]] [deep_sky_blue3 bold]STARTING CONVERT[/] [[i sky_blue2]ALL[/]]",
+                f"[[i not bold sky_blue2]{time_now}[/]] [deep_sky_blue3 bold]STARTING"
+                " CONVERT[/] [[i sky_blue2]ALL[/]]",
                 align="center",
                 end="",
                 style="deep_sky_blue3",
@@ -203,7 +210,8 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
             config.git_push(commit)
         else:
             console.print(
-                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]] {add_info}",
+                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]"
+                f" {add_info}",
                 Markdown(add_msg),
                 remove_info,
                 Markdown(remove_msg),

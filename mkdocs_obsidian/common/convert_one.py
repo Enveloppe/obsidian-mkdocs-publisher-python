@@ -43,10 +43,12 @@ def convert_one(ori, git: bool, meta: int):
             convert.clipboard(ori, clipkey)
         elif checkfile and git:
             console.print(
-                f"[{datetime.now().strftime('%H:%M:%S')}] 🎉 Successfully converted [u blue bold]{file_name.lower()}[/]"
+                f"[{datetime.now().strftime('%H:%M:%S')}] 🎉 Successfully converted [u"
+                f" blue bold]{file_name.lower()}[/]"
             )
     except yaml.YAMLError:
         sys.exit(
-            f"Error in {file_name} : Your YAML frontmatter doesn't seem valid! Use https://jsonformatter.org/yaml-validator to correct it!"
+            f"Error in {file_name} : Your YAML frontmatter doesn't seem valid! Use"
+            " https://jsonformatter.org/yaml-validator to correct it!"
         )
     sys.exit()
