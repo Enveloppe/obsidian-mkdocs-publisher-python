@@ -37,8 +37,10 @@ Mkdocs Obsidian is an association between a python script and a Material mkdocs 
 - [Roamlinks](https://github.com/Jackiexiao/mkdocs-roamlinks-plugin) : `pip install mkdocs-roamlinks-plugin`
 - [mkdocs-obsidian](https://pypi.org/project/obs2mk/) : `pip install obs2mk`
 - [mkdocs-awesome-pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin) : `pip install mkdocs-awesome-pages-plugin`
+- [mkdocs-tooltipster](https://github.com/Mara-Li/mkdocs-tooltipster-links-plugin)
+- [mkdocs-embed-file-plugins](https://github.com/Mara-Li/mkdocs_embed_file_plugins)
 
-	</details>
+    </details>
 	
 You can install all package with `pip install -r requirements.txt`
 
@@ -68,6 +70,7 @@ So, with the configuration I have done, the mkdocs support :
 - Wikilinks and relative links
 - Highlight and tilde markdown
 - Mathjax and Mermaid 
+- Embed files (entire file, inline, heading)
 - Custom Attribute, as [CM6 Attribute (with tags)](https://github.com/nothingislost/obsidian-cm6-attributes/releases), [Markdown Attribute](https://github.com/valentine195/obsidian-markdown-attributes) and [Contextual Typography (with tags)](https://github.com/mgmeyers/obsidian-contextual-typography).
 
 I didn't found a way to embed file with wiki links for the moment. Because of the strange behavior of roam links, these embedded file will be rendered as image. The script will care of this bug. 
@@ -210,8 +213,7 @@ There are some files to customize the script :
 - The script will not delete the file and folder if you change the `category` key. Beware of this. 
 - Share “all” can be long on big vault. 
 - File with same name can have some problem while scanning because I don't keep your folder structure. Please, beware of this! Don't forget, you can use `title` if you want a specific name (and this name already exist). 
-- Bloc citation doesn't work, the script will care of that. 
-- Embed file (citation and # too) doesn't work, the script will also care about it !
+
 
 ## Support
 The script can work on any platform that support python. The script doesn't use Cpython, so don't worry about it for IOS.

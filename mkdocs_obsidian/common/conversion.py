@@ -231,14 +231,7 @@ def file_convert(filepath, force=0):
                 "\\\\", final_text.strip()
             ):  # New line when using "\" in obsidian filepath
                 final_text = "\n"
-            # Remove embed filepaths (and link to them)
-            elif re.search("!\[{2}(.*)\]{2}", final_text):
-                embed = re.search("!\[{2}(.*)\]{2}", final_text)
-                embed = embed.group().split("]")
-                for i in embed:
-                    if not re.search("(png)|(jpg)|(gif)|(jpeg)", i):
-                        remove = i.replace("!", "")
-                        final_text = final_text.replace(i, remove)
+
             elif final_text == "```\n":
                 # fix code newlines for material mkdocs
                 final_text = final_text + "\n"
