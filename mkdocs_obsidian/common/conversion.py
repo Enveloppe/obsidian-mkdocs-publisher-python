@@ -184,6 +184,38 @@ def convert_hashtags(final_text: str):
             final_text = final_text.replace(token[i], ial, 1)
     return final_text
 
+def index_citation(final_text:str):
+    """
+    :param final_text: Line to check, wikilinks or MD links
+    :return: Invert the alias with the name to get the index citation
+    """
+    if ') [' in final_text:
+        cited = re.search(
+            '(\[{2}.*\|index\]{2}|\[index]\(.*\))', final_text
+            ).group().split(') [')
+    else:
+        cited = re.search(
+            '(\[{2}.*\|index\]{2}|\[index]\(.*\))', final_text
+            ).group().split(']]')
+    for i in cited:
+        if i != '' and not 'www' in i:
+            if re.search('(.*)\|', i):
+                file_name = re.search('(.*)\|', i).group().replace('|', '').replace(
+                    '[', ''
+                    )
+                cite = '[[index|' + file_name.strip()
+            elif re.search('\((.*)', i):
+                file_name = re.search('\((.*)', i).group().replace(
+                    '(',
+                    ''
+                    ).replace(
+                    ')', ''
+                    )
+                cite = '[' + file_name + '](index)'
+            final_text = final_text.replace(i, cite).replace(']]', ']] ').replace(
+                '))', ')'
+                )
+    return final_text
 
 def file_convert(filepath, force=0):
     """
@@ -235,12 +267,9 @@ def file_convert(filepath, force=0):
             elif final_text == "```\n":
                 # fix code newlines for material mkdocs
                 final_text = final_text + "\n"
-            # remove inline block citation
-            elif re.search("\^[A-Za-z0-9]+$", final_text):
-                final_text = re.sub("\^[A-Za-z0-9]+$", "", final_text).strip()
-            elif re.search("#\^[A-Za-z0-9]+\]{2}", final_text):
-                final_text = re.sub("#\^[A-Za-z0-9]+", "", final_text).strip()
-
+            elif re.search('\[\[?(.*)index\]\]?', final_text) and not re.search('!\[\[?(.*)index\]\]?', final_text) :
+                #fix pagination.indexes page citation, exclude image/embed file
+                final_text = index_citation(final_text)
             final.append(final_text)
     for k, v in meta.metadata.items():
         if isinstance(v, str):
