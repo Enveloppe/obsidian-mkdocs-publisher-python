@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.4.0 (2022-01-20)
+### Feature
+* Add support for embed file plugins ([`7de2431`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/7de2431742edf6cb99f432a311e95c23906ebda0))
+
+### Documentation
+* **requirements:** Remove python frontmatter ([`3236386`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3236386fd888ca1bb662567735ec177a62e359a3))
+
 ## v1.3.2 (2022-01-18)
 ### Documentation
 * **docstring:** Update docstring ([`e334aa2`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e334aa2132da7c6ba88080733fa95957bec1e910))
