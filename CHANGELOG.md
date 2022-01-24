@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.6.0 (2022-01-24)
+### Feature
+* **paginationindex:** Add support for file renamed into index ([`7438e30`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/7438e30a88970251caccc07977244b077ffade61))
+
+### Documentation
+* **readme:** Add info on foldernote and index ([`0209d30`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/0209d3027e56ff7a0d00e45fad8fe01d2b1a9c2e))
+
 ## v1.5.0 (2022-01-24)
 ### Feature
 * **all:** Now compare also the metadata value ([`d294fdc`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d294fdc6fca60c478d62f97bd7173e919cccc7b8))
