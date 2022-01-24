@@ -85,8 +85,10 @@ def diff_file(filepath: str, folder: str, contents: list, update=0):
         new_version = retro(contents, 1)
         meta_new = front_temp.metadata
         meta_new.pop("link", None)
-        if new_version == retro_old and sorted(meta_old.keys()) == sorted(
-            meta_new.keys()
+        if (
+            new_version == retro_old
+            and sorted(meta_old.keys()) == sorted(meta_new.keys())
+            and sorted(str(meta_old.values())) == sorted(str(meta_new.values()))
         ):
             return False
         return True

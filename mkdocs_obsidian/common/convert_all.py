@@ -206,7 +206,7 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
                 commit = "".join(new_files)
                 markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
                 convert.clipboard(markdown_msg, clipkey)
-            commit = f"**Updated** : \n {commit}"
+            commit = f"**Updated** : \n {commit}\n"
             config.git_push(commit)
         else:
             console.print(
