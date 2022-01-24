@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.5.0 (2022-01-24)
+### Feature
+* **all:** Now compare also the metadata value ([`d294fdc`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d294fdc6fca60c478d62f97bd7173e919cccc7b8))
+
 ## v1.4.0 (2022-01-20)
 ### Feature
 * Add support for embed file plugins ([`7de2431`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/7de2431742edf6cb99f432a311e95c23906ebda0))
