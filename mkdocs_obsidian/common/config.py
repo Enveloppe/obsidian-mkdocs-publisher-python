@@ -9,7 +9,6 @@ from pathlib import Path
 from rich.console import Console
 from rich.markdown import Markdown
 from rich import print
-
 import mkdocs_obsidian as obs
 from mkdocs_obsidian.common import global_value as gl
 
@@ -53,27 +52,30 @@ def create_env():
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pass
-
     env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
-
-    print(f"Creating environnement in {env_path}")
+    console = Console()
+    print(f"[bold]Creating environnement in [u]{env_path}[/][/]")
     vault = ""
     blog = ""
     while vault == "" or not os.path.isdir(vault):
-        vault = str(input("Please provide your obsidian vault path : "))
+        vault = str(console.input("Please provide your [u bold]obsidian vault[/] path: "))
     while blog == "" or not os.path.isdir(blog):
-        blog = str(input("Please provide the blog repository path : "))
+        blog = str(console.input("Please provide the [u bold]blog[/] repository path: "))
     blog_link = check_url(blog).strip()
     if blog_link == "":
-        blog_link = str(input("Please, provide the URL of your blog : "))
-    share = str(input("Choose your share key name (default: share) : "))
+        blog_link = str(console.input("Please, provide the [u]URL[/] of your blog: "))
+    share = str(console.input("Choose your share key name [i](default: [bold]share[/])[/]: "))
     if share == "":
         share = "share"
+    index_key = str(input('If you want to use [u]folder note[/], please choose the key for citation [i](default: [bold](i)[/])[/]: '))
+    if index_key == "":
+        index_key = "(i)"
     with open(env_path, "w", encoding="utf-8") as env:
         env.write(f"vault={vault}\n")
         env.write(f"blog_path={blog}\n")
         env.write(f"blog={blog_link}\n")
         env.write(f"share={share}\n")
+        env.write(f"index_key={index_key}\n")
     BASEDIR = gl.BASEDIR
     post = Path(f"{BASEDIR}/docs/notes")
     img = Path(f"{BASEDIR}/docs/assets/img/")

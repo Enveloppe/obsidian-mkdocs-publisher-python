@@ -25,6 +25,7 @@ BASEDIR = gl.BASEDIR
 VAULT = gl.VAULT
 VAULT_FILE = gl.VAULT_FILE
 SHARE = gl.SHARE
+INDEX_KEY = gl.INDEX_KEY
 
 
 def exclude_folder(filepath: str):
