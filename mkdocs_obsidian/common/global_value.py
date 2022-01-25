@@ -32,7 +32,7 @@ else:
         else:
             for data in components:
                 VAULT = data.split("=")
-                if len(data) == 0 or len(VAULT[1]) == 0 :
+                if len(data) == 0 or len(VAULT[1]) == 0:
                     config.create_env()
 
 # In case of error
@@ -44,13 +44,13 @@ try:
     try:
         SHARE = env["share"]
     except KeyError:
-        SHARE = 'share'
+        SHARE = "share"
         with open(ENV_PATH, "a", encoding="utf-8") as f:
             f.write("share=share")
     try:
-        INDEX_KEY = env['index_key']
+        INDEX_KEY = env["index_key"]
     except KeyError:
-        INDEX_KEY = '(i)'
+        INDEX_KEY = "(i)"
         with open(ENV_PATH, "a", encoding="utf-8") as f:
             f.write("index_key=(i)")
 except KeyError:
@@ -62,14 +62,14 @@ except KeyError:
         BASEDIR = Path(basedir_str)
         WEB = "".join(f.readlines(3)).replace("blog=", "")
         SHARE = "".join(f.readlines(4)).replace("share=", "")
-        INDEX_KEY = "".join(f.readlines(5)).replace('index_key=', '')
+        INDEX_KEY = "".join(f.readlines(5)).replace("index_key=", "")
     with open(ENV_PATH, "a", encoding="utf-8") as f:
         if len(SHARE) == 0:
-            SHARE = 'share'
+            SHARE = "share"
             f.write("share=share")
         if len(INDEX_KEY) == 0:
-            INDEX_KEY = '(i)'
-            f.write('index_key=(i)')
+            INDEX_KEY = "(i)"
+            f.write("index_key=(i)")
     if len(vault_str) == 0 or len(basedir_str) == 0 or len(WEB) == 0:
         sys.exit("Please provide a valid path for all config items")
 except RuntimeError:
@@ -77,7 +77,7 @@ except RuntimeError:
     VAULT = Path(env["vault"])
     WEB = env["blog"]
     SHARE = env["share"]
-    INDEX_KEY=env['index_key']
+    INDEX_KEY = env["index_key"]
 try:
     VAULT = VAULT.expanduser()
     BASEDIR = BASEDIR.expanduser()

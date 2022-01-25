@@ -24,6 +24,7 @@ VAULT = Path(config.VAULT)
 VAULT_FILE = config.VAULT_FILE
 SHARE = config.SHARE
 
+
 def get_image(image):
     """
     Check if the image exists in the VAULT
@@ -183,36 +184,78 @@ def convert_hashtags(final_text: str):
             final_text = final_text.replace(token[i], ial, 1)
     return final_text
 
-def index_citation(final_text:str):
+
+def index_citation(final_text: str):
     """
     :param final_text: Line to check, wikilinks or MD links
     :return: Invert the alias with the name to get the index citation
     """
     INDEX_KEY = config.INDEX_KEY
-    if ') [' in final_text:
-        cited = re.search(rf'(\[{2}.*\|(.*)'+re.escape(INDEX_KEY)+r'(.*)\]{2}|\[.*'+re.escape(INDEX_KEY)+r'.*]\(.*\))', final_text).group().split(') [')
+    if ") [" in final_text:
+        cited = (
+            re.search(
+                rf"(\[{2}.*\|(.*)"
+                + re.escape(INDEX_KEY)
+                + r"(.*)\]{2}|\[.*"
+                + re.escape(INDEX_KEY)
+                + r".*]\(.*\))",
+                final_text,
+            )
+            .group()
+            .split(") [")
+        )
     else:
-        cited = re.search(
-            r'(\[{2}.*\|.*'+re.escape(INDEX_KEY)+r'.*\]{2}|\[.*'+re.escape(INDEX_KEY)+r'.*]\(.*\))', final_text
-            ).group().split(']]')
+        cited = (
+            re.search(
+                r"(\[{2}.*\|.*"
+                + re.escape(INDEX_KEY)
+                + r".*\]{2}|\[.*"
+                + re.escape(INDEX_KEY)
+                + r".*]\(.*\))",
+                final_text,
+            )
+            .group()
+            .split("]]")
+        )
     for i in cited:
-        if i != '' and not 'www' in i :
-            if re.search('(.*)\|', i):
-                file_name = re.search(rf'\|.*'+re.escape(INDEX_KEY)+rf'.*', i).group().replace(INDEX_KEY, '').replace('|', '').strip()
+        if i != "" and not "www" in i:
+            if re.search("(.*)\|", i):
+                file_name = (
+                    re.search(rf"\|.*" + re.escape(INDEX_KEY) + rf".*", i)
+                    .group()
+                    .replace(INDEX_KEY, "")
+                    .replace("|", "")
+                    .strip()
+                )
                 if len(file_name) == 0:
-                    file_name = re.search('(.*)\|', i).group(1).replace('|', '').replace(
-                    '[', ''
-                    ).replace(INDEX_KEY,'')
-                cite = '[[index|' + file_name.strip()
+                    file_name = (
+                        re.search("(.*)\|", i)
+                        .group(1)
+                        .replace("|", "")
+                        .replace("[", "")
+                        .replace(INDEX_KEY, "")
+                    )
+                cite = "[[index|" + file_name.strip()
                 final_text = final_text.replace(i, cite)
-            elif re.search('(.*)\]\(', i):
-                file_name = re.search(r'(.*)' + re.escape(INDEX_KEY) + r'(.*)\]', i)
-                file_name = file_name.group().replace(INDEX_KEY, '').replace('[', '').replace(']', '')
+            elif re.search("(.*)\]\(", i):
+                file_name = re.search(r"(.*)" + re.escape(INDEX_KEY) + r"(.*)\]", i)
+                file_name = (
+                    file_name.group()
+                    .replace(INDEX_KEY, "")
+                    .replace("[", "")
+                    .replace("]", "")
+                )
                 if len(file_name) == 0:
-                    file_name= re.search('\]\((.*)', i).group(1).replace(')', '')
-                cite = '[' + file_name + '](index)'
-                final_text = final_text.replace(i, cite).replace('))', ')').replace('[[', '[').replace(']]', ']')
+                    file_name = re.search("\]\((.*)", i).group(1).replace(")", "")
+                cite = "[" + file_name + "](index)"
+                final_text = (
+                    final_text.replace(i, cite)
+                    .replace("))", ")")
+                    .replace("[[", "[")
+                    .replace("]]", "]")
+                )
     return final_text
+
 
 def file_convert(filepath, force=0):
     """
@@ -264,8 +307,10 @@ def file_convert(filepath, force=0):
             elif final_text == "```\n":
                 # fix code newlines for material mkdocs
                 final_text = final_text + "\n"
-            elif re.search('\[\[?(.*)index\]\]?', final_text) and not re.search('!\[\[?(.*)index\]\]?', final_text) :
-                #fix pagination.indexes page citation, exclude image/embed file
+            elif re.search("\[\[?(.*)index\]\]?", final_text) and not re.search(
+                "!\[\[?(.*)index\]\]?", final_text
+            ):
+                # fix pagination.indexes page citation, exclude image/embed file
                 final_text = index_citation(final_text)
             final.append(final_text)
     for k, v in meta.metadata.items():

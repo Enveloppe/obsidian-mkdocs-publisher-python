@@ -58,16 +58,27 @@ def create_env():
     vault = ""
     blog = ""
     while vault == "" or not os.path.isdir(vault):
-        vault = str(console.input("Please provide your [u bold]obsidian vault[/] path: "))
+        vault = str(
+            console.input("Please provide your [u bold]obsidian vault[/] path: ")
+        )
     while blog == "" or not os.path.isdir(blog):
-        blog = str(console.input("Please provide the [u bold]blog[/] repository path: "))
+        blog = str(
+            console.input("Please provide the [u bold]blog[/] repository path: ")
+        )
     blog_link = check_url(blog).strip()
     if blog_link == "":
         blog_link = str(console.input("Please, provide the [u]URL[/] of your blog: "))
-    share = str(console.input("Choose your share key name [i](default: [bold]share[/])[/]: "))
+    share = str(
+        console.input("Choose your share key name [i](default: [bold]share[/])[/]: ")
+    )
     if share == "":
         share = "share"
-    index_key = str(input('If you want to use [u]folder note[/], please choose the key for citation [i](default: [bold](i)[/])[/]: '))
+    index_key = str(
+        input(
+            "If you want to use [u]folder note[/], please choose the key for citation"
+            " [i](default: [bold](i)[/])[/]: "
+        )
+    )
     if index_key == "":
         index_key = "(i)"
     with open(env_path, "w", encoding="utf-8") as env:
