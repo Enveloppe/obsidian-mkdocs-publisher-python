@@ -265,6 +265,7 @@ def file_convert(filepath, force=0):
     :return: converted contents
     """
     final = []
+    INDEX_KEY = config.INDEX_KEY
     meta = frontmatter.load(filepath)
     lines = meta.content.splitlines(True)
     if force != 1 and not meta.get(SHARE):
@@ -294,6 +295,9 @@ def file_convert(filepath, force=0):
                     .decode("utf-16")
                 )
                 final_text = re.sub(r"\\U\w+", convert_emojiz, final_text)
+            if re.search(rf'\[\[?(.*)'+ re.escape(INDEX_KEY)+r'(.*)\]\]?', final_text):
+                # fix pagination.indexes page citation, exclude image/embed file
+                final_text = index_citation(final_text)
             if re.search("#\w+", final_text) and not re.search(
                 "(`|\[{2}|\()(.*)#(.*)(`|\]{2}|\))", final_text
             ):  # search hashtags not in link
@@ -307,11 +311,7 @@ def file_convert(filepath, force=0):
             elif final_text == "```\n":
                 # fix code newlines for material mkdocs
                 final_text = final_text + "\n"
-            elif re.search("\[\[?(.*)index\]\]?", final_text) and not re.search(
-                "!\[\[?(.*)index\]\]?", final_text
-            ):
-                # fix pagination.indexes page citation, exclude image/embed file
-                final_text = index_citation(final_text)
+
             final.append(final_text)
     for k, v in meta.metadata.items():
         if isinstance(v, str):
