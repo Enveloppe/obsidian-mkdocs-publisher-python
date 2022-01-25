@@ -128,7 +128,8 @@ By default, the script will remove all file that doesn't exist in the vault, and
 > A little note about "Folder Note": If the file has the same name as the last part of `category`, it will be renamed `index` during conversion.  
 > However, this prevents the file from being deleted if its source is deleted from your vault: in this case, you have to delete it manually. 
 
-> ⚠️ You need to use the alias `index` to cite an index file. The script will invert the filename and the alias.
+> ⚠️ You need to configure and use an alias to cite an index file ; By default, this alias is `(i)` but it can be configured in environment configuration. 
+> Some example : `[[Real file|(i) Alias]]` → `[[index|Alias]]` | `[[Real File|(i)]]` → `[[index|Real file]]`
 
 > Git Note : If a folder is empty, it will be "erased" in git. 
 
@@ -189,12 +190,14 @@ vault=
 blog_path=
 blog=
 share=
+index_key=
 ```
 With :
 - `vault`: Vault Absolute Path
 - `blog_path` : Blog repository absolute path
 - `blog` : Blog link (same as `site_url` from `mkdocs.yml`)
 - `share` : your wanted share key ; by default : `share`
+- `index_key`: For folder note citation
 
 Before running the shortcuts, you need to install all requirements, aka :
 ```
