@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.7.0 (2022-01-25)
+### Feature
+* **foldernote:** Add a way to use a customized key ([`1b8b242`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1b8b24266f3905fc38e82c1ccddbc24d4cb0c46e))
+
 ## v1.6.0 (2022-01-24)
 ### Feature
 * **paginationindex:** Add support for file renamed into index ([`7438e30`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/7438e30a88970251caccc07977244b077ffade61))
