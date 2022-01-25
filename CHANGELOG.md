@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.7.1 (2022-01-25)
+### Fix
+* **folderNote:** Quick fix for folder note ([`13a009b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/13a009b59f54f363164bd4cc9afb3a0c51e86aaf))
+
 ## v1.7.0 (2022-01-25)
 ### Feature
 * **foldernote:** Add a way to use a customized key ([`1b8b242`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1b8b24266f3905fc38e82c1ccddbc24d4cb0c46e))
