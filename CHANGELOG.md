@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.7.2 (2022-01-26)
+### Fix
+* **foldernote:** Hot fix for alias without index ([`cd3077a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/cd3077aa83f41bbf4c0ab28c9565f1800ac405f1))
+
+### Documentation
+* **README:** Update readme ([`f64f5b3`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/f64f5b36a85add735c53d480791b10c0eb2657a0))
+
 ## v1.7.1 (2022-01-25)
 ### Fix
 * **folderNote:** Quick fix for folder note ([`13a009b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/13a009b59f54f363164bd4cc9afb3a0c51e86aaf))
