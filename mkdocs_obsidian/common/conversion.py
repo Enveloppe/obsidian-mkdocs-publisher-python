@@ -219,7 +219,7 @@ def index_citation(final_text: str):
         )
     for i in cited:
         if i != "" and not "www" in i:
-            if re.search("(.*)\|", i):
+            if re.search(rf"\|.*" + re.escape(INDEX_KEY) + rf".*", i):
                 file_name = (
                     re.search(rf"\|.*" + re.escape(INDEX_KEY) + rf".*", i)
                     .group()
@@ -237,7 +237,7 @@ def index_citation(final_text: str):
                     )
                 cite = "[[index|" + file_name.strip()
                 final_text = final_text.replace(i, cite)
-            elif re.search("(.*)\]\(", i):
+            elif re.search(r"(.*)" + re.escape(INDEX_KEY) + r"(.*)\]", i):
                 file_name = re.search(r"(.*)" + re.escape(INDEX_KEY) + r"(.*)\]", i)
                 file_name = (
                     file_name.group()
