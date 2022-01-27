@@ -185,6 +185,16 @@ def convert_hashtags(final_text: str):
     return final_text
 
 
+def index_path(file_name):
+    file = [x for x in VAULT_FILE if os.path.basename(x) == file_name + ".md"]
+    index = "index"
+    if file:
+        metadata = frontmatter.load(file[0])
+        if metadata.get("category"):
+            index = "/" + metadata["category"] + "/index.md"
+    return index
+
+
 def index_citation(final_text: str):
     """
     :param final_text: Line to check, wikilinks or MD links
@@ -235,7 +245,8 @@ def index_citation(final_text: str):
                         .replace("[", "")
                         .replace(INDEX_KEY, "")
                     )
-                cite = "[[index|" + file_name.strip()
+                index = index_path(file_name)
+                cite = f"[[{index}|" + file_name.strip()
                 final_text = final_text.replace(i, cite)
             elif re.search(r"(.*)" + re.escape(INDEX_KEY) + r"(.*)\]", i):
                 file_name = re.search(r"(.*)" + re.escape(INDEX_KEY) + r"(.*)\]", i)
@@ -247,7 +258,8 @@ def index_citation(final_text: str):
                 )
                 if len(file_name) == 0:
                     file_name = re.search("\]\((.*)", i).group(1).replace(")", "")
-                cite = "[" + file_name + "](index)"
+                index = index_path(file_name)
+                cite = "[" + file_name + f"]({index})"
                 final_text = (
                     final_text.replace(i, cite)
                     .replace("))", ")")
@@ -295,7 +307,9 @@ def file_convert(filepath, force=0):
                     .decode("utf-16")
                 )
                 final_text = re.sub(r"\\U\w+", convert_emojiz, final_text)
-            if re.search(rf'\[\[?(.*)'+ re.escape(INDEX_KEY)+r'(.*)\]\]?', final_text):
+            if re.search(
+                rf"\[\[?(.*)" + re.escape(INDEX_KEY) + r"(.*)\]\]?", final_text
+            ):
                 # fix pagination.indexes page citation, exclude image/embed file
                 final_text = index_citation(final_text)
             if re.search("#\w+", final_text) and not re.search(
