@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.7.3 (2022-01-27)
+### Fix
+* **foldernote:** Finally found a way to cite index without error ([`9692d02`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/9692d02d3417e0b2ded5325cdcb963f9aac65e49))
+
 ## v1.7.2 (2022-01-26)
 ### Fix
 * **foldernote:** Hot fix for alias without index ([`cd3077a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/cd3077aa83f41bbf4c0ab28c9565f1800ac405f1))
