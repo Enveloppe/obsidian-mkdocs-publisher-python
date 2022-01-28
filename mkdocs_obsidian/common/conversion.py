@@ -118,7 +118,7 @@ def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
     if preserve == 0 and not meta.get(SHARE):
         check.delete_file(filepath, folder, meta_update)
         return False
-    if os.path.splitext(file_name)[0] == os.path.basename(folder):
+    if os.path.splitext(file_name)[0] == Path(folder).name:
         file_name = "index.md"
     with open(Path(f"{folder}/{file_name}"), "w", encoding="utf-8") as new_notes:
         for line in contents:
@@ -190,8 +190,9 @@ def index_path(file_name):
     index = "index"
     if file:
         metadata = frontmatter.load(file[0])
-        if metadata.get("category"):
-            index = "/" + metadata["category"] + "/index.md"
+        if metadata.get("category") and Path(metadata["category"]).name == file_name:
+            category = str(Path(metadata['category'])).replace('\\', '/') #Normalize path on Windows
+            index = "/" + category + "/index.md"
     return index
 
 
