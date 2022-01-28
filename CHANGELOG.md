@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v1.7.4 (2022-01-28)
+### Fix
+* **foldernote:** Use path.name instead of os.path.basename ([`5c816e0`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/5c816e0329363829c5ce7855b051b5f73f3a7078))
+* **foldernote:** Better check for index file ([`116b88d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/116b88d6ecdcba5b21aecc0183980f9f0e60a461))
+
 ## v1.7.3 (2022-01-27)
 ### Fix
 * **foldernote:** Finally found a way to cite index without error ([`9692d02`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/9692d02d3417e0b2ded5325cdcb963f9aac65e49))
