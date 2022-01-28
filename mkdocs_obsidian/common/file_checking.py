@@ -171,7 +171,7 @@ def check_file(filepath, folder: str):
     :return: "EXIST" or "NE"
     """
     file = os.path.basename(filepath)
-    folder_check = os.path.basename(folder)
+    folder_check = Path(folder).name
     if file.replace(".md", "") == folder_check:
         file = "index.md"
     publish = Path(f"{folder}/{file}")
