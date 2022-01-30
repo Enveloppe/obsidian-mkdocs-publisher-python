@@ -35,7 +35,7 @@ def search_shortcuts(file):
     return False
 
 
-def obsidian_shell(file="0", meta_update=0, vault_share=0, git=False):
+def obsidian_shell(file="0", meta_update=0, vault_share=0, git=True):
     """
     :param file: Filepath. 0 for all shared files
     :param meta_update: Disable-enable metadata update in source file
@@ -45,7 +45,7 @@ def obsidian_shell(file="0", meta_update=0, vault_share=0, git=False):
     """
 
     if file == "0":
-        all.obsidian_simple(False, git, 0, 0, vault_share)
+        all.obsidian_simple(False, git, 1, 0, vault_share)
     elif not os.path.exists(file):
         file = search_shortcuts(file)
         if not file:
@@ -66,7 +66,7 @@ def mobile_shortcuts(file="0", meta_update=0, vault_share=0):
     :return: None
     """
     if file == "0":
-        all.convert_all(False, False, 0, 0, vault_share)
+        all.convert_all(False, False, 1, 0, vault_share)
     elif not os.path.exists(file):
         file = search_shortcuts(file)
         if not file:
@@ -166,18 +166,24 @@ def main():
         if len(info) > 1:
             info[0] = "- " + info[0]
             info_str = "\n- ".join(info)
-            console.print(
-                f'[[i not bold sky_blue2]{datetime.now().strftime("%H:%M:%S")}[/]] 🗑️[u'
-                " red bold]Delete from blog :[/]",
-                Markdown(info_str),
-                end="",
-            )
+            if args.obsidian:
+                console.print(
+                    f'[[i not bold sky_blue2]{datetime.now().strftime("%H:%M:%S")}[/]] 🗑️[u'
+                    " red bold]Delete from blog :[/]",
+                    Markdown(info_str),
+                    end="",
+                )
+            else:
+                print(f'[{datetime.now().strftime("%H:%M:%Sf")}] 🗑️ Delete from blog: {info_str}')
         elif len(info) == 1:
             info_str = info[0]
-            console.print(
-                f"🗑️ [u red bold] Delete[/] [bold red i] {info_str}[/] [u red bold]from"
-                " blog[/]"
-            )
+            if args.obsidian:
+                console.print(
+                    f"🗑️ [u red bold] Delete[/] [bold red i] {info_str}[/] [u red bold]from"
+                    " blog[/]"
+                )
+            else:
+                print(f'Delete {info_str} from blog.')
         stop_share = 1
     else:
         stop_share = 0
