@@ -229,12 +229,12 @@ The script can work on any platform that support python. The script doesn't use 
 
 You can integrate the script within obsidian using the nice plugin [Obsidian ShellCommands](https://github.com/Taitava/obsidian-shellcommands).  
 You could create two commands :
-1. `share all` : `obs2mk --obsidian`
-2. `share one` : `obs2mk --obsidian --f {{file_path:absolute}}`
+1. Publish everything: Alias `Publish` with `obs2mk --obsidian`
+3. Publish one specific file : Alias `Publish {{title}}` with `obs2mk --obsidian --f {{file_path:absolute}}`
 
-With the 0.10.0 you could also add event shortcuts :
-- File menu event: `obs2mk --obsidian --f "{{event_file_path:absolute}}"`
-- Folder Note event : `obs2mk --obsidian --f "{{event_folder_path:relative}}\{{event_folder_name}}.md"`
+With the `0.10` you could also add event shortcuts :
+- File menu event `Publish {{event_file_name}}`: `obs2mk --obsidian --f "{{event_file_path:absolute}}"`
+- Folder Note event `Publish {{event_folder_name}}`: `obs2mk --obsidian --f "{{event_folder_path:relative}}\{{event_folder_name}}.md"`
 
 You can use :
 - [Customizable Sidebar](https://github.com/phibr0/obsidian-customizable-sidebar)  
