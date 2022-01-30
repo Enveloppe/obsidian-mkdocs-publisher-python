@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.8.4 (2022-01-30)
+### Fix
+* **one:** Fix git variable for convert one ([`e8e7452`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e8e7452ae8d982b22b0201bb349d1752cde65939))
+
 ## v1.8.3 (2022-01-30)
 ### Fix
 * **one:** Fix file path (normalize) ([`b6e0201`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b6e020184c22864ee981be6f008b998103bd0168))
