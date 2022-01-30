@@ -95,10 +95,15 @@ def create_env():
     sys.exit("Environment created.")
 
 
-def git_push(commit: str):
+def git_push(commit: str, obsidian=False, add_info="", rmv_info="", add_msg="", remove_msg=""):
     """
     git push the modified files and print a message result
     :param commit: Commit information
+    :param obsidian: Message without markup
+    :param add_info: Adding title
+    :param rmv_info: Removing title
+    :param remove_msg: File removed
+    :param add_msg: File added/modified
     :return: None
     """
     console = Console()
@@ -111,17 +116,29 @@ def git_push(commit: str):
         repo.git.commit("-m", f"{commit}")
         origin = repo.remote("origin")
         origin.push()
-        console.print(
-            f"[{datetime.now().strftime('%H:%M:%S')}]",
-            Markdown(commit),
-            "successfully 🎉",
-            end=" ",
-        )
+        if not obsidian:
+            console.print(
+                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/] {add_info}",
+                Markdown(add_msg),
+                rmv_info,
+                Markdown(remove_msg),
+                Markdown('---'),
+                "🎉 Successful 🎉",
+                end=" ",
+            )
+        else:
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] {add_info}\n{add_msg}\n\n---\n\n{rmv_info}{remove_msg}\n\n---🎉 Successfull 🎉")
 
     except ImportError:
-        console.print(
-            f"[{datetime.now().strftime('%H:%M:%S')}]",
-            Markdown(commit),
-            "changed\nPlease, use another way to push your change 😶",
-            end=" ",
-        )
+        if not obsidian:
+            console.print(
+                f"[{datetime.now().strftime('%H:%M:%S')}]",
+                Markdown(commit),
+                "changed\nPlease, use another way to push your change 😶",
+                end=" ",
+            )
+        else:
+            print(
+                f"[{datetime.now().strftime('%H:%M:%S')}] {commit} changed\n Please use"
+                " another way to push your change 😶"
+            )
