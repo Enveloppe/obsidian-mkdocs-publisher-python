@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v1.8.0 (2022-01-30)
+### Feature
+* **obsidian:** Adding obsidian shell ([`6b8a20c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6b8a20c978dbcda798a4b0f9682bfb1ec4e302f6))
+
+### Fix
+* **conversion:** Normalize category path on windows ([`0b29639`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/0b29639f9b213f8d8c55555c7d6c07bb8bec8a37))
+* **markup:** Fix markup commit ([`3d944cd`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3d944cda3489364a96b7320bea27d08d5d8f55ec))
+
 ## v1.7.4 (2022-01-28)
 ### Fix
 * **foldernote:** Use path.name instead of os.path.basename ([`5c816e0`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/5c816e0329363829c5ce7855b051b5f73f3a7078))
