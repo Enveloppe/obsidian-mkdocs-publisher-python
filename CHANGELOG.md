@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.8.2 (2022-01-30)
+### Fix
+* **one:** Fix path share one file ([`0e9d687`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/0e9d687d49447fd9596ad1a45d7d33b1cbf46d34))
+
 ## v1.8.1 (2022-01-30)
 ### Fix
 * **main:** Deletion file and push ([`2764e23`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2764e23ea6a283e0d1972a4f5ddfe0dc134d5383))
