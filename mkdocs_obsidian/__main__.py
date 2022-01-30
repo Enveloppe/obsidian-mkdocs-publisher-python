@@ -5,6 +5,7 @@ from datetime import datetime
 from rich.markdown import Markdown
 from rich.console import Console
 from rich import print
+from pathlib import Path
 
 try:
     sys.stdin.reconfigure(encoding="utf-8")
@@ -46,13 +47,13 @@ def obsidian_shell(file="0", meta_update=0, vault_share=0, git=True):
 
     if file == "0":
         all.obsidian_simple(False, git, 1, 0, vault_share)
-    elif not os.path.exists(file):
+    elif not os.path.exists(Path(file)):
         file = search_shortcuts(file)
         if not file:
             print("File not found.")
             sys.exit()
         one.convert_one(file, git, meta_update)
-    elif file != "0" and os.path.exists(file):
+    elif file != "0" and os.path.exists(Path(file)):
         one.convert_one(file, git, meta_update)
     sys.exit()
 
@@ -67,7 +68,7 @@ def mobile_shortcuts(file="0", meta_update=0, vault_share=0):
     """
     if file == "0":
         all.convert_all(False, False, 1, 0, vault_share)
-    elif not os.path.exists(file):
+    elif not os.path.exists(Path(file)):
         file = search_shortcuts(file)
         if not file:
             print("[u red]File not found.")
@@ -76,7 +77,7 @@ def mobile_shortcuts(file="0", meta_update=0, vault_share=0):
     elif file == "--c":
         setup.create_env()
         sys.exit()
-    elif file != "0" and os.path.exists(file):
+    elif file != "0" and os.path.exists(Path(file)):
         one.convert_one(file, False, meta_update)
 
 

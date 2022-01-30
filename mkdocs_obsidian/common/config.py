@@ -127,7 +127,7 @@ def git_push(commit: str, obsidian=False, add_info="", rmv_info="", add_msg="", 
                 end=" ",
             )
         else:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] {add_info}\n{add_msg}\n\n---\n\n{rmv_info}{remove_msg}\n\n---🎉 Successfull 🎉")
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] {add_info}:\n{add_msg}\n---\n{rmv_info}:\n{remove_msg}\n🎉 Successfull 🎉")
 
     except ImportError:
         if not obsidian:
