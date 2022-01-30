@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v1.8.1 (2022-01-30)
+### Fix
+* **main:** Deletion file and push ([`2764e23`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2764e23ea6a283e0d1972a4f5ddfe0dc134d5383))
+
+### Documentation
+* **readme:** More info for obsidianshell ([`fa9c2fe`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/fa9c2fe12f081f95611bda67c85fbb41aafcf777))
+* **Readme:** Updated obsidian shell ([`42c62f8`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/42c62f82e1fc7bca5b54491975779e0d1b21b496))
+
 ## v1.8.0 (2022-01-30)
 ### Feature
 * **obsidian:** Adding obsidian shell ([`6b8a20c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6b8a20c978dbcda798a4b0f9682bfb1ec4e302f6))
