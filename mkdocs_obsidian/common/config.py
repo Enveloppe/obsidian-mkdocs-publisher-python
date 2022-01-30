@@ -127,8 +127,16 @@ def git_push(commit: str, obsidian=False, add_info="", rmv_info="", add_msg="", 
                 end=" ",
             )
         else:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] {add_info}:\n{add_msg}\n---\n{rmv_info}:\n{remove_msg}\n🎉 Successfull 🎉")
-
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n🎉 Successfull 🎉")
+    except git.GitCommandError:
+        if not obsidian:
+            console.print(
+                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]",
+                Markdown("*No modification 😶*"),
+                end=" ",
+                )
+        else:
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
     except ImportError:
         if not obsidian:
             console.print(

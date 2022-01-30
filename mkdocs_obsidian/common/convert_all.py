@@ -196,7 +196,7 @@ def obsidian_simple(delopt=False, git=True, stop_share=0, meta=0, vault_share=0)
         else:
             print(
                 f"[{datetime.now().strftime('%H:%M:%S')}]"
-                f"{add_info}:\n{add_msg}\n---\n{remove_info}:\n{remove_msg}"
+                f"{add_info}: {add_msg}\n{remove_info}: {remove_msg}"
             )
     else:
         print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
