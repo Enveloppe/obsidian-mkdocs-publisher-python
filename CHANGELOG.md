@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v1.8.3 (2022-01-30)
+### Fix
+* **one:** Fix file path (normalize) ([`b6e0201`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b6e020184c22864ee981be6f008b998103bd0168))
+* **git:** Fix ([`f6d4999`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/f6d49996df653d40e02fba513b5bfcd89351425f))
+
 ## v1.8.2 (2022-01-30)
 ### Fix
 * **one:** Fix path share one file ([`0e9d687`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/0e9d687d49447fd9596ad1a45d7d33b1cbf46d34))
