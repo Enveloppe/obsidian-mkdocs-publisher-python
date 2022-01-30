@@ -195,7 +195,7 @@ def main():
         elif args.mobile:
             mobile_shortcuts(ori, meta_update, share_vault)
             sys.exit()
-        elif os.path.exists(ori):  # Share ONE
+        elif os.path.exists(Path(ori)):  # Share ONE
             one.convert_one(ori, ng, meta_update)
         else:
             print(f"[red bold]Error :[/] [u]{ori}[/] [red bold]doesn't exist.")
