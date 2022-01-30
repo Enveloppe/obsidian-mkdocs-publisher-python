@@ -191,7 +191,9 @@ def index_path(file_name):
     if file:
         metadata = frontmatter.load(file[0])
         if metadata.get("category") and Path(metadata["category"]).name == file_name:
-            category = str(Path(metadata['category'])).replace('\\', '/') #Normalize path on Windows
+            category = str(Path(metadata["category"])).replace(
+                "\\", "/"
+            )  # Normalize path on Windows
             index = "/" + category + "/index.md"
     return index
 
