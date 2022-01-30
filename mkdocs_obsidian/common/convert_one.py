@@ -40,7 +40,7 @@ def convert_one(ori, git: bool, meta: int, obsidian=False):
         checkfile = convert.file_write(ori, contents, priv, 1, meta)
         if checkfile and git:
             commit = f"Pushed {file_name.lower()} to blog"
-            setup.git_push(commit)
+            setup.git_push(commit, obsidian, "Push", {file_name.lower()})
             convert.clipboard(ori, clipkey)
         elif checkfile and not git:
             if not obsidian:

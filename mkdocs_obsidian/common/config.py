@@ -127,7 +127,7 @@ def git_push(commit: str, obsidian=False, add_info="", rmv_info="", add_msg="", 
                 end=" ",
             )
         else:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n🎉 Successfull 🎉")
+            print(f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}] {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n")
     except git.GitCommandError:
         if not obsidian:
             console.print(
