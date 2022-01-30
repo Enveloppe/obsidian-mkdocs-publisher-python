@@ -18,12 +18,13 @@ from mkdocs_obsidian.common import (
 )
 
 
-def convert_one(ori, git: bool, meta: int):
+def convert_one(ori, git: bool, meta: int, obsidian=False):
     """
     Function to start the conversion of *one* specified file.
     :param ori: path to file to convert
-    :param git: if False, push to git
+    :param git: if True, push to git
     :param meta: If 1 update the metadata's source file
+    :param obsidian: Disable markup
     :return: None
     """
     file_name = os.path.basename(ori).upper()
@@ -37,15 +38,21 @@ def convert_one(ori, git: bool, meta: int):
             clipkey = yaml_front["category"]
         contents = convert.file_convert(ori, 1)
         checkfile = convert.file_write(ori, contents, priv, 1, meta)
-        if checkfile and not git:
+        if checkfile and git:
             commit = f"Pushed {file_name.lower()} to blog"
             setup.git_push(commit)
             convert.clipboard(ori, clipkey)
-        elif checkfile and git:
-            console.print(
-                f"[{datetime.now().strftime('%H:%M:%S')}] 🎉 Successfully converted [u"
-                f" blue bold]{file_name.lower()}[/]"
-            )
+        elif checkfile and not git:
+            if not obsidian:
+                console.print(
+                    f"[{datetime.now().strftime('%H:%M:%S')}] 🎉 Successfully converted"
+                    f" [u blue bold]{file_name.lower()}[/]"
+                )
+            else:
+                print(
+                    f"[{datetime.now().strftime('%H:%M:%S')}] 🎉 Successfully converted"
+                    f" {file_name.lower()}"
+                )
     except yaml.YAMLError:
         sys.exit(
             f"Error in {file_name} : Your YAML frontmatter doesn't seem valid! Use"

@@ -58,7 +58,7 @@ def dest(filepath: str, folder: str):
     return str(destination)
 
 
-def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
+def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False):
     """
     Search file to publish
     :param preserve: if 1 force update
@@ -71,7 +71,9 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
     check_file = False
     clipkey = "notes"
     description = "[cyan u]Scanning\n"
-    for filepath in track(VAULT_FILE, description=description, total=len(VAULT_FILE)):
+    for filepath in track(
+        VAULT_FILE, description=description, total=len(VAULT_FILE), disable=obsidian
+    ):
         if (
             filepath.endswith(".md")
             and "excalidraw" not in filepath
@@ -137,7 +139,72 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0):
     return filespush, clipkey
 
 
-def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
+def obsidian_simple(delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
+    """
+    Main function to convert multiple file in obsidian shell
+    :param delopt: Force deletion if True
+    :param git: Git push if True
+    :param stop_share: Delete stoped shared file if 0
+    :param meta: Update frontmatter if 1
+    :param vault_share: Share all file in vault if 1
+    :return: None
+    """
+    if not git:
+        git_info = "No push"
+    else:
+        git_info = "Push"
+    time_now = datetime.now().strftime("%H:%M:%S")
+    msg_info = ""
+    if vault_share == 1:
+        msg_info = "\n- Share entire vault [**ignore share**]"
+    if delopt:  # preservesdds
+        print(
+            f"[{time_now}] STARTING CONVERT ALL\n\n- {git_info}\n- Force"
+            f" deletion{msg_info}"
+        )
+        new_files, clipkey = search_share(
+            1, stop_share, meta, vault_share, obsidian=True
+        )
+    else:
+        print(f"[{time_now}] STARTING CONVERT ALL\n- {git_info}\n{msg_info}")
+        new_files, clipkey = search_share(
+            0, stop_share, meta, vault_share, obsidian=True
+        )
+    if len(new_files) > 0:
+        add_msg = ""
+        remove_msg = ""
+        for markdown_msg in new_files:
+            if "removed" in markdown_msg.lower():
+                remove_msg = (
+                    remove_msg + "\n- " + markdown_msg.replace("Removed : ", "")
+                )
+            elif "added" in markdown_msg.lower():
+                add_msg = add_msg + "\n- " + markdown_msg.replace("Added : ", "")
+        remove_info = ""
+        add_info = ""
+        if len(remove_msg) > 0:
+            remove_info = "🗑 Removed from blog : "
+        if len(add_msg) > 0:
+            add_info = "🎉 Added to blog :"
+        commit = add_msg + remove_msg
+        if git:
+            if len(new_files) == 1:
+                commit = "".join(new_files)
+                markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
+                convert.clipboard(markdown_msg, clipkey)
+            commit = f"Updated :\n\n {commit}\n"
+            config.git_push(commit, True, add_info=add_info, rmv_info=remove_info, add_msg=add_msg, remove_msg=remove_msg)
+        else:
+            print(
+                f"[{datetime.now().strftime('%H:%M:%S')}]"
+                f"{add_info}\n{add_msg}\n\n---\n{remove_info}\n{remove_msg}"
+            )
+    else:
+        print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
+    sys.exit()
+
+
+def convert_all(delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
     """
     Main function to convert multiple file
     :param delopt: Force deletion if True
@@ -148,7 +215,7 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
     :return: None
     """
     console = Console()
-    if git:
+    if not git:
         git_info = "No push"
     else:
         git_info = "Push"
@@ -156,7 +223,7 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
     msg_info = ""
     if vault_share == 1:
         msg_info = "\n- Share entire vault [**ignore share**]"
-    if delopt:  # preserve
+    if delopt:  # preservesdds
         console.print(
             Rule(
                 f"[[i not bold sky_blue2]{time_now}[/]] [deep_sky_blue3 bold]STARTING"
@@ -202,13 +269,13 @@ def convert_all(delopt=False, git=False, stop_share=0, meta=0, vault_share=0):
         if len(add_msg) > 0:
             add_info = "🎉 [u bold sky_blue2]Added to blog :"
         commit = add_msg + remove_msg
-        if git is False:
+        if git:
             if len(new_files) == 1:
                 commit = "".join(new_files)
                 markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
                 convert.clipboard(markdown_msg, clipkey)
             commit = f"**Updated** : \n {commit}\n"
-            config.git_push(commit)
+            config.git_push(commit, add_info=add_info, rmv_info=remove_info, add_msg=add_msg, remove_msg=remove_msg)
         else:
             console.print(
                 f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]"

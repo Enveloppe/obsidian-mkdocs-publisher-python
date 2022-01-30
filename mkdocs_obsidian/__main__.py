@@ -35,11 +35,33 @@ def search_shortcuts(file):
     return False
 
 
+def obsidian_shell(file="0", meta_update=0, vault_share=0, git=False):
+    """
+    :param file: Filepath. 0 for all shared files
+    :param meta_update: Disable-enable metadata update in source file
+    :param vault_share: Share all vault.
+    :param git: If true, push to git
+    :return: /
+    """
+
+    if file == "0":
+        all.obsidian_simple(False, git, 0, 0, vault_share)
+    elif not os.path.exists(file):
+        file = search_shortcuts(file)
+        if not file:
+            print("File not found.")
+            sys.exit()
+        one.convert_one(file, git, meta_update)
+    elif file != "0" and os.path.exists(file):
+        one.convert_one(file, git, meta_update)
+    sys.exit()
+
+
 def mobile_shortcuts(file="0", meta_update=0, vault_share=0):
     """
     Main function using on mobile
-    :param meta_update: int (bool)
-    :param file: String (file path)
+    :param meta_update: Enable the metadata update
+    :param file: File to convert
     :param vault_share: int (bool)
     :return: None
     """
@@ -50,12 +72,12 @@ def mobile_shortcuts(file="0", meta_update=0, vault_share=0):
         if not file:
             print("[u red]File not found.")
             sys.exit()
-        one.convert_one(file, True, meta_update)
+        one.convert_one(file, False, meta_update)
     elif file == "--c":
         setup.create_env()
         sys.exit()
     elif file != "0" and os.path.exists(file):
-        one.convert_one(file, True, meta_update)
+        one.convert_one(file, False, meta_update)
 
 
 def main():
@@ -72,7 +94,7 @@ def main():
     group_files = parser.add_mutually_exclusive_group()
     group_git = parser.add_mutually_exclusive_group()
     group_git.add_argument(
-        "--git", "--g", "--G", help="No commit and no push to git", action="store_true"
+        "--git", "--g", "--G", help="No commit and no push to git", action="store_false"
     )
     group_git.add_argument(
         "--mobile",
@@ -99,6 +121,7 @@ def main():
     parser.add_argument(
         "--config", "--c", "--C", help="Edit the config file", action="store_true"
     )
+    parser.add_argument("--obsidian", help=argparse.SUPPRESS, action="store_true")
     parser.add_argument(
         "--force",
         "--d",
@@ -159,8 +182,11 @@ def main():
     else:
         stop_share = 0
     if ori:
-        if args.mobile:
-            mobile_shortcuts(ori, meta_update)
+        if args.obsidian:
+            obsidian_shell(ori, meta_update, share_vault, ng)
+            sys.exit()
+        elif args.mobile:
+            mobile_shortcuts(ori, meta_update, share_vault)
             sys.exit()
         elif os.path.exists(ori):  # Share ONE
             one.convert_one(ori, ng, meta_update)
@@ -169,7 +195,10 @@ def main():
             sys.exit()
     else:
         if args.mobile:
-            mobile_shortcuts("0", meta_update)
+            mobile_shortcuts("0", meta_update, share_vault)
+            sys.exit()
+        elif args.obsidian:
+            obsidian_shell("0", meta_update, share_vault)
             sys.exit()
         all.convert_all(delopt, ng, stop_share, meta_update, share_vault)
 
