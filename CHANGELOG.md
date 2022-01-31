@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.8.5 (2022-01-31)
+### Fix
+* **git:** Fix pushed message ([`ea4b25d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ea4b25d20ef7202e27d8ce364c5f25faeaf6490a))
+
 ## v1.8.4 (2022-01-30)
 ### Fix
 * **one:** Fix git variable for convert one ([`e8e7452`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e8e7452ae8d982b22b0201bb349d1752cde65939))
