@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v1.8.6 (2022-02-02)
+### Fix
+* **requirements:** Update requi ([`8c1f314`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/8c1f31469a55dc0710fccde02ee8ba005381f733))
+* **env:** Fix circular import ([`540aa77`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/540aa7798df0593d24862df716a5ebf49c981bfe))
+
 ## v1.8.5 (2022-01-31)
 ### Fix
 * **git:** Fix pushed message ([`ea4b25d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ea4b25d20ef7202e27d8ce364c5f25faeaf6490a))
