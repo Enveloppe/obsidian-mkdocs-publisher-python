@@ -61,6 +61,7 @@ def dest(filepath: str, folder: str):
 def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False):
     """
     Search file to publish
+    :param obsidian: Use normal printing for obsidian_shell
     :param preserve: if 1 force update
     :param stop_share: remove stoped shared file if 1
     :param meta: Update the metadata if 1
@@ -82,6 +83,8 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
             try:
                 yaml_front = frontmatter.load(filepath)
                 clipkey = yaml_front.get("category", "notes")
+                if not clipkey:
+                    clipkey = 'hidden'
                 if yaml_front.get(SHARE) or vault_share == 1:
                     folder = check.create_folder(clipkey, 0)
                     if preserve == 0:  # preserve

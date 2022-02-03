@@ -33,9 +33,13 @@ def convert_one(ori, git: bool, meta: int, obsidian=False):
         yaml_front = frontmatter.load(ori)
         priv = Path(value.POST)
         clipkey = "notes"
-        if yaml_front.get("category"):
-            priv = check.create_folder(yaml_front["category"])
-            clipkey = yaml_front["category"]
+        if "category" in yaml_front.keys():
+            if not yaml_front['category']:
+                priv = check.create_folder('hidden')
+                clipkey = 'hidden'
+            else:
+                priv = check.create_folder(yaml_front["category"])
+                clipkey = yaml_front["category"]
         contents = convert.file_convert(ori, 1)
         checkfile = convert.file_write(ori, contents, priv, 1, meta)
         if checkfile and git:
