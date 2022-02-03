@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.9.0 (2022-02-03)
+### Feature
+* **category:** Use 'false' to get 'hidden' folder ([`8ab122f`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/8ab122f0c75e265bbed3987cd2ab4ea2dd6b6469))
+
 ## v1.8.6 (2022-02-02)
 ### Fix
 * **requirements:** Update requi ([`8c1f314`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/8c1f31469a55dc0710fccde02ee8ba005381f733))
