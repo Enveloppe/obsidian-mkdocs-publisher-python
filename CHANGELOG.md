@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.9.4 (2022-02-05)
+### Fix
+* **image:** Fix image search in vault (use all found name) ([`e9ff462`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e9ff462ce545cbea19790b1bab735e0db2bb7c9f))
+
 ## v1.9.3 (2022-02-05)
 ### Fix
 * **git:** Fix crash for push ([`2ab8bbf`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2ab8bbff7f0455b948cd00cfa199bdd3d4a86b5b))
