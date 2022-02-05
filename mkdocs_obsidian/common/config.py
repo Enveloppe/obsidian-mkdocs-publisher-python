@@ -94,7 +94,9 @@ def create_env():
     sys.exit("Environment created.")
 
 
-def git_push(commit: str, obsidian=False, add_info="", rmv_info="", add_msg="", remove_msg=""):
+def git_push(
+    commit: str, obsidian=False, add_info="", rmv_info="", add_msg="", remove_msg=""
+):
     """
     git push the modified files and print a message result
     :param commit: Commit information
@@ -121,19 +123,21 @@ def git_push(commit: str, obsidian=False, add_info="", rmv_info="", add_msg="", 
                 Markdown(add_msg),
                 rmv_info,
                 Markdown(remove_msg),
-                Markdown('---'),
+                Markdown("---"),
                 "🎉 Successful 🎉",
                 end=" ",
             )
         else:
-            print(f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}] {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n")
+            print(
+                f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}] {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n"
+            )
     except git.GitCommandError:
         if not obsidian:
             console.print(
                 f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]",
                 Markdown("*No modification 😶*"),
                 end=" ",
-                )
+            )
         else:
             print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
     except ImportError:

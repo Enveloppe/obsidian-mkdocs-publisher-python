@@ -175,7 +175,9 @@ def main():
                     end="",
                 )
             else:
-                print(f'[{datetime.now().strftime("%H:%M:%Sf")}] 🗑️ Delete from blog: {info_str}')
+                print(
+                    f'[{datetime.now().strftime("%H:%M:%Sf")}] 🗑️ Delete from blog: {info_str}'
+                )
         elif len(info) == 1:
             info_str = info[0]
             if args.obsidian:
@@ -184,7 +186,7 @@ def main():
                     " blog[/]"
                 )
             else:
-                print(f'Delete {info_str} from blog.')
+                print(f"Delete {info_str} from blog.")
         stop_share = 1
     else:
         stop_share = 0

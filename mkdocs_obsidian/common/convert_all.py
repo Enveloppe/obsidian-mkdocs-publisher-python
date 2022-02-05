@@ -84,7 +84,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
                 yaml_front = frontmatter.load(filepath)
                 clipkey = yaml_front.get("category", "notes")
                 if not clipkey:
-                    clipkey = 'hidden'
+                    clipkey = "hidden"
                 if yaml_front.get(SHARE) or vault_share == 1:
                     folder = check.create_folder(clipkey, 0)
                     if preserve == 0:  # preserve
@@ -195,7 +195,14 @@ def obsidian_simple(delopt=False, git=True, stop_share=0, meta=0, vault_share=0)
                 markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
                 convert.clipboard(markdown_msg, clipkey)
             commit = f"Updated :\n\n {commit}\n"
-            config.git_push(commit, True, add_info=add_info, rmv_info=remove_info, add_msg=add_msg, remove_msg=remove_msg)
+            config.git_push(
+                commit,
+                True,
+                add_info=add_info,
+                rmv_info=remove_info,
+                add_msg=add_msg,
+                remove_msg=remove_msg,
+            )
         else:
             print(
                 f"[{datetime.now().strftime('%H:%M:%S')}]"
@@ -277,7 +284,13 @@ def convert_all(delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
                 markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
                 convert.clipboard(markdown_msg, clipkey)
             commit = f"**Updated** : \n {commit}\n"
-            config.git_push(commit, add_info=add_info, rmv_info=remove_info, add_msg=add_msg, remove_msg=remove_msg)
+            config.git_push(
+                commit,
+                add_info=add_info,
+                rmv_info=remove_info,
+                add_msg=add_msg,
+                remove_msg=remove_msg,
+            )
         else:
             console.print(
                 f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]"

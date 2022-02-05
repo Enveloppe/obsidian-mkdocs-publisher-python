@@ -168,7 +168,7 @@ def admonition_trad(file_data: list):
                     file_data[i] = ""
                 elif "color:" in file_data[i]:
                     file_data[i] = ""
-                elif len(file_data[i]) == 1 and adm == "b":
+                elif len(file_data[i]) == 1 and adm == "b": #change this
                     file_data[i] = "\t  \n"
                 else:
                     file_data[i] = "\t" + file_data[i]
