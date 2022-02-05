@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v1.9.1 (2022-02-05)
+### Fix
+* **admonition:** Fix admonition.py ([`e5f0fed`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e5f0fed2ea15e73a0584235bf26d930a14f9ae4b))
+* **Admonition:** Fix displaying admonition ([`922ef39`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/922ef3930e7c3b85281b54e10c1773b5ec9cc88b))
+
+### Documentation
+* **readme:** Update readme ([`f3420ba`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/f3420baefa366b13bfafea1c8d616bec86618091))
+
 ## v1.9.0 (2022-02-03)
 ### Feature
 * **category:** Use 'false' to get 'hidden' folder ([`8ab122f`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/8ab122f0c75e265bbed3987cd2ab4ea2dd6b6469))
