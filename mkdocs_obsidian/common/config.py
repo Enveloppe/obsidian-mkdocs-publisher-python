@@ -10,7 +10,6 @@ from rich.console import Console
 from rich.markdown import Markdown
 from rich import print
 import mkdocs_obsidian as obs
-from mkdocs_obsidian.common import global_value as gl
 
 
 def check_url(blog_path: str):
@@ -74,7 +73,7 @@ def create_env():
     if share == "":
         share = "share"
     index_key = str(
-        input(
+        console.input(
             "If you want to use [u]folder note[/], please choose the key for citation"
             " [i](default: [bold](i)[/])[/]: "
         )
