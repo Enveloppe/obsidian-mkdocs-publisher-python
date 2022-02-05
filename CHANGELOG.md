@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.9.3 (2022-02-05)
+### Fix
+* **git:** Fix crash for push ([`2ab8bbf`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2ab8bbff7f0455b948cd00cfa199bdd3d4a86b5b))
+
 ## v1.9.2 (2022-02-05)
 ### Fix
 * **config:** Fix Mara-Li/mkdocs_obsidian_template#1 ([`9ed2953`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/9ed29532b25e522391e0254737b72445310c0eac))
