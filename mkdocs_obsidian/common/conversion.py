@@ -32,7 +32,7 @@ def get_image(image):
     :return: bool or filepath to image
     """
     for filepath in VAULT_FILE:
-        if unidecode.unidecode(os.path.basename(filepath)) in unidecode.unidecode(
+        if unidecode.unidecode(os.path.basename(filepath)) == unidecode.unidecode(
             image
         ):
             return filepath
@@ -50,7 +50,7 @@ def copy_image(final_text):
         for i in list_text:
             link = re.search("(\[{2}|\().*\.(png|jpg|jpeg|gif)", i)
             if link:
-                final_text = re.sub("(!|\(|(%20)|\[|\]|\))", "", i)
+                final_text = re.sub("(!?|\(|(%20)|\[|\]|\))", "", i)
                 final_text = os.path.basename(final_text.split("|")[0])
                 image_path = get_image(final_text)
                 if image_path and os.path.isfile(image_path):
