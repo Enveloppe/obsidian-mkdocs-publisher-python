@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.9.2 (2022-02-05)
+### Fix
+* **config:** Fix Mara-Li/mkdocs_obsidian_template#1 ([`9ed2953`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/9ed29532b25e522391e0254737b72445310c0eac))
+
 ## v1.9.1 (2022-02-05)
 ### Fix
 * **admonition:** Fix admonition.py ([`e5f0fed`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e5f0fed2ea15e73a0584235bf26d930a14f9ae4b))
