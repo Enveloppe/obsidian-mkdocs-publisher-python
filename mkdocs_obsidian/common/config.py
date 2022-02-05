@@ -109,7 +109,7 @@ def git_push(
     console = Console()
     try:
         import git
-
+        from mkdocs_obsidian.common import global_value as gl
         BASEDIR = gl.BASEDIR
         repo = git.Repo(Path(f"{BASEDIR}/.git"))
         repo.git.add(".")
