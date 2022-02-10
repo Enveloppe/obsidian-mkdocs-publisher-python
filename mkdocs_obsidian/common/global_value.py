@@ -55,7 +55,7 @@ try:
             f.write("index_key=(i)")
 except KeyError:
     with open(ENV_PATH, "r", encoding="utf-8") as f:
-        vault_str = "".join(f.readlines(1)).replace("VAULT=", "").rstrip()
+        vault_str = "".join(f.readlines(1)).replace("vault=", "").rstrip()
         basedir_str = "".join(f.readlines(2)).replace("blog_path=", "").rstrip()
 
         VAULT = Path(vault_str)
