@@ -18,7 +18,9 @@ setup(
         "python-frontmatter",
         "pyYAML",
         "pyperclip",
-        "unidecode",
+        "Unidecode",
+        "rich",
+        "mkdocs-embed-file-plugins"
     ],
     license="AGPL",
     keywords="obsidian, obsidian.md, free publish, publish, mkdocs, material",
