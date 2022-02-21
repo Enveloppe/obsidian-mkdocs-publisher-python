@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.10.0 (2022-02-21)
+### Feature
+* **mobile:** Use pyto bookmarks to create env ([`2631b7c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2631b7cd58c5456add5c4ffd14d4aae9c3a578a5))
+
 ## v1.9.4 (2022-02-05)
 ### Fix
 * **image:** Fix image search in vault (use all found name) ([`e9ff462`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e9ff462ce545cbea19790b1bab735e0db2bb7c9f))
