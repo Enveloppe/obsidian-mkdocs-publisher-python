@@ -11,6 +11,40 @@ from rich.markdown import Markdown
 from rich import print
 import mkdocs_obsidian as obs
 
+def pyto_environment(console):
+    """
+    Use pyto bookmark to get path on IOS
+    :param console: rich console
+    :return vault_path ; blog_path
+    """
+    import bookmarks as bm
+    vault = ""
+    blog = ""
+    console.input("Please provide your [u bold]obsidian vault[/] path: ")
+    vault = bm.FolderBookmark()
+    vault_path = vault.path
+    console.input("Please provide the [u bold]blog[/] repository path: ")
+    blog = bm.FolderBookmark()
+    blog_path = blog.path
+    return vault_path, blog_path
+
+def legal_environment(console):
+    """
+    Ask environment without using pyto bookmark
+    :param console: rich console
+    :return vault_path, blog_path
+    """
+    vault = ""
+    blog = ""
+    while vault == "" or not os.path.isdir(vault):
+        vault = str(
+            console.input("Please provide your [u bold]obsidian vault[/] path: ")
+        )
+    while blog == "" or not os.path.isdir(blog):
+        blog = str(
+            console.input("Please provide the [u bold]blog[/] repository path: ")
+        )
+    return vault, blog
 
 def check_url(blog_path: str):
     """
@@ -44,26 +78,21 @@ def create_env():
     :return: None
     """
     BASEDIR = obs.__path__[0]
+    pyto_check = False
     try:
         import pyto
-
+        pyto_check=True
         BASEDIR = Path(BASEDIR)
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pass
-    env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
     console = Console()
+    env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
     print(f"[bold]Creating environnement in [u]{env_path}[/][/]")
-    vault = ""
-    blog = ""
-    while vault == "" or not os.path.isdir(vault):
-        vault = str(
-            console.input("Please provide your [u bold]obsidian vault[/] path: ")
-        )
-    while blog == "" or not os.path.isdir(blog):
-        blog = str(
-            console.input("Please provide the [u bold]blog[/] repository path: ")
-        )
+    if pyto_check:
+        vault, blog = pyto_environment(console)
+    else:
+        vault, blog = legal_environment(console)
     blog_link = check_url(blog).strip()
     if blog_link == "":
         blog_link = str(console.input("Please, provide the [u]URL[/] of your blog: "))
