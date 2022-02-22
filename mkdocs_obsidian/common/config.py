@@ -20,15 +20,15 @@ def pyto_environment(console):
     import bookmarks as bm
     vault = ""
     blog = ""
-    console.input("Please provide your [u bold]obsidian vault[/] path: ")
+    console.print("Please provide your [u bold]obsidian vault[/] path: ")
     vault = bm.FolderBookmark()
     vault_path = vault.path
-    console.input("Please provide the [u bold]blog[/] repository path: ")
+    console.print("Please provide the [u bold]blog[/] repository path: ")
     blog = bm.FolderBookmark()
     blog_path = blog.path
     return vault_path, blog_path
 
-def legal_environment(console):
+def legacy_environment(console):
     """
     Ask environment without using pyto bookmark
     :param console: rich console
@@ -45,6 +45,31 @@ def legal_environment(console):
             console.input("Please provide the [u bold]blog[/] repository path: ")
         )
     return vault, blog
+
+def ashell_environment(console):
+    """
+    Relly on pickFolder in ashell to create the environment
+    :param console: rich console
+    :return vault_path, blog_path
+    """
+    import subprocess
+    vault = ""
+    blog = ""
+    console.print("Please provide your [u bold]obsidian vault[/] path: ")
+    cmd = 'pickFolder'
+    subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    #Now, the os.getcwd() change for the pickedFolder
+    vault = os.getcwd()
+    subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    console.print("Please provide the [u bold]blog[/] repository path: ")
+    subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    blog = os.getcwd()
+    #return to default environment
+    cmd='cd'
+    subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    return vault, blog
+    
+    
 
 def check_url(blog_path: str):
     """
@@ -86,13 +111,21 @@ def create_env():
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pass
+    version = sys.version.split('\n')
+    ashell = False
+    if len(version) > 1:
+        version = version[1]
+        if 'Clang' in version:
+            ashell = True
     console = Console()
     env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
     print(f"[bold]Creating environnement in [u]{env_path}[/][/]")
     if pyto_check:
         vault, blog = pyto_environment(console)
+    elif ashell:
+        vault, blog = ashell_environment(console)
     else:
-        vault, blog = legal_environment(console)
+        vault, blog = legacy_environment(console)
     blog_link = check_url(blog).strip()
     if blog_link == "":
         blog_link = str(console.input("Please, provide the [u]URL[/] of your blog: "))
