@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.1 (2022-02-22)
+### Fix
+* **config:** Using term program to check environment ([`6e637aa`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6e637aae56fe040ec4382beeb6b86c61390f785c))
+
 ## v1.11.0 (2022-02-22)
 ### Feature
 * **config:** Environment creator on ashell ([`2ee521a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2ee521aa5294ddea3594cc9e36e45f5c14c4c21a))
