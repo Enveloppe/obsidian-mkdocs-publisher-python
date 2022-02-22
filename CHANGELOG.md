@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.0 (2022-02-22)
+### Feature
+* **config:** Environment creator on ashell ([`2ee521a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2ee521aa5294ddea3594cc9e36e45f5c14c4c21a))
+
 ## v1.10.0 (2022-02-21)
 ### Feature
 * **mobile:** Use pyto bookmarks to create env ([`2631b7c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2631b7cd58c5456add5c4ffd14d4aae9c3a578a5))
