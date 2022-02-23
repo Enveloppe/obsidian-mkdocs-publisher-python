@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.2 (2022-02-23)
+### Fix
+* **config:** Use $TERM_PROGRAM to check ashell ([`ed721cb`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ed721cba3ab49df1ebab4e6e3e42ebba4bdb95ee))
+
 ## v1.11.1 (2022-02-22)
 ### Fix
 * **config:** Using term program to check environment ([`6e637aa`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6e637aae56fe040ec4382beeb6b86c61390f785c))
