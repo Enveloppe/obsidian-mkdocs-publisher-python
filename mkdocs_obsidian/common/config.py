@@ -3,6 +3,7 @@ Function to create environment variables and push to git.
 """
 
 import os.path
+import subprocess
 import sys
 import subprocess
 from datetime import datetime
