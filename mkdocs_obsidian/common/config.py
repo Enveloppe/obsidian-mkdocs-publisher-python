@@ -25,11 +25,11 @@ def pyto_environment(console):
     vault = ""
     blog = ""
     console.print("Please provide your [u bold]obsidian vault[/] path: ")
-    sleep(10)  # The user needs to read the message !
+    sleep(3)  # The user needs to read the message !
     vault = bm.FolderBookmark()
     vault_path = vault.path
     console.print("Please provide the [u bold]blog[/] repository path: ")
-    sleep(10)  # The user needs to read the message !
+    sleep(3)  # The user needs to read the message !
     blog = bm.FolderBookmark()
     blog_path = blog.path
     return vault_path, blog_path
@@ -64,13 +64,13 @@ def ashell_environment(console):
     blog = ""
     console.print("Please provide your [u bold]obsidian vault[/] path: ")
     cmd = "pickFolder"
-    sleep(10)  # The user needs to read the message !
+    sleep(3)  # The user needs to read the message !
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
     # Now, the os.getcwd() change for the pickedFolder
     vault = os.getcwd()
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
     console.print("Please provide the [u bold]blog[/] repository path: ")
-    sleep(10)  # The user needs to read the message !
+    sleep(3)  # The user needs to read the message !
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
     blog = os.getcwd()
     # return to default environment
