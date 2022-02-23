@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.3 (2022-02-23)
+### Fix
+* **config:** Fix subprocess not supported on pyto ([`b144527`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b144527aa03edeb5534b70e94f25849dca249ca5))
+
 ## v1.11.2 (2022-02-23)
 ### Fix
 * **config:** Use $TERM_PROGRAM to check ashell ([`ed721cb`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ed721cba3ab49df1ebab4e6e3e42ebba4bdb95ee))
