@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.5 (2022-02-23)
+### Fix
+* **config:** Lowering sleep for mobile ([`835bd7b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/835bd7b90aed15a0543c66d0e5120a9c3ded1c65))
+
 ## v1.11.4 (2022-02-23)
 ### Fix
 * **config:** Add delay ([`4c6c409`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/4c6c4092c9ba01bfe7697409525ae7fa17867b5c))
