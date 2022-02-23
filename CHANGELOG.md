@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.4 (2022-02-23)
+### Fix
+* **config:** Add delay ([`4c6c409`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/4c6c4092c9ba01bfe7697409525ae7fa17867b5c))
+
 ## v1.11.3 (2022-02-23)
 ### Fix
 * **config:** Fix subprocess not supported on pyto ([`b144527`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b144527aa03edeb5534b70e94f25849dca249ca5))
