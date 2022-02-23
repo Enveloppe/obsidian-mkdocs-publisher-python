@@ -5,7 +5,6 @@ Function to create environment variables and push to git.
 import os.path
 import subprocess
 import sys
-import subprocess
 from datetime import datetime
 from pathlib import Path
 from rich.console import Console
@@ -116,9 +115,15 @@ def create_env():
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pass
-    process = subprocess.Popen("echo $TERM_PROGRAM", stdout=subprocess.PIPE)
-    output, error = process.communicate()
-    ashell = output.decode("utf-8").strip() == "a-Shell"
+    try:
+        import subprocess
+
+        process = subprocess.Popen("echo $TERM_PROGRAM", stdout=subprocess.PIPE)
+        output, error = process.communicate()
+        ashell = output.decode("utf-8").strip() == "a-Shell"
+    except RuntimeError:
+        ashell = False
+
     console = Console()
     env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
     print(f"[bold]Creating environnement in [u]{env_path}[/][/]")
