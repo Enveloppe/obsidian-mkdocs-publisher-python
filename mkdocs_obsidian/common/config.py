@@ -115,9 +115,9 @@ def create_env():
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pass
-    process = subprocess.Popen('echo $TERM_PROGRAM', stdout=subprocess.PIPE)
+    process = subprocess.Popen("echo $TERM_PROGRAM", stdout=subprocess.PIPE)
     output, error = process.communicate()
-    ashell = output.decode('utf-8').strip()=='a-Shell'
+    ashell = output.decode("utf-8").strip() == "a-Shell"
     console = Console()
     env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
     print(f"[bold]Creating environnement in [u]{env_path}[/][/]")
@@ -182,7 +182,8 @@ def git_push(
         origin.push()
         if not obsidian:
             console.print(
-                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/] {add_info}",
+                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/]"
+                f" {add_info}",
                 Markdown(add_msg),
                 rmv_info,
                 Markdown(remove_msg),
@@ -192,7 +193,8 @@ def git_push(
             )
         else:
             print(
-                f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}] {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n"
+                f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}]"
+                f" {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n"
             )
     except git.GitCommandError:
         if not obsidian:
