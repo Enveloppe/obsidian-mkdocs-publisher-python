@@ -11,6 +11,7 @@ from rich.markdown import Markdown
 from rich import print
 import mkdocs_obsidian as obs
 
+
 def pyto_environment(console):
     """
     Use pyto bookmark to get path on IOS
@@ -18,6 +19,7 @@ def pyto_environment(console):
     :return vault_path ; blog_path
     """
     import bookmarks as bm
+
     vault = ""
     blog = ""
     console.print("Please provide your [u bold]obsidian vault[/] path: ")
@@ -27,6 +29,7 @@ def pyto_environment(console):
     blog = bm.FolderBookmark()
     blog_path = blog.path
     return vault_path, blog_path
+
 
 def legacy_environment(console):
     """
@@ -46,6 +49,7 @@ def legacy_environment(console):
         )
     return vault, blog
 
+
 def ashell_environment(console):
     """
     Relly on pickFolder in ashell to create the environment
@@ -53,23 +57,23 @@ def ashell_environment(console):
     :return vault_path, blog_path
     """
     import subprocess
+
     vault = ""
     blog = ""
     console.print("Please provide your [u bold]obsidian vault[/] path: ")
-    cmd = 'pickFolder'
+    cmd = "pickFolder"
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
-    #Now, the os.getcwd() change for the pickedFolder
+    # Now, the os.getcwd() change for the pickedFolder
     vault = os.getcwd()
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
     console.print("Please provide the [u bold]blog[/] repository path: ")
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
     blog = os.getcwd()
-    #return to default environment
-    cmd='cd'
+    # return to default environment
+    cmd = "cd"
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
     return vault, blog
-    
-    
+
 
 def check_url(blog_path: str):
     """
@@ -106,16 +110,17 @@ def create_env():
     pyto_check = False
     try:
         import pyto
-        pyto_check=True
+
+        pyto_check = True
         BASEDIR = Path(BASEDIR)
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pass
-    version = sys.version.split('\n')
+    version = sys.version.split("\n")
     ashell = False
     if len(version) > 1:
         version = version[1]
-        if 'Clang' in version:
+        if "Clang" in version:
             ashell = True
     console = Console()
     env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
@@ -172,6 +177,7 @@ def git_push(
     try:
         import git
         from mkdocs_obsidian.common import global_value as gl
+
         BASEDIR = gl.BASEDIR
         repo = git.Repo(Path(f"{BASEDIR}/.git"))
         repo.git.add(".")
