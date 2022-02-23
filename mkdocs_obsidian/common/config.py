@@ -4,6 +4,7 @@ Function to create environment variables and push to git.
 
 import os.path
 import sys
+import subprocess
 from datetime import datetime
 from pathlib import Path
 from rich.console import Console
@@ -56,8 +57,6 @@ def ashell_environment(console):
     :param console: rich console
     :return vault_path, blog_path
     """
-    import subprocess
-
     vault = ""
     blog = ""
     console.print("Please provide your [u bold]obsidian vault[/] path: ")
@@ -116,12 +115,9 @@ def create_env():
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pass
-    version = sys.version.split("\n")
-    ashell = False
-    if len(version) > 1:
-        version = version[1]
-        if "Clang" in version:
-            ashell = True
+    process = subprocess.Popen('echo $TERM_PROGRAM', stdout=subprocess.PIPE)
+    output, error = process.communicate()
+    ashell = output.decode('utf-8').strip()=='a-Shell'
     console = Console()
     env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
     print(f"[bold]Creating environnement in [u]{env_path}[/][/]")
