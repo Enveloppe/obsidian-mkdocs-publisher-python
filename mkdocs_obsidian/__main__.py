@@ -164,10 +164,9 @@ def main():
         share_vault = 1
     if not args.keep:
         info = check.delete_not_exist()
-        if len(info) > 1:
-            info[0] = "- " + info[0]
-            info_str = "\n- ".join(info)
-            if not args.obsidian:
+        if len(info) > 1:            
+            info_str = "\n- " + "\n- ".join(info)
+            if args.obsidian:
                 console.print(
                     f'[[i not bold sky_blue2]{datetime.now().strftime("%H:%M:%S")}[/]]'
                     " 🗑️[u red bold]Delete from blog :[/]",

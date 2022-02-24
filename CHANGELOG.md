@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.7 (2022-02-24)
+### Fix
+* **delete:** Fix broken deleted message ([`723189c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/723189c6df58f129c561e1371e1d4eb5d9a55082))
+
+## v1.11.6 (2022-02-24)
+### Fix
+* **git:** Fix except error order ([`95f3798`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/95f37983056d53d008f2d6f02f98c3910e06298d))
+
 ## v1.11.5 (2022-02-23)
 ### Fix
 * **config:** Lowering sleep for mobile ([`835bd7b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/835bd7b90aed15a0543c66d0e5120a9c3ded1c65))
