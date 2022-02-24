@@ -25,11 +25,11 @@ def pyto_environment(console):
     vault = ""
     blog = ""
     console.print("Please provide your [u bold]obsidian vault[/] path: ")
-    sleep(3)  # The user needs to read the message !
+    sleep(5)  # The user needs to read the message !
     vault = bm.FolderBookmark()
     vault_path = vault.path
     console.print("Please provide the [u bold]blog[/] repository path: ")
-    sleep(3)  # The user needs to read the message !
+    sleep(5)  # The user needs to read the message !
     blog = bm.FolderBookmark()
     blog_path = blog.path
     return vault_path, blog_path
@@ -64,13 +64,13 @@ def ashell_environment(console):
     blog = ""
     console.print("Please provide your [u bold]obsidian vault[/] path: ")
     cmd = "pickFolder"
-    sleep(3)  # The user needs to read the message !
+    sleep(5)  # The user needs to read the message !
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
     # Now, the os.getcwd() change for the pickedFolder
     vault = os.getcwd()
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
     console.print("Please provide the [u bold]blog[/] repository path: ")
-    sleep(3)  # The user needs to read the message !
+    sleep(5)  # The user needs to read the message !
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
     blog = os.getcwd()
     # return to default environment
@@ -186,36 +186,37 @@ def git_push(
         from mkdocs_obsidian.common import global_value as gl
 
         BASEDIR = gl.BASEDIR
-        repo = git.Repo(Path(f"{BASEDIR}/.git"))
-        repo.git.add(".")
-        repo.git.commit("-m", f"{commit}")
-        origin = repo.remote("origin")
-        origin.push()
-        if not obsidian:
-            console.print(
-                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/]"
-                f" {add_info}",
-                Markdown(add_msg),
-                rmv_info,
-                Markdown(remove_msg),
-                Markdown("---"),
-                "🎉 Successful 🎉",
-                end=" ",
-            )
-        else:
-            print(
-                f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}]"
-                f" {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n"
-            )
-    except git.GitCommandError:
-        if not obsidian:
-            console.print(
-                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]",
-                Markdown("*No modification 😶*"),
-                end=" ",
-            )
-        else:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
+        try:
+            repo = git.Repo(Path(f"{BASEDIR}/.git"))
+            repo.git.add(".")
+            repo.git.commit("-m", f"{commit}")
+            origin = repo.remote("origin")
+            origin.push()
+            if not obsidian:
+                console.print(
+                    f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/]"
+                    f" {add_info}",
+                    Markdown(add_msg),
+                    rmv_info,
+                    Markdown(remove_msg),
+                    Markdown("---"),
+                    "🎉 Successful 🎉",
+                    end=" ",
+                )
+            else:
+                print(
+                    f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}]"
+                    f" {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n"
+                )
+        except git.GitCommandError:
+            if not obsidian:
+                console.print(
+                    f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]",
+                    Markdown("*No modification 😶*"),
+                    end=" ",
+                )
+            else:
+                print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
     except ImportError:
         if not obsidian:
             console.print(
