@@ -186,36 +186,37 @@ def git_push(
         from mkdocs_obsidian.common import global_value as gl
 
         BASEDIR = gl.BASEDIR
-        repo = git.Repo(Path(f"{BASEDIR}/.git"))
-        repo.git.add(".")
-        repo.git.commit("-m", f"{commit}")
-        origin = repo.remote("origin")
-        origin.push()
-        if not obsidian:
-            console.print(
-                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/]"
-                f" {add_info}",
-                Markdown(add_msg),
-                rmv_info,
-                Markdown(remove_msg),
-                Markdown("---"),
-                "🎉 Successful 🎉",
-                end=" ",
-            )
-        else:
-            print(
-                f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}]"
-                f" {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n"
-            )
-    except git.GitCommandError:
-        if not obsidian:
-            console.print(
-                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]",
-                Markdown("*No modification 😶*"),
-                end=" ",
-            )
-        else:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
+        try:
+            repo = git.Repo(Path(f"{BASEDIR}/.git"))
+            repo.git.add(".")
+            repo.git.commit("-m", f"{commit}")
+            origin = repo.remote("origin")
+            origin.push()
+            if not obsidian:
+                console.print(
+                    f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/]"
+                    f" {add_info}",
+                    Markdown(add_msg),
+                    rmv_info,
+                    Markdown(remove_msg),
+                    Markdown("---"),
+                    "🎉 Successful 🎉",
+                    end=" ",
+                )
+            else:
+                print(
+                    f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}]"
+                    f" {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n"
+                )
+        except git.GitCommandError:
+            if not obsidian:
+                console.print(
+                    f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]",
+                    Markdown("*No modification 😶*"),
+                    end=" ",
+                )
+            else:
+                print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
     except ImportError:
         if not obsidian:
             console.print(
