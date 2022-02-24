@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.9 (2022-02-24)
+### Fix
+* **shell:** Fix markup ([`225f228`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/225f228b567731b79c07f92198ef05992ded8866))
+
 ## v1.11.8 (2022-02-24)
 ### Fix
 * **shell:** Fix message markup ([`3c6af5f`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3c6af5f473b8221b16e4bdb7ee42a825e5cce288))
