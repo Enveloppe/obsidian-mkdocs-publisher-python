@@ -167,7 +167,7 @@ def main():
         if len(info) > 1:
             info[0] = "- " + info[0]
             info_str = "\n- ".join(info)
-            if args.obsidian:
+            if not args.obsidian:
                 console.print(
                     f'[[i not bold sky_blue2]{datetime.now().strftime("%H:%M:%S")}[/]]'
                     " 🗑️[u red bold]Delete from blog :[/]",
@@ -181,7 +181,7 @@ def main():
                 )
         elif len(info) == 1:
             info_str = info[0]
-            if args.obsidian:
+            if not args.obsidian:
                 console.print(
                     f"🗑️ [u red bold] Delete[/] [bold red i] {info_str}[/] [u red"
                     " bold]from blog[/]"
