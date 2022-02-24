@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.8 (2022-02-24)
+### Fix
+* **shell:** Fix message markup ([`3c6af5f`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3c6af5f473b8221b16e4bdb7ee42a825e5cce288))
+
 ## v1.11.7 (2022-02-24)
 ### Fix
 * **delete:** Fix broken deleted message ([`723189c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/723189c6df58f129c561e1371e1d4eb5d9a55082))
