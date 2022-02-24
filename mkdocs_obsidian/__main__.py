@@ -166,7 +166,7 @@ def main():
         info = check.delete_not_exist()
         if len(info) > 1:            
             info_str = "\n- " + "\n- ".join(info)
-            if args.obsidian:
+            if not args.obsidian:
                 console.print(
                     f'[[i not bold sky_blue2]{datetime.now().strftime("%H:%M:%S")}[/]]'
                     " 🗑️[u red bold]Delete from blog :[/]",
