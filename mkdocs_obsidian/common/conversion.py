@@ -112,13 +112,15 @@ def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
     :return: True if file is created, False otherwise
     """
     file_name = os.path.basename(filepath)
+    shortname = unidecode.decode(os.path.splitext(file_name)[0])
+    foldername=unidecode.decode(Path(folder).name)
     meta = frontmatter.load(filepath)
     if contents == "":
         return False
     if preserve == 0 and not meta.get(SHARE):
         check.delete_file(filepath, folder, meta_update)
         return False
-    if os.path.splitext(file_name)[0] == Path(folder).name:
+    if shortname == foldername:
         file_name = "index.md"
     with open(Path(f"{folder}/{file_name}"), "w", encoding="utf-8") as new_notes:
         for line in contents:
