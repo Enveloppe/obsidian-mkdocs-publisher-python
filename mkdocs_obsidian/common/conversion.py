@@ -31,10 +31,10 @@ def get_image(image):
     :param image: str
     :return: bool or filepath to image
     """
+    shortname = unidecode.unidecode(os.path.splitext(image)[0])
     for filepath in VAULT_FILE:
-        if unidecode.unidecode(os.path.basename(filepath)) == unidecode.unidecode(
-            image
-        ):
+        file_name = unidecode.unidecode(os.path.splitext(os.path.basename(filepath))[0])
+        if file_name == shortname:
             return filepath
     return False
 
@@ -113,7 +113,7 @@ def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
     """
     file_name = os.path.basename(filepath)
     shortname = unidecode.decode(os.path.splitext(file_name)[0])
-    foldername=unidecode.decode(Path(folder).name)
+    foldername = unidecode.decode(Path(folder).name)
     meta = frontmatter.load(filepath)
     if contents == "":
         return False
