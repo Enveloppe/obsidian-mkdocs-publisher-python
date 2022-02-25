@@ -164,7 +164,7 @@ def main():
         share_vault = 1
     if not args.keep:
         info = check.delete_not_exist()
-        if len(info) > 1:            
+        if len(info) > 1:
             info_str = "\n- " + "\n- ".join(info)
             if not args.obsidian:
                 console.print(
