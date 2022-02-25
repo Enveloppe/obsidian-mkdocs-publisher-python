@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.10 (2022-02-25)
+### Fix
+* **folder_note:** Fix normalized characters ([`ef8e87b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ef8e87b28920de8c617b04a09b2e31b23ed85e20))
+
 ## v1.11.9 (2022-02-24)
 ### Fix
 * **shell:** Fix markup ([`225f228`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/225f228b567731b79c07f92198ef05992ded8866))
