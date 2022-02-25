@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.11 (2022-02-25)
+### Fix
+* **image:** Fix image not recognize ([`791caa0`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/791caa0cf1c86473a7737fa7cf5cbb9b6802832d))
+* **foldernote:** Fix index renaming ([`3b7d3ab`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3b7d3abbf5067c849ba8340b1d1111fc80d8d830))
+
 ## v1.11.10 (2022-02-25)
 ### Fix
 * **folder_note:** Fix normalized characters ([`ef8e87b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ef8e87b28920de8c617b04a09b2e31b23ed85e20))
