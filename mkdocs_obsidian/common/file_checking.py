@@ -67,8 +67,8 @@ def diff_file(filepath: str, folder: str, contents: list, update=0):
     :return: boolean
     """
     filename = os.path.basename(filepath)
-    shortname = unidecode.unidecode(os.path.splitext(filename)[0])
-    foldername = unidecode.unidecode(Path(folder).name)
+    shortname = unidecode(os.path.splitext(filename)[0])
+    foldername = unidecode(Path(folder).name)
     if check_file(filename, folder) == "EXIST":
         if update == 1:
             return False
@@ -173,8 +173,8 @@ def check_file(filepath, folder: str):
     :return: "EXIST" or "NE"
     """
     file = os.path.basename(filepath)
-    shortname = unidecode.unidecode(os.path.splitext(file)[0])
-    foldername = unidecode.unidecode(Path(folder).name)
+    shortname = unidecode(os.path.splitext(file)[0])
+    foldername = unidecode(Path(folder).name)
     if foldername == shortne:
         file = "index.md"
     publish = Path(f"{folder}/{file}")
