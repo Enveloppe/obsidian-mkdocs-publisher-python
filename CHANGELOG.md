@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.13 (2022-02-26)
+### Fix
+* **check:** Fix typo ([`47ce30b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/47ce30b84b38713b9fd7b6eb8437497e6361a242))
+
 ## v1.11.12 (2022-02-26)
 ### Fix
 * **config:** Fix a-shell environment creation crashing ([`3e35218`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3e35218e32c90b72a2966404facdc8176c0d89c2))
