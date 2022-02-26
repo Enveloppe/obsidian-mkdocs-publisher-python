@@ -66,16 +66,21 @@ def ashell_environment(console):
     cmd = "pickFolder"
     sleep(5)  # The user needs to read the message !
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    sleep(10)
+    console.input("Press any key to continue...")
     # Now, the os.getcwd() change for the pickedFolder
     vault = os.getcwd()
-    subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    sleep(3)
     console.print("Please provide the [u bold]blog[/] repository path: ")
-    sleep(5)  # The user needs to read the message !
+    sleep(3)  # The user needs to read the message !
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    sleep(10)
+    console.input("Press any key to continue...")
     blog = os.getcwd()
     # return to default environment
-    cmd = "cd"
+    cmd = "cd ~/Documents"
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    sleep(3)
     return vault, blog
 
 
