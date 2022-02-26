@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.17 (2022-02-26)
+### Fix
+* Typo that create a script crash ([`563ce3d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/563ce3d4bf35fe1c9606fcef505039f8d0722045))
+
+### Documentation
+* **readme:** Update doc to add config info ([`90fe49d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/90fe49d80a18de329422115893b0b56589f6fdb2))
+
 ## v1.11.16 (2022-02-26)
 ### Fix
 * **image:** Some note was recognize as image. ([`bf36acb`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/bf36acb0aabd032fd96e93bc589f75cb6424309d))
