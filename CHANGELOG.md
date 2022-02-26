@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.14 (2022-02-26)
+### Fix
+* **check:** Fix typo ([`fd3f1af`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/fd3f1afea05eb81410bb5fd92e585f492cfa1f3b))
+
 ## v1.11.13 (2022-02-26)
 ### Fix
 * **check:** Fix typo ([`47ce30b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/47ce30b84b38713b9fd7b6eb8437497e6361a242))
