@@ -32,7 +32,7 @@ def get_image(image):
     :return: bool or filepath to image
     """
     shortname = unidecode.unidecode(os.path.splitext(image)[0])
-    assets = [x for x in VAULT_FILE if not x.endwisth('.md')]
+    assets = [x for x in VAULT_FILE if not x.endswith('.md')]
     for filepath in assets:
         file_name = unidecode.unidecode(os.path.splitext(os.path.basename(filepath))[0])
         if file_name == shortname:
