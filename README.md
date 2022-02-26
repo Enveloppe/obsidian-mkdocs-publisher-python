@@ -165,40 +165,17 @@ Mobile supports all previous option, including `--ignore`.
 ### IOS 
 Using :
 - [a-shell](https://holzschu.github.io/a-Shell_iOS/) (Free)
-- [Working Copy](https://workingcopyapp.com/)
-You can update the docs.
+- [pyto](https://pyto.app) (3$ lite version / 10$ complete version)
+- [Working Copy](https://workingcopyapp.com/) (Free for student / 19$)
+ 
+You can update your blog.
 
-First, in a-shell, run `pickFolder` and choose the folder of your vault, and rerun `pickFolder` to choose the folder where are the blog data (you need to clone with [Working Copy](https://workingcopyapp.com/))
-After, do `showmarks` and copy the two path in any note app. Check if the path is not broken because of the paste!
-You can also do :
-```bash
-cd 
-showmarks > bookmark
-vim bookmark
-```
+The script will rely on some a-shell or pyto command to help you to build the environment, so you don't need to edit manually the file in case of you change your folder. Also, on IOS, get a path manually is a mess so...
 
-Here is a blank sheet to help you if you want to manually write / edit it :
-```
-vault=
-blog_path=
-blog=
-share=
-index_key=
-```
-With :
-- `vault`: Vault Absolute Path
-- `blog_path` : Blog repository absolute path
-- `blog` : Blog link (same as `site_url` from `mkdocs.yml`)
-- `share` : your wanted share key ; by default : `share`
-- `index_key`: For folder note citation
+:warning: For pyto, you need to add the writing autorization for your vault folder and blog repo folder.
+> You can access to it in parameters > Runtime > Accessive folder
 
-Before running the shortcuts, you need to install all requirements, aka :
-```
-pip install obs2mk
-obs2mk --config
-```
-
-After, in a-shell, you can use the same option as on a PC.
+After, you can use the same option as on a PC.
 </details>
 
 ## Customization
