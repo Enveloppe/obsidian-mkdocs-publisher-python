@@ -32,7 +32,8 @@ def get_image(image):
     :return: bool or filepath to image
     """
     shortname = unidecode.unidecode(os.path.splitext(image)[0])
-    for filepath in VAULT_FILE:
+    assets = [x for x in VAULT_FILE if not x.endwisth('.md')]
+    for filepath in assets:
         file_name = unidecode.unidecode(os.path.splitext(os.path.basename(filepath))[0])
         if file_name == shortname:
             return filepath
@@ -53,7 +54,7 @@ def copy_image(final_text):
                 final_text = re.sub("(!?|\(|(%20)|\[|\]|\))", "", i)
                 final_text = os.path.basename(final_text.split("|")[0])
                 image_path = get_image(final_text)
-                if image_path and os.path.isfile(image_path):
+                if image_path and os.path.isfile(image_path) and not image_path.endswith('.md'):
                     shutil.copyfile(
                         image_path, Path(f"{config.IMG}/{os.path.basename(image_path)}")
                     )
