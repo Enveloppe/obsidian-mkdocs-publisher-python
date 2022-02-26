@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.16 (2022-02-26)
+### Fix
+* **image:** Some note was recognize as image. ([`bf36acb`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/bf36acb0aabd032fd96e93bc589f75cb6424309d))
+
 ## v1.11.15 (2022-02-26)
 ### Fix
 * **write:** Fix typo ([`2867a53`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2867a535f3ffcb02f9fadc4ac3115852026fe645))
