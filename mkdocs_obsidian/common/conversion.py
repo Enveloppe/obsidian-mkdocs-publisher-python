@@ -112,8 +112,8 @@ def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
     :return: True if file is created, False otherwise
     """
     file_name = os.path.basename(filepath)
-    shortname = unidecode.decode(os.path.splitext(file_name)[0])
-    foldername = unidecode.decode(Path(folder).name)
+    shortname = unidecode.unidecode(os.path.splitext(file_name)[0])
+    foldername = unidecode.unidecode(Path(folder).name)
     meta = frontmatter.load(filepath)
     if contents == "":
         return False
