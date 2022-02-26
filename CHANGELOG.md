@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.12 (2022-02-26)
+### Fix
+* **config:** Fix a-shell environment creation crashing ([`3e35218`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3e35218e32c90b72a2966404facdc8176c0d89c2))
+
 ## v1.11.11 (2022-02-25)
 ### Fix
 * **image:** Fix image not recognize ([`791caa0`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/791caa0cf1c86473a7737fa7cf5cbb9b6802832d))
