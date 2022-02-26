@@ -175,7 +175,7 @@ def check_file(filepath, folder: str):
     file = os.path.basename(filepath)
     shortname = unidecode(os.path.splitext(file)[0])
     foldername = unidecode(Path(folder).name)
-    if foldername == shortne:
+    if foldername == shortname:
         file = "index.md"
     publish = Path(f"{folder}/{file}")
     if os.path.isfile(publish):
