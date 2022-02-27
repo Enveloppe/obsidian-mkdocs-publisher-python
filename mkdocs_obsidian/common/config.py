@@ -12,7 +12,7 @@ from rich.console import Console
 from rich.markdown import Markdown
 from rich import print
 import mkdocs_obsidian as obs
-
+import platform
 
 def pyto_environment(console):
     """
@@ -28,10 +28,12 @@ def pyto_environment(console):
     sleep(5)  # The user needs to read the message !
     vault = bm.FolderBookmark()
     vault_path = vault.path
+    console.print(f'[u]Vault:[/][i] {vault_path}[/]\n')
     console.print("Please provide the [u bold]blog[/] repository path: ")
     sleep(5)  # The user needs to read the message !
     blog = bm.FolderBookmark()
     blog_path = blog.path
+    console.print(f'[u]Blog:[/][i] {blog_path}[/]\n')
     return vault_path, blog_path
 
 
@@ -53,6 +55,22 @@ def legacy_environment(console):
         )
     return vault, blog
 
+def PC_environment(console):
+    import tkinter.filedialog
+    vault = ""
+    blog = ""
+    while vault == "":
+        console.print("Please provide your [u bold]obsidian vault[/] path")
+        sleep(1)
+        vault = tkinter.filedialog.askdirectory()
+    console.print(f'[u]Vault:[/][i] {vault}[/]\n')
+    while blog == "":
+        console.print("Please provide the [u bold]blog[/] repository path")
+        sleep(1)
+        blog = tkinter.filedialog.askdirectory()
+    console.print(f'[u]Blog:[/][i] {blog}[/]\n')
+    return vault, blog
+
 
 def ashell_environment(console):
     """
@@ -60,8 +78,6 @@ def ashell_environment(console):
     :param console: rich console
     :return vault_path, blog_path
     """
-    vault = ""
-    blog = ""
     console.print("Please provide your [u bold]obsidian vault[/] path: ")
     cmd = "pickFolder"
     sleep(5)  # The user needs to read the message !
@@ -71,12 +87,14 @@ def ashell_environment(console):
     # Now, the os.getcwd() change for the pickedFolder
     vault = os.getcwd()
     sleep(3)
+    console.print(f'[u]Vault:[/][i] {vault}[/]\n')
     console.print("Please provide the [u bold]blog[/] repository path: ")
     sleep(3)  # The user needs to read the message !
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
     sleep(10)
     console.input("Press any key to continue...")
     blog = os.getcwd()
+    console.print(f'[u]Blog:[/][i] {blog}[/]\n')
     # return to default environment
     cmd = "cd ~/Documents"
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
@@ -116,7 +134,6 @@ def create_env():
     :return: None
     """
     BASEDIR = obs.__path__[0]
-    pyto_check = False
     try:
         import pyto
 
@@ -124,23 +141,26 @@ def create_env():
         BASEDIR = Path(BASEDIR)
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
-        pass
+        pyto_check = False
     try:
         import subprocess
-
         process = subprocess.Popen("echo $TERM_PROGRAM", stdout=subprocess.PIPE)
         output, error = process.communicate()
         ashell = output.decode("utf-8").strip() == "a-Shell"
-    except RuntimeError:
+    except (RuntimeError, FileNotFoundError):
         ashell = False
-
+    computer = False
+    if platform.architecture()[1] != "":
+        computer = True
     console = Console()
     env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
-    print(f"[bold]Creating environnement in [u]{env_path}[/][/]")
+    print(f"[bold]Creating environnement in [u]{env_path}[/][/]\n")
     if pyto_check:
         vault, blog = pyto_environment(console)
     elif ashell:
         vault, blog = ashell_environment(console)
+    elif computer:
+        vault, blog = PC_environment(console)
     else:
         vault, blog = legacy_environment(console)
     blog_link = check_url(blog).strip()
