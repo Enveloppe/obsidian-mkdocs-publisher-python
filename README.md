@@ -56,7 +56,7 @@ To edit the logo and the favicon, first put the chosen file in `assets/logo`, an
 You can customize :
 - font
 - Color scheme, palette, icons 
-- Language
+- Language  
 [Check the documentation to get more information](https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/)
 
 You don't need to touch everything in `features ; markdown_extensions…`
