@@ -1,9 +1,11 @@
 from setuptools import setup, find_packages
 
-version = "1.9.4"
+version = "1.11.17"
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
+with open("requirements.txt") as f:
+    required = f.read().splitlines()
 setup(
     name="obs2mk",
     python_requires=">=3.7",
@@ -12,16 +14,7 @@ setup(
     author="Mara-Li",
     author_email="mara-li@icloud.com",
     packages=find_packages(),
-    install_requires=[
-        "python-dotenv",
-        "gitpython",
-        "python-frontmatter",
-        "pyYAML",
-        "pyperclip",
-        "Unidecode",
-        "rich",
-        "mkdocs-embed-file-plugins"
-    ],
+    install_requires=required,
     license="AGPL",
     keywords="obsidian, obsidian.md, free publish, publish, mkdocs, material",
     classifiers=[

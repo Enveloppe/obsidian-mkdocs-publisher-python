@@ -3,13 +3,85 @@ Function to create environment variables and push to git.
 """
 
 import os.path
+import subprocess
 import sys
 from datetime import datetime
+from time import sleep
 from pathlib import Path
 from rich.console import Console
 from rich.markdown import Markdown
 from rich import print
 import mkdocs_obsidian as obs
+
+
+def pyto_environment(console):
+    """
+    Use pyto bookmark to get path on IOS
+    :param console: rich console
+    :return vault_path ; blog_path
+    """
+    import bookmarks as bm
+
+    vault = ""
+    blog = ""
+    console.print("Please provide your [u bold]obsidian vault[/] path: ")
+    sleep(5)  # The user needs to read the message !
+    vault = bm.FolderBookmark()
+    vault_path = vault.path
+    console.print("Please provide the [u bold]blog[/] repository path: ")
+    sleep(5)  # The user needs to read the message !
+    blog = bm.FolderBookmark()
+    blog_path = blog.path
+    return vault_path, blog_path
+
+
+def legacy_environment(console):
+    """
+    Ask environment without using pyto bookmark
+    :param console: rich console
+    :return vault_path, blog_path
+    """
+    vault = ""
+    blog = ""
+    while vault == "" or not os.path.isdir(vault):
+        vault = str(
+            console.input("Please provide your [u bold]obsidian vault[/] path: ")
+        )
+    while blog == "" or not os.path.isdir(blog):
+        blog = str(
+            console.input("Please provide the [u bold]blog[/] repository path: ")
+        )
+    return vault, blog
+
+
+def ashell_environment(console):
+    """
+    Relly on pickFolder in ashell to create the environment
+    :param console: rich console
+    :return vault_path, blog_path
+    """
+    vault = ""
+    blog = ""
+    console.print("Please provide your [u bold]obsidian vault[/] path: ")
+    cmd = "pickFolder"
+    sleep(5)  # The user needs to read the message !
+    subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    sleep(10)
+    console.input("Press any key to continue...")
+    # Now, the os.getcwd() change for the pickedFolder
+    vault = os.getcwd()
+    sleep(3)
+    console.print("Please provide the [u bold]blog[/] repository path: ")
+    sleep(3)  # The user needs to read the message !
+    subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    sleep(10)
+    console.input("Press any key to continue...")
+    blog = os.getcwd()
+    # return to default environment
+    cmd = "cd ~/Documents"
+    subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    sleep(3)
+    return vault, blog
 
 
 def check_url(blog_path: str):
@@ -44,26 +116,33 @@ def create_env():
     :return: None
     """
     BASEDIR = obs.__path__[0]
+    pyto_check = False
     try:
         import pyto
 
+        pyto_check = True
         BASEDIR = Path(BASEDIR)
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pass
-    env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
+    try:
+        import subprocess
+
+        process = subprocess.Popen("echo $TERM_PROGRAM", stdout=subprocess.PIPE)
+        output, error = process.communicate()
+        ashell = output.decode("utf-8").strip() == "a-Shell"
+    except RuntimeError:
+        ashell = False
+
     console = Console()
+    env_path = Path(f"{BASEDIR}/.mkdocs_obsidian")
     print(f"[bold]Creating environnement in [u]{env_path}[/][/]")
-    vault = ""
-    blog = ""
-    while vault == "" or not os.path.isdir(vault):
-        vault = str(
-            console.input("Please provide your [u bold]obsidian vault[/] path: ")
-        )
-    while blog == "" or not os.path.isdir(blog):
-        blog = str(
-            console.input("Please provide the [u bold]blog[/] repository path: ")
-        )
+    if pyto_check:
+        vault, blog = pyto_environment(console)
+    elif ashell:
+        vault, blog = ashell_environment(console)
+    else:
+        vault, blog = legacy_environment(console)
     blog_link = check_url(blog).strip()
     if blog_link == "":
         blog_link = str(console.input("Please, provide the [u]URL[/] of your blog: "))
@@ -110,35 +189,39 @@ def git_push(
     try:
         import git
         from mkdocs_obsidian.common import global_value as gl
+
         BASEDIR = gl.BASEDIR
-        repo = git.Repo(Path(f"{BASEDIR}/.git"))
-        repo.git.add(".")
-        repo.git.commit("-m", f"{commit}")
-        origin = repo.remote("origin")
-        origin.push()
-        if not obsidian:
-            console.print(
-                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/] {add_info}",
-                Markdown(add_msg),
-                rmv_info,
-                Markdown(remove_msg),
-                Markdown("---"),
-                "🎉 Successful 🎉",
-                end=" ",
-            )
-        else:
-            print(
-                f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}] {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n"
-            )
-    except git.GitCommandError:
-        if not obsidian:
-            console.print(
-                f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]",
-                Markdown("*No modification 😶*"),
-                end=" ",
-            )
-        else:
-            print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
+        try:
+            repo = git.Repo(Path(f"{BASEDIR}/.git"))
+            repo.git.add(".")
+            repo.git.commit("-m", f"{commit}")
+            origin = repo.remote("origin")
+            origin.push()
+            if not obsidian:
+                console.print(
+                    f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/]"
+                    f" {add_info}",
+                    Markdown(add_msg),
+                    rmv_info,
+                    Markdown(remove_msg),
+                    Markdown("---"),
+                    "🎉 Successful 🎉",
+                    end=" ",
+                )
+            else:
+                print(
+                    f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}]"
+                    f" {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n"
+                )
+        except git.GitCommandError:
+            if not obsidian:
+                console.print(
+                    f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]",
+                    Markdown("*No modification 😶*"),
+                    end=" ",
+                )
+            else:
+                print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
     except ImportError:
         if not obsidian:
             console.print(

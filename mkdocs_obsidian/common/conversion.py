@@ -31,10 +31,11 @@ def get_image(image):
     :param image: str
     :return: bool or filepath to image
     """
-    for filepath in VAULT_FILE:
-        if unidecode.unidecode(os.path.basename(filepath)) == unidecode.unidecode(
-            image
-        ):
+    shortname = unidecode.unidecode(os.path.splitext(image)[0])
+    assets = [x for x in VAULT_FILE if not x.endswith('.md')]
+    for filepath in assets:
+        file_name = unidecode.unidecode(os.path.splitext(os.path.basename(filepath))[0])
+        if file_name == shortname:
             return filepath
     return False
 
@@ -53,7 +54,7 @@ def copy_image(final_text):
                 final_text = re.sub("(!?|\(|(%20)|\[|\]|\))", "", i)
                 final_text = os.path.basename(final_text.split("|")[0])
                 image_path = get_image(final_text)
-                if image_path and os.path.isfile(image_path):
+                if image_path and os.path.isfile(image_path) and not image_path.endswith('.md'):
                     shutil.copyfile(
                         image_path, Path(f"{config.IMG}/{os.path.basename(image_path)}")
                     )
@@ -112,13 +113,15 @@ def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
     :return: True if file is created, False otherwise
     """
     file_name = os.path.basename(filepath)
+    shortname = unidecode.unidecode(os.path.splitext(file_name)[0])
+    foldername = unidecode.unidecode(Path(folder).name)
     meta = frontmatter.load(filepath)
     if contents == "":
         return False
     if preserve == 0 and not meta.get(SHARE):
         check.delete_file(filepath, folder, meta_update)
         return False
-    if os.path.splitext(file_name)[0] == Path(folder).name:
+    if shortname == foldername:
         file_name = "index.md"
     with open(Path(f"{folder}/{file_name}"), "w", encoding="utf-8") as new_notes:
         for line in contents:

@@ -2,6 +2,86 @@
 
 <!--next-version-placeholder-->
 
+## v1.11.17 (2022-02-26)
+### Fix
+* Typo that create a script crash ([`563ce3d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/563ce3d4bf35fe1c9606fcef505039f8d0722045))
+
+### Documentation
+* **readme:** Update doc to add config info ([`90fe49d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/90fe49d80a18de329422115893b0b56589f6fdb2))
+
+## v1.11.16 (2022-02-26)
+### Fix
+* **image:** Some note was recognize as image. ([`bf36acb`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/bf36acb0aabd032fd96e93bc589f75cb6424309d))
+
+## v1.11.15 (2022-02-26)
+### Fix
+* **write:** Fix typo ([`2867a53`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2867a535f3ffcb02f9fadc4ac3115852026fe645))
+
+## v1.11.14 (2022-02-26)
+### Fix
+* **check:** Fix typo ([`fd3f1af`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/fd3f1afea05eb81410bb5fd92e585f492cfa1f3b))
+
+## v1.11.13 (2022-02-26)
+### Fix
+* **check:** Fix typo ([`47ce30b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/47ce30b84b38713b9fd7b6eb8437497e6361a242))
+
+## v1.11.12 (2022-02-26)
+### Fix
+* **config:** Fix a-shell environment creation crashing ([`3e35218`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3e35218e32c90b72a2966404facdc8176c0d89c2))
+
+## v1.11.11 (2022-02-25)
+### Fix
+* **image:** Fix image not recognize ([`791caa0`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/791caa0cf1c86473a7737fa7cf5cbb9b6802832d))
+* **foldernote:** Fix index renaming ([`3b7d3ab`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3b7d3abbf5067c849ba8340b1d1111fc80d8d830))
+
+## v1.11.10 (2022-02-25)
+### Fix
+* **folder_note:** Fix normalized characters ([`ef8e87b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ef8e87b28920de8c617b04a09b2e31b23ed85e20))
+
+## v1.11.9 (2022-02-24)
+### Fix
+* **shell:** Fix markup ([`225f228`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/225f228b567731b79c07f92198ef05992ded8866))
+
+## v1.11.8 (2022-02-24)
+### Fix
+* **shell:** Fix message markup ([`3c6af5f`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3c6af5f473b8221b16e4bdb7ee42a825e5cce288))
+
+## v1.11.7 (2022-02-24)
+### Fix
+* **delete:** Fix broken deleted message ([`723189c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/723189c6df58f129c561e1371e1d4eb5d9a55082))
+
+## v1.11.6 (2022-02-24)
+### Fix
+* **git:** Fix except error order ([`95f3798`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/95f37983056d53d008f2d6f02f98c3910e06298d))
+
+## v1.11.5 (2022-02-23)
+### Fix
+* **config:** Lowering sleep for mobile ([`835bd7b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/835bd7b90aed15a0543c66d0e5120a9c3ded1c65))
+
+## v1.11.4 (2022-02-23)
+### Fix
+* **config:** Add delay ([`4c6c409`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/4c6c4092c9ba01bfe7697409525ae7fa17867b5c))
+
+## v1.11.3 (2022-02-23)
+### Fix
+* **config:** Fix subprocess not supported on pyto ([`b144527`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b144527aa03edeb5534b70e94f25849dca249ca5))
+
+## v1.11.2 (2022-02-23)
+### Fix
+* **config:** Use $TERM_PROGRAM to check ashell ([`ed721cb`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ed721cba3ab49df1ebab4e6e3e42ebba4bdb95ee))
+
+## v1.11.1 (2022-02-22)
+### Fix
+* **config:** Using term program to check environment ([`6e637aa`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6e637aae56fe040ec4382beeb6b86c61390f785c))
+
+## v1.11.0 (2022-02-22)
+### Feature
+* **config:** Environment creator on ashell ([`2ee521a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2ee521aa5294ddea3594cc9e36e45f5c14c4c21a))
+
+## v1.10.0 (2022-02-21)
+### Feature
+* **mobile:** Use pyto bookmarks to create env ([`2631b7c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/2631b7cd58c5456add5c4ffd14d4aae9c3a578a5))
+
 ## v1.9.4 (2022-02-05)
 ### Fix
 * **image:** Fix image search in vault (use all found name) ([`e9ff462`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e9ff462ce545cbea19790b1bab735e0db2bb7c9f))
