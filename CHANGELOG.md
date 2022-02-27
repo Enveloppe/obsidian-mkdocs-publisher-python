@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.12.0 (2022-02-27)
+### Feature
+* **config:** Finalize optimisation for environment creation ([`8976b9a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/8976b9a9bcb227c26d1111286543a9cf7e121e59))
+
 ## v1.11.17 (2022-02-26)
 ### Fix
 * Typo that create a script crash ([`563ce3d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/563ce3d4bf35fe1c9606fcef505039f8d0722045))

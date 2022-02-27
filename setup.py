@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = "1.11.17"
+version = "1.12.0"
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
