@@ -182,7 +182,8 @@ After, you can use the same option as on a PC.
 ## Customization
 There are some files to customize the script :
 - You can create [custom admonition with material docs](https://squidfunk.github.io/mkdocs-material/reference/admonitions/) and adding the name in `custom_admonition.yml`. 
-- You can completely exclude some folder of your vault with `exclude_folder.yml`. You can exclude specific path as `folder1/subfolderA` etc.
+- You can completely exclude some folder from **conversion** using `exclude.yml`. You can exclude specific path as `folder1/subfolderA` etc. The folder you want to exclude must be after the `folder` key. These file won't be converted by the script, no matter the `share`'s state. 
+- You can exclude file from **deletion** using `exclude.yml`. Just insert the name of the file (as `index` or `CNAME`). These file won't be deleted by the script. 
 - Using the `\docs\assets\css\custom_attributes.css` you can create specific aspect for your tags, and it also adds compatibility with CM6 Attribute and Contextual Typography. 
 
 ## Limitation

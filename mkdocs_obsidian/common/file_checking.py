@@ -4,7 +4,7 @@ All function intended to check the file and their path.
 
 import glob
 import os
-import re
+import sys
 from pathlib import Path
 
 import frontmatter
@@ -12,13 +12,32 @@ import yaml
 from unidecode import unidecode
 
 from mkdocs_obsidian.common import global_value as settings
-from mkdocs_obsidian.common import convert_all as exclude
 from mkdocs_obsidian.common import metadata as mt
 
 BASEDIR = settings.BASEDIR
 POST = settings.POST
 VAULT = settings.VAULT
 VAULT_FILE = settings.VAULT_FILE
+
+
+def config_exclude():
+    config_folder = Path(f"{BASEDIR}/exclude_folder.yml")
+    if not os.path.exists(config_folder):
+        config_folder = Path(f"{BASEDIR}/exclude.yml")
+    return config_folder
+
+
+def exclude(filepath: str, key: str):
+    config_folder = config_exclude()
+    if os.path.exists(config_folder):
+        with open(config_folder, "r", encoding="utf-8") as file_config:
+            try:
+                folder = yaml.safe_load(file_config)
+            except yaml.YAMLError as exc:
+                sys.exit(exc)
+        excluded_folder = folder.get(key, "")
+        return any(str(Path(file)) in filepath for file in excluded_folder)
+    return False
 
 
 def delete_not_exist():
@@ -33,28 +52,29 @@ def delete_not_exist():
     docs = Path(f"{BASEDIR}/docs/**")
     for note in VAULT_FILE:
         vault_file.append(os.path.basename(note))
-        if exclude.exclude_folder(note):
+        if exclude(note, "folder"):
             excluded.append(os.path.basename(note))
     for file in glob.iglob(str(docs), recursive=True):
-        if not any(i in file for i in important_folder):
-            if not re.search(
-                "(README|index|CNAME|tags|tag)", os.path.basename(file)
-            ) and (
+        if (
+            not any(i in file for i in important_folder)
+            and not exclude(file, "files")
+            and (
                 os.path.basename(file) not in vault_file
                 or os.path.basename(file) in excluded
-            ):  # or if file in file_excluded
-                try:
-                    if os.path.isfile(Path(file)):
-                        os.remove(Path(file))
-                        folder = os.path.dirname(Path(file))
-                        if len(os.listdir(folder)) == 0:
-                            # Delete folder
-                            os.rmdir(folder)
-                        info.append(os.path.basename(file))
-                except PermissionError:
-                    pass
-                except IsADirectoryError:
-                    pass
+            )
+        ):  # or if file in file_excluded
+            try:
+                if os.path.isfile(Path(file)):
+                    os.remove(Path(file))
+                    folder = os.path.dirname(Path(file))
+                    if len(os.listdir(folder)) == 0:
+                        # Delete folder
+                        os.rmdir(folder)
+                    info.append(os.path.basename(file))
+            except PermissionError:
+                pass
+            except IsADirectoryError:
+                pass
     return info
 
 

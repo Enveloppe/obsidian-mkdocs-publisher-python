@@ -80,21 +80,13 @@ def clipboard(filepath, folder):
         filename = ""
     paste = url.quote(f"{folder_key}/{filename}")
     clip = f"{config.WEB}{paste}"
-    if "iPhone" in platform.uname().machine or "iPad" in platform.uname().machine:
+    if platform.architecture()[1] == "":
         try:
             import pasteboard  # work with pyto
 
             pasteboard.set_string(clip)
         except ImportError:
-            try:
-                import clipboard  # work with pytonista
-
-                clipboard.set(clip)
-            except ImportError:
-                print(
-                    "Please, report issue with your OS and configuration to check if it"
-                    " possible to use another clipboard manager"
-                )
+            pass
     else:
         try:
             # trying to use Pyperclip

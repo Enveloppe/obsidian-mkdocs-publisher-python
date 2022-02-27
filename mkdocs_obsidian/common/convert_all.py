@@ -62,7 +62,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
         if (
             filepath.endswith(".md")
             and "excalidraw" not in filepath
-            and not exclude_folder(filepath)
+            and not check.exclude(filepath, "folder")
         ):
             try:
                 yaml_front = frontmatter.load(filepath)
