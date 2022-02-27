@@ -17,7 +17,7 @@ from mkdocs_obsidian.common import (
     global_value as config,
     metadata as mt,
     admonition as adm,
-)
+    )
 
 BASEDIR = Path(config.BASEDIR)
 VAULT = Path(config.VAULT)
@@ -350,7 +350,7 @@ def file_convert(filepath, force=0):
     ----------
     filepath : str
         path to file
-    force : bool, default: 0
+    force : int, default: 0
         deletion option
 
     Returns
