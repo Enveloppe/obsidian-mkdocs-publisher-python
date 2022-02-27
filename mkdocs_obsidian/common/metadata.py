@@ -33,10 +33,7 @@ def update_frontmatter(filepath, link=1):
         tag = ""
     meta.metadata.pop("tag", None)
     meta.metadata.pop("tags", None)
-    if meta.metadata.get("category"):
-        folder = meta.metadata["category"]
-    else:
-        folder = "notes"
+    folder = meta.metadata.get("category", config.DEFAULT_NOTES)
 
     with open(filepath, "w", encoding="utf-8") as f:
         filename = os.path.basename(filepath)

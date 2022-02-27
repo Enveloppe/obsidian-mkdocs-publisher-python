@@ -80,7 +80,7 @@ The script will care about some things you can forget :
 - Moving your image in assets ;
 - Change the admonition from the plugin to material admonition (mainly for codeblocks)
 - Remove Obsidian comment (`%% text %%`) 
-- **Create a folder structure** based on the `category` key. Without it, the note will be created in `docs/notes`.
+- **Create a folder structure** based on the `category` key. Without it, the note will be created in `docs/notes`. (you can configure the default folder, use `/` for root.)
 
 If you use the `--meta` option, it will also add, in the **original file** a link to the blog. 
 

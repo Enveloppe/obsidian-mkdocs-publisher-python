@@ -23,6 +23,8 @@ BASEDIR = Path(config.BASEDIR)
 VAULT = Path(config.VAULT)
 VAULT_FILE = config.VAULT_FILE
 SHARE = config.SHARE
+POST = config.POST
+DEFAULT_NOTES = config.DEFAULT_NOTES
 
 
 def get_image(image):

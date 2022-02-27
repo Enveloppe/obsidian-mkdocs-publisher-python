@@ -26,24 +26,8 @@ VAULT = gl.VAULT
 VAULT_FILE = gl.VAULT_FILE
 SHARE = gl.SHARE
 INDEX_KEY = gl.INDEX_KEY
-
-
-def exclude_folder(filepath: str):
-    """
-    Check if the file is in an excluded folder
-    :param filepath: file to check
-    :return: boolean
-    """
-    config_folder = Path(f"{BASEDIR}/exclude_folder.yml")
-    if os.path.exists(config_folder):
-        with open(config_folder, "r", encoding="utf-8") as file_config:
-            try:
-                folder = yaml.safe_load(file_config)
-            except yaml.YAMLError as exc:
-                print(exc)
-                sys.exit(1)
-        return any(str(Path(file)) in filepath for file in folder)
-    return False
+DEFAULT_NOTES = gl.DEFAULT_NOTES
+POST = gl.POST
 
 
 def dest(filepath: str, folder: str):
@@ -70,7 +54,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
     """
     filespush = []
     check_file = False
-    clipkey = "notes"
+    clipkey = DEFAULT_NOTES
     description = "[cyan u]Scanning\n"
     for filepath in track(
         VAULT_FILE, description=description, total=len(VAULT_FILE), disable=obsidian
@@ -82,7 +66,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
         ):
             try:
                 yaml_front = frontmatter.load(filepath)
-                clipkey = yaml_front.get("category", "notes")
+                clipkey = yaml_front.get("category", DEFAULT_NOTES)
                 if not clipkey:
                     clipkey = "hidden"
                 if yaml_front.get(SHARE) or vault_share == 1:

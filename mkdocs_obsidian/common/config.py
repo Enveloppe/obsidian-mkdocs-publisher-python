@@ -180,6 +180,11 @@ def create_env():
     share = str(
         console.input("Choose your share key name [i](default: [bold]share[/])[/]: ")
     )
+    default_blog = console.input(
+        "Choose your default folder note [i](default: [bold]notes[/])[/]: "
+    )
+    if default_blog == "":
+        default_blog = "notes"
     if share == "":
         share = "share"
     index_key = str(
@@ -196,15 +201,16 @@ def create_env():
         env.write(f"blog={blog_link}\n")
         env.write(f"share={share}\n")
         env.write(f"index_key={index_key}\n")
-    post = Path(f"{blog}/docs/notes")
+        env.write(f"default_blog={default_blog}\n")
+    if default_blog == "/":
+        default_blog = ""
+    post = Path(f"{blog}/docs/{default_blog}")
     img = Path(f"{blog}/docs/assets/img/")
     try:
         img.mkdir(
             exist_ok=True
         )  # Assets must exist, raise a file not found error if not.
-        post.mkdir(
-            exist_ok=True, parents=True
-        )  # Notes is needed in this configuration ;
+        post.mkdir(exist_ok=True, parents=True)
         sys.exit("Environment created.")
     except FileNotFoundError:
         sys.exit("Error in configuration, please, retry with the correct path. ")

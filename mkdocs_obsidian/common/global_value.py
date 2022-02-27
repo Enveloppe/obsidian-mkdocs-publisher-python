@@ -53,6 +53,12 @@ try:
         INDEX_KEY = "(i)"
         with open(ENV_PATH, "a", encoding="utf-8") as f:
             f.write("index_key=(i)")
+    try:
+        DEFAULT_NOTES = env["default_blog"]
+    except KeyError:
+        DEFAULT_NOTES = "notes"
+        with open(ENV_PATH, "a", encoding="utf-8") as f:
+            f.write("default_blog=notes")
 except KeyError:
     with open(ENV_PATH, "r", encoding="utf-8") as f:
         vault_str = "".join(f.readlines(1)).replace("vault=", "").rstrip()
@@ -63,6 +69,7 @@ except KeyError:
         WEB = "".join(f.readlines(3)).replace("blog=", "")
         SHARE = "".join(f.readlines(4)).replace("share=", "")
         INDEX_KEY = "".join(f.readlines(5)).replace("index_key=", "")
+        DEFAULT_NOTES = "".join(f.readlines(6)).replace("default_blog=", "")
     with open(ENV_PATH, "a", encoding="utf-8") as f:
         if len(SHARE) == 0:
             SHARE = "share"
@@ -70,6 +77,9 @@ except KeyError:
         if len(INDEX_KEY) == 0:
             INDEX_KEY = "(i)"
             f.write("index_key=(i)")
+        if len(DEFAULT_NOTES) == 0:
+            DEFAULT_NOTES = "notes"
+            f.write("default_blog=notes")
     if len(vault_str) == 0 or len(basedir_str) == 0 or len(WEB) == 0:
         sys.exit("Please provide a valid path for all config items")
 except RuntimeError:
@@ -78,13 +88,15 @@ except RuntimeError:
     WEB = env["blog"]
     SHARE = env["share"]
     INDEX_KEY = env["index_key"]
+    DEFAULT_NOTES = env["default_blog"]
 try:
     VAULT = VAULT.expanduser()
     BASEDIR = BASEDIR.expanduser()
 except RuntimeError:
     sys.exit("Please provide a valid path for all config items")
-
-POST = Path(f"{BASEDIR}/docs/notes")
+if DEFAULT_NOTES == "/":
+    DEFAULT_NOTES = ""
+POST = Path(f"{BASEDIR}/docs/{DEFAULT_NOTES}")
 IMG = Path(f"{BASEDIR}/docs/assets/img/")
 VAULT_FILE = [
     x

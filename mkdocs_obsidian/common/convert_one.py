@@ -32,7 +32,7 @@ def convert_one(ori, git: bool, meta: int, obsidian=False):
     try:
         yaml_front = frontmatter.load(ori)
         priv = Path(value.POST)
-        clipkey = "notes"
+        clipkey = value.DEFAULT_NOTES
         if "category" in yaml_front.keys():
             if not yaml_front["category"]:
                 priv = check.create_folder("hidden")
