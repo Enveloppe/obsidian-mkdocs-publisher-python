@@ -215,8 +215,8 @@ To support the citation and link to these page, you need to use an index key (cf
 Some examples of citation and their transformation : 
 | In Obsidian               | In Publish            |
 | ------------------------- | --------------------- |
-| `[[Real File|(i) Alias]]` | `[[index|Alias]]`     |
-| `[[Real File|(i)]]`       | `[[index|Real File]]` |
+| `[[Real File\|(i) Alias]]` | `[[index\|Alias]]`     |
+| `[[Real File\|(i)]]`       | `[[index\|Real File]]` |
 | `[(i) Alias](Real file) ` | `[Alias](index)`      |
 | `[(i)](real file)`        | `[real file](index)`  | 
 
