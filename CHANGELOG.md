@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.12.1 (2022-02-27)
+### Fix
+* Raise some error ([`4afa68d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/4afa68da976da4b0c7e3d04018ede0521b630cad))
+
 ## v1.12.0 (2022-02-27)
 ### Feature
 * **config:** Finalize optimisation for environment creation ([`8976b9a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/8976b9a9bcb227c26d1111286543a9cf7e121e59))
