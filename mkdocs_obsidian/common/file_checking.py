@@ -21,6 +21,7 @@ VAULT_FILE = settings.VAULT_FILE
 
 
 def config_exclude():
+    """ """
     config_folder = Path(f"{BASEDIR}/exclude_folder.yml")
     if not os.path.exists(config_folder):
         config_folder = Path(f"{BASEDIR}/exclude.yml")
@@ -28,6 +29,19 @@ def config_exclude():
 
 
 def exclude(filepath: str, key: str):
+    """
+    Check if a file is in `exclude.yml`.
+    Parameters
+    ----------
+    filepath: str
+        Path to the file to check
+    key: str
+
+    Returns
+    -------
+    bool:
+        True if filepath is in the list.
+    """
     config_folder = config_exclude()
     if os.path.exists(config_folder):
         with open(config_folder, "r", encoding="utf-8") as file_config:
@@ -42,8 +56,12 @@ def exclude(filepath: str, key: str):
 
 def delete_not_exist():
     """
-    Removes files that have been deleted from the vault
-    :return: A list of deleted files
+    Removes files that have been deleted from the vault unless they are in `exclude.yml[files]` and always delete if founded file is in `exclude.yml[folder]`
+
+    Returns
+    -------
+    info: list[str]
+        List of deleted file
     """
     vault_file = []
     info = []
@@ -79,14 +97,25 @@ def delete_not_exist():
 
 
 def diff_file(filepath: str, folder: str, contents: list, update=0):
-    """
-    Check the difference between file in vault and file in publish.
+    """Check the difference between file in vault and file in publish.
     Check if the new converted file = the file on publish.
-    :param filepath: filepath
-    :param folder: folderpath
-    :param contents: Contents of the file to check
-    :param update: check if update is forced
-    :return: boolean
+
+    Parameters
+    ----------
+    filepath : str
+        filepath of source file
+    folder: str
+        folder found in category of the source file
+    contents: list[str]
+        Contents of the file to check
+    update: int, default: 0
+        check if update is forced
+
+    Returns
+    -------
+    bool:
+        True if file are different or don't exist
+
     """
     filename = os.path.basename(filepath)
     shortname = unidecode(os.path.splitext(filename)[0])
@@ -120,11 +149,20 @@ def diff_file(filepath: str, folder: str, contents: list, update=0):
 
 
 def retro(file, opt=0):
-    """
-    Remove metadata from note
-    :param file: str or list
-    :param opt: if filepath is a list or a filepath
-    :return: the frontmatter of the note
+    """Remove metadata from note
+
+    Parameters
+    ----------
+    file: str, list
+    opt: int, default: 0
+        if file is a list (note's content) or a filepath
+        - 0: Filepath
+        - 1: note's content
+    Returns
+    -------
+    list[str]:
+        the frontmatter of the note
+
     """
     notes = []
 
@@ -144,10 +182,18 @@ def retro(file, opt=0):
 
 def create_folder(category: str, share=0):
     """
-    create a folder based on the category key as 'folder1/folder2/.../'
-    :param category: string
-    :param share: status of the note
-    :return: folderpath (Path)
+    create a folder based on the category key as 'folder1/folder2/.../' and return the folder path. Return default path in case of error/none category
+    Parameters
+    ----------
+    category : str
+        Category frontmatter key
+    share: int, default: 0
+        status of the note
+    Returns
+    -------
+    folder: Path
+        Created folder path
+
     """
     if category != "":
         folder = Path(f"{BASEDIR}/docs/{category}")
@@ -162,12 +208,21 @@ def create_folder(category: str, share=0):
 
 
 def modification_time(filepath: str, folder: str, update: int):
-    """
-    check the modification time : return true if file modified since the last push.
-    :param filepath: file to check
-    :param folder: folder in the blog
-    :param update: skip check if 0 (force update)
-    :return: boolean
+    """check the modification time : return true if file modified since the last push.
+
+    Parameters
+    ----------
+    filepath : str
+        filepath's file to check
+    folder: str
+        folder in the blog
+    update : int
+        skip check if 0 (force update)
+
+    Returns
+    -------
+    bool:
+        True if file doesn't exist, force update or file modified since the last push.
     """
     if update == 0:
         return True  # Force update
@@ -180,19 +235,40 @@ def modification_time(filepath: str, folder: str, update: int):
 
 
 def skip_update(filepath: str, folder: str, update: int):
-    """
-    check if file exist + update is false
+    """check if file exist + update is false
+
+    Parameters
+    ----------
+    filepath: str
+        file's filepath to check existence
+    folder: str
+        folder's path
+    update: int
+        Update key state
+
+    Returns
+    -------
+
     """
     filepath = Path(filepath)
     return update == 1 and check_file(filepath, folder) == "EXIST"
 
 
 def check_file(filepath, folder: str):
-    """
-    check if the requested file exist or not in publish.
-    :param filepath: filepath
-    :param folder: folderpath in publish
-    :return: "EXIST" or "NE"
+    """check if the requested file exist or not in publish.
+
+    Parameters
+    ----------
+    filepath : str, Path
+        filepath
+    folder : str
+        folderpath in publish
+
+    Returns
+    -------
+    str:
+        "EXIST" or "NE"
+
     """
     file = os.path.basename(filepath)
     shortname = unidecode(os.path.splitext(file)[0])
@@ -206,12 +282,22 @@ def check_file(filepath, folder: str):
 
 
 def delete_file(filepath: str, folder: str, meta_update=1) -> bool:
-    """
-    Delete the requested file
-    :param filepath: filepath
-    :param folder: folder path
-    :param meta_update:  update the metadata if 0
-    :return: boolean
+    """Delete the requested file
+
+    Parameters
+    ----------
+    filepath :
+        filepath
+    folder :
+        folder path
+    meta_update :
+        update the metadata if 0 (Default value = 1)
+
+    Returns
+    -------
+    bool:
+        True if file is successfully deleted
+
     """
     path = Path(folder)
     try:

@@ -28,10 +28,18 @@ DEFAULT_NOTES = config.DEFAULT_NOTES
 
 
 def get_image(image):
-    """
-    Check if the image exists in the VAULT
-    :param image: str
-    :return: bool or filepath to image
+    """Check if the image exists in the VAULT
+
+    Parameters
+    ----------
+    image :
+        str
+
+    Returns
+    -------
+    bool, str:
+        Path to image if True, False otherwise
+
     """
     shortname = unidecode.unidecode(os.path.splitext(image)[0])
     assets = [x for x in VAULT_FILE if not x.endswith(".md")]
@@ -43,10 +51,13 @@ def get_image(image):
 
 
 def copy_image(final_text):
-    """
-    Copy the image if exist
-    :param final_text: str
-    :return: None
+    """Copy the image in assets if exist
+
+    Parameters
+    ----------
+    final_text : str
+        Line readed
+
     """
     list_text = final_text.split("!")
     if len(list_text) > 0:
@@ -67,11 +78,14 @@ def copy_image(final_text):
 
 
 def clipboard(filepath, folder):
-    """
-    Copy file URL to clipboard
-    :param filepath: str
-    :param folder: str
-    :return: None
+    """Copy file URL to clipboard
+
+    Parameters
+    ----------
+    filepath : str
+        Path to the file
+    folder: str
+        Path to folder
     """
     filename = os.path.basename(filepath)
     filename = filename.replace(".md", "")
@@ -101,14 +115,26 @@ def clipboard(filepath, folder):
 
 
 def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
-    """
-    Write the new converted file and update metadata if meta_update is 0
-    :param filepath: file to convert
-    :param contents: File contents
-    :param folder: folderpath in publish
-    :param preserve: Change shared state in frontmatter if 1
-    :param meta_update: Update frontmatter if meta_update = 0
-    :return: True if file is created, False otherwise
+    """Write the new converted file and update metadata if meta_update is 0
+
+    Parameters
+    ----------
+    filepath : str, Path
+        file to convert
+    contents: list
+        File contents
+    folder: str, Path
+        folderpath in publish
+    preserve: int, default: 0
+        Change shared state in frontmatter if 1
+    meta_update: int, default: 1
+        Update frontmatter if meta_update = 0
+
+    Returns
+    -------
+    bool:
+        True if file is created, False otherwise
+
     """
     file_name = os.path.basename(filepath)
     shortname = unidecode.unidecode(os.path.splitext(file_name)[0])
@@ -134,9 +160,15 @@ def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
 
 
 def read_custom():
-    """
-    read custom css
-    :return: A list of the id in the CSS file
+    """read custom css, selection of id for custom attribute (special hashtags)
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+    id_css:
+        List of the custom attribute CSS founded
     """
     id_css = []
     with open(
@@ -149,10 +181,19 @@ def read_custom():
 
 
 def convert_hashtags(final_text: str):
-    """
-    Convert configured hashtags with ial CSS from custom.css
-    :param final_text: A line of the contents to convert if contains hashtags
-    :return: str
+    """Convert configured hashtags with inline attribute CSS from custom.css
+
+    Parameters
+    ----------
+    final_text: str
+        A line of the contents to convert if contains hashtags
+
+
+    Returns
+    -------
+    final_text: str
+        converted line
+
     """
     css = read_custom()
     token = re.findall("#\w+", final_text)
@@ -187,6 +228,19 @@ def convert_hashtags(final_text: str):
 
 
 def index_path(file_name):
+    """
+    Get the path of a founded index.md
+
+    Parameters
+    ----------
+    file_name: str
+        File found to be an index
+
+    Returns
+    -------
+    index: str
+        converted url path with category/index.md
+    """
     file = [x for x in VAULT_FILE if os.path.basename(x) == file_name + ".md"]
     index = "index"
     if file:
@@ -201,8 +255,24 @@ def index_path(file_name):
 
 def index_citation(final_text: str):
     """
-    :param final_text: Line to check, wikilinks or MD links
-    :return: Invert the alias with the name to get the index citation
+    Allow the citation of index.md by citation with configured INDEX_KEY.
+    Invert the alias and filename, replace filename by `category/index`
+
+    Examples
+    --------
+    - `[[filename|(i) Alias]]`  -> `[[index|Alias]]`
+    - `[[filename|(i)]]`  -> `[[index|filename]]`
+
+    Parameters
+    ----------
+    final_text : str
+        Line to check, wikilinks or MD links
+
+    Returns
+    -------
+    final_text: str
+        Return the line with alias and file name inverted
+
     """
     INDEX_KEY = config.INDEX_KEY
     if ") [" in final_text:
@@ -274,11 +344,20 @@ def index_citation(final_text: str):
 
 
 def file_convert(filepath, force=0):
-    """
-    Read the filepath and convert each line based on regex condition.
-    :param filepath: path to file
-    :param force: deletion option
-    :return: converted contents
+    """Read the filepath and convert each line based on regex condition.
+
+    Parameters
+    ----------
+    filepath : str
+        path to file
+    force : bool, default: 0
+        deletion option
+
+    Returns
+    -------
+    final: list[str]
+        converted contents, ready for writing.
+
     """
     final = []
     INDEX_KEY = config.INDEX_KEY

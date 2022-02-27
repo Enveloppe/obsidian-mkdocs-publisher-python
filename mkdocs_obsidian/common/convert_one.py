@@ -6,9 +6,10 @@ import os
 import sys
 from datetime import datetime
 from pathlib import Path
-from rich.console import Console
+
 import frontmatter
 import yaml
+from rich.console import Console
 
 from mkdocs_obsidian.common import (
     file_checking as check,
@@ -19,13 +20,19 @@ from mkdocs_obsidian.common import (
 
 
 def convert_one(ori, git: bool, meta: int, obsidian=False):
-    """
-    Function to start the conversion of *one* specified file.
-    :param ori: path to file to convert
-    :param git: if True, push to git
-    :param meta: If 1 update the metadata's source file
-    :param obsidian: Disable markup
-    :return: None
+    """Function to start the conversion of *one* specified file.
+
+    Parameters
+    ----------
+    ori: str
+        path to file to convert
+    git: Bool
+        if True, push to git
+    meta: int
+        If 1 update the metadata's source file
+    obsidian: Bool, default: False
+        Disable rich markup library
+
     """
     file_name = os.path.basename(ori).upper()
     console = Console()

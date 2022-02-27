@@ -3,28 +3,42 @@ Function to create environment variables and push to git.
 """
 
 import os.path
+import platform
 import subprocess
 import sys
 from datetime import datetime
-from time import sleep
 from pathlib import Path
+from time import sleep
+
+from rich import print
 from rich.console import Console
 from rich.markdown import Markdown
-from rich import print
+
 import mkdocs_obsidian as obs
-import platform
 
 
-def pyto_environment(console):
-    """
-    Use pyto bookmark to get path on IOS
-    :param console: rich console
-    :return vault_path ; blog_path
+def pyto_environment(console) -> tuple[str, str]:
+    """(IOS) Use Pyto [1]_ bookmark to get folder path
+
+    Parameters
+    ----------
+    console :
+        rich console
+
+    Returns
+    -------
+    tuple: [str, str]
+         vault:
+            vault absolute path
+         blog:
+            Blog absolute path
+
+    References
+    -------
+    .. [1] https://pyto.readthedocs.io/en/latest/library/bookmarks.html
     """
     import bookmarks as bm
 
-    vault = ""
-    blog = ""
     console.print("Please provide your [u bold]obsidian vault[/] path: ")
     sleep(5)  # The user needs to read the message !
     vault = bm.FolderBookmark()
@@ -38,11 +52,21 @@ def pyto_environment(console):
     return vault_path, blog_path
 
 
-def legacy_environment(console):
-    """
-    Ask environment without using pyto bookmark
-    :param console: rich console
-    :return vault_path, blog_path
+def legacy_environment(console) -> tuple[str, str]:
+    """(Other platform) Ask environment ; rely only on console.
+
+    Parameters
+    ----------
+    console : print
+        rich console
+
+    Returns
+    -------
+    tuple: [str, str]
+        vault:
+            vault absolute path
+        blog:
+            Blog absolute path
     """
     vault = ""
     blog = ""
@@ -57,7 +81,22 @@ def legacy_environment(console):
     return vault, blog
 
 
-def PC_environment(console):
+def PC_environment(console) -> tuple[str, str]:
+    """Create environment for computer (Windows, Linux, macOS) using filedialog (tkinter) and askdirectory.
+    Parameters
+    ----------
+    console :
+        rich console
+
+    Returns
+    -------
+    tuple: [str, str]
+        vault:
+            vault absolute path
+        blog:
+            Blog absolute path
+
+    """
     import tkinter.filedialog
 
     vault = ""
@@ -75,11 +114,27 @@ def PC_environment(console):
     return vault, blog
 
 
-def ashell_environment(console):
+def ashell_environment(console) -> tuple[str, str]:
     """
-    Relly on pickFolder in ashell to create the environment
-    :param console: rich console
-    :return vault_path, blog_path
+    (IOS) Use pickFolder [1]_ in **ashell** to help to create the environment
+
+    Parameters
+    ----------
+    console:
+        rich console
+
+    Returns
+    -------
+    tuple: [str, str]
+        vault:
+            vault absolute path
+        blog:
+            Blog absolute path
+
+    References
+    ----------
+    .. [1] https://github.com/holzschu/a-shell#sandbox-and-bookmarks
+
     """
     console.print("Please provide your [u bold]obsidian vault[/] path: ")
     cmd = "pickFolder"
@@ -106,10 +161,17 @@ def ashell_environment(console):
 
 
 def check_url(blog_path: str):
-    """
-    check if the url is in the config file and return it
-    :param blog_path: Publish absolute path
-    :return: URL
+    """check if the url is in the config file and return it
+
+    Parameters
+    ----------
+    blog_path :
+        Publish absolute path
+
+    Returns
+    -------
+    web: str
+        Site url founded in site_url from mkdocs.yml
     """
     web = ""
     try:
@@ -128,6 +190,18 @@ def check_url(blog_path: str):
 
 
 def right_path(vault):
+    """
+    Check if .obsidian exist in provided vault path
+    Parameters
+    ----------
+    vault: str
+        Absolute path to vault
+
+    Returns
+    -------
+    bool:
+        return True .obsidian exist in vault
+    """
     config_vault = os.path.join(vault, ".obsidian")
     if os.path.isdir(config_vault):
         return True
@@ -136,12 +210,20 @@ def right_path(vault):
 
 def create_env():
     """
-    Create environment variable with:
-        - vault = Path to the obsidian vault ;
-        - blog = Path to the publish folder
-        - blog_link = Publish url
-        - share = Metadata key for sharing file
-    :return: None
+    Main function to create environment ; Check if run on pyto (IOS), a-shell (ios) or computer (MacOS, linux, Windows)
+
+    Create environment variable with asking for :
+        - blog_link : Publish url if not found
+        - share : Metadata key for sharing file
+        - default_blog : Default folder for notes
+
+    Write the variable in `.env` file.
+    Parameters
+    ----------
+    Returns
+    -------
+
+
     """
     BASEDIR = obs.__path__[0]
     try:
@@ -221,13 +303,20 @@ def git_push(
 ):
     """
     git push the modified files and print a message result
-    :param commit: Commit information
-    :param obsidian: Message without markup
-    :param add_info: Adding title
-    :param rmv_info: Removing title
-    :param remove_msg: File removed
-    :param add_msg: File added/modified
-    :return: None
+
+    Parameters
+    ----------
+    commit:
+        Commit information
+    obsidian : bool, default: False
+        Message without markup
+    add_info : str, default: ""
+        Adding title
+    rmv_info : str, default: ""
+        Removing title
+    remove_msg : str, default: ""
+        File removed
+    add_msg : str, default: ""
     """
     console = Console()
     try:

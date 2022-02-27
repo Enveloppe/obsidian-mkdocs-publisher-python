@@ -4,10 +4,11 @@ Update metadata in the file, if option is used.
 
 import os
 import re
-from pathlib import Path
 import urllib.parse as url
+from pathlib import Path
 
 import frontmatter
+
 from mkdocs_obsidian.common import global_value as config
 
 BASEDIR = Path(config.BASEDIR)
@@ -16,12 +17,16 @@ SHARE = config.SHARE
 
 
 def update_frontmatter(filepath, link=1):
-    """
-    If link = 1, update the frontmatter with new publish URL
+    """If link = 1, update the frontmatter with new publish URL
     Also, update the share state if convert_one.
-    :param filepath: path to source file
-    :param link: if 1 add link to the metadata
-    :return: None
+
+    Parameters
+    ----------
+    filepath: str, Path
+        path to source file
+    link: int, default: 1
+        if 1 add link to the metadata
+
     """
     with open(filepath, "r", encoding="utf8") as metadata:
         meta = frontmatter.load(metadata)

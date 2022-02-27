@@ -9,11 +9,12 @@ from pathlib import Path
 
 import frontmatter
 import yaml
+from rich import print
+from rich.console import Console
+from rich.markdown import Markdown
 from rich.progress import track
 from rich.rule import Rule
-from rich.markdown import Markdown
-from rich.console import Console
-from rich import print
+
 from mkdocs_obsidian.common import (
     config,
     global_value as gl,
@@ -32,10 +33,18 @@ POST = gl.POST
 
 def dest(filepath: str, folder: str):
     """
-    Return the path of the final file
-    :param filepath: file to convert
-    :param folder: final folder
-    :return: str
+    Returns the final destination path of the file.
+
+    Parameters
+    ----------
+    filepath : str
+        file to convert
+    folder : str
+        final folder
+
+    Returns
+    -------
+    destination: str
     """
     file_name = os.path.basename(filepath)
     destination = Path(f"{folder}/{file_name}")
@@ -43,14 +52,29 @@ def dest(filepath: str, folder: str):
 
 
 def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False):
-    """
-    Search file to publish
-    :param obsidian: Use normal printing for obsidian_shell
-    :param preserve: if 1 force update
-    :param stop_share: remove stoped shared file if 1
-    :param meta: Update the metadata if 1
-    :param vault_share: If all the vault need to be shared
-    :return: Contents of the notes
+    """Search file to publish, convert and write them.
+
+    Parameters
+    ----------
+    obsidian: bool, default: False
+        Use normal printing for obsidian_shell (Default value = False)
+    preserve: int, default: 1
+        if 1 force update
+    stop_share: int, default: 1
+        remove stoped shared file if 1
+    meta: int, default: 0
+        Update the metadata if 1
+    vault_share: int, default: 0
+        If all the vault need to be shared
+
+    Returns
+    -------
+    tuple:
+        filepush: list[str]
+            Founded files
+        clipkey: str, default = DEFAULT_NOTES
+            Category key
+
     """
     filespush = []
     check_file = False
@@ -126,14 +150,20 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
 
 
 def obsidian_simple(delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
-    """
-    Main function to convert multiple file in obsidian shell
-    :param delopt: Force deletion if True
-    :param git: Git push if True
-    :param stop_share: Delete stoped shared file if 0
-    :param meta: Update frontmatter if 1
-    :param vault_share: Share all file in vault if 1
-    :return: None
+    """Convert file without markup for obsidian shell command.
+
+    Parameters
+    ----------
+    delopt : bool, default: False
+        Force deletion if True
+    git: bool, default: True
+        Git push if True
+    stop_share: int, default: 0
+        Delete stoped shared file if 0
+    meta: int, default: 0
+        Update frontmatter if 1
+    vault_share: int, default: 0
+        Share all file in vault if 1
     """
     if not git:
         git_info = "No push"
@@ -142,7 +172,7 @@ def obsidian_simple(delopt=False, git=True, stop_share=0, meta=0, vault_share=0)
     time_now = datetime.now().strftime("%H:%M:%S")
     msg_info = ""
     if vault_share == 1:
-        msg_info = "\n- Share entire vault [**ignore share**]"
+        msg_info = "\n- Share entire vault [ignore share]"
     if delopt:  # preservesdds
         print(
             f"[{time_now}] STARTING CONVERT ALL\n\n- {git_info}\n- Force"
@@ -198,14 +228,21 @@ def obsidian_simple(delopt=False, git=True, stop_share=0, meta=0, vault_share=0)
 
 
 def convert_all(delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
-    """
-    Main function to convert multiple file
-    :param delopt: Force deletion if True
-    :param git: Git push if True
-    :param stop_share: Delete stoped shared file if 0
-    :param meta: Update frontmatter if 1
-    :param vault_share: Share all file in vault if 1
-    :return: None
+    """Convert all shared file with relying on rich markup library.
+
+    Parameters
+    ----------
+    delopt: bool, default: False
+        Force deletion if True
+    git: bool, default: True
+        Git push if True
+    stop_share: int, default: 0
+        Delete stoped shared file if 0
+    meta: int, default: 0
+        Update source file frontmatter if 1
+    vault_share: int, default: 0
+        Share all file in vault if 1
+
     """
     console = Console()
     if not git:

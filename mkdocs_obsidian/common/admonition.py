@@ -7,18 +7,30 @@ import re
 import sys
 from itertools import zip_longest
 from pathlib import Path
+
 import yaml
+
 from mkdocs_obsidian.common import global_value as config
 
 BASEDIR = config.BASEDIR
 
 
 def code_blocks(start_list: list, end_list: list):
-    """
-    Check all code blocks in the contents
-    :param start_list: List of all started codeblocs
-    :param end_list: list of all ended code blocks
-    :return: merged list
+    """Check all code blocks in the contents
+
+    Parameters
+    ----------
+    start_list : list
+        List of all started codeblocs
+    end_list : list
+        list of all ended code blocks
+
+
+    Returns
+    -------
+    merged: list
+        Merged list for start and end
+
     """
     start_bug = []
     end_bug = []
@@ -43,10 +55,19 @@ def code_blocks(start_list: list, end_list: list):
 
 
 def admonition_trad(file_data: list):
-    """
-    Change all admonition to material admonition
-    :param file_data: Contents of the file
-    :return: Admonition Converted contents
+    """Change all admonition to material admonition
+
+    Parameters
+    ----------
+    file_data : list
+        Contents of the file
+
+
+    Returns
+    -------
+    list:
+       All file contents with admonition converted
+
     """
     code_index = 0
     code_dict = {}
