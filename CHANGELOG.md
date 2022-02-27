@@ -2,11 +2,7 @@
 
 <!--next-version-placeholder-->
 
-## v2.0.0 (2022-02-27)
-### Feature
-* **exclude:** Add important file in excluded ([`032ae7d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/032ae7d2e7c2dba9619b27545e92935976cb86be))
-* **config:** Add a config for default folder ([`a4a717f`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/a4a717fed2d48a9aeb65659956f07dccbae0aedc))
-
+## v1.12.1 (2022-02-27)
 ### Fix
 * Raise some error ([`4afa68d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/4afa68da976da4b0c7e3d04018ede0521b630cad))
 
