@@ -167,14 +167,14 @@ The file will be in `site-packages/mkdocs_obsidian`
 ### IOS
 The script support IOS using :
 - [a-shell](https://holzschu.github.io/a-Shell_iOS/) (Free)  
-- [Pyto](https://pyto.app) ($3 lite version / $10 complete version) [^5]
+- [Pyto](https://pyto.app) ($3 lite version / $10 complete version) [^4]
 - [Working Copy](https://workingcopyapp.com/) (Free for student / $19)
 
 >The option `mobile` will **never** push. You need to use Working Copy to push the converted file.
 
 You can :
 1. Share the entire vault : `obs2mk --mobile`
-2. Share a specific file, using its name : `obs2mk --mobile --f "filename"`.[^6] This option can be used especially with [Shortcuts](https://support.apple.com/guide/shortcuts/welcome/ios)
+2. Share a specific file, using its name : `obs2mk --mobile --f "filename"`.[^5] This option can be used especially with [Shortcuts](https://support.apple.com/guide/shortcuts/welcome/ios)
 
 Mobile supports all previous option, including `--ignore`.
 
