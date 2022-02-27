@@ -25,9 +25,6 @@ Mkdocs Obsidian is an association between a python script and a Material mkdocs 
 
 </details>
 
-## Pre-requiries
-
-<
 # Prerequisites
 You need : 
 - [Git](https://git-scm.com/)
