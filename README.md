@@ -57,9 +57,10 @@ You can customize :
 - font
 - Color scheme, palette, icons 
 - Language  
+  
 [Check the documentation to get more information](https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/)
 
-You don't need to touch everything in `features ; markdown_extensions…`
+You don't need to touch anything in `features ; markdown_extensions…`
 
 ## Local testing
 To locally build template, you need to run `pip install -r requirements.txt` after cloning : 
@@ -91,19 +92,19 @@ The script relies on the front matter** of the notes you want to publish.
     - `category: false` will **hide** the file from navigation.
     - `category: hidden` will do the same.
     - `category: folder1/folder2/` will move the file in `folder2`, under `folder1`
-    - `category: folder1/folder2/filename` will rename the file `index` and allow support of [section's index page](https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#section-index-pages)
+    - `category: folder1/folder2/filename` will rename the file `index` and allow support of [section's index page](https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#section-index-pages)  
     You can customize the folder with [Awesome Pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
 3. `update: false` prevent to update the file after the first publishing
 4. `description` : Add a description to the file (for meta-tag sharing)[^3]
 5. `title` : Change the title in the navigation.
-6. `image` : Add an image for meta-tags sharing.[^4] It needs to be the name of the file, as `image.png`. 
+6. `image` : Add an image for meta-tags sharing.[^3] It needs to be the name of the file, as `image.png`. 
 
 ## Usage
 The script can be use :
 - Directly in Obsidian, using [Obsidian Shell Commands](https://github.com/Taitava/obsidian-shellcommands) (see [Obsidian Shell's configuration](#obsidian-shell-configuration))
 - In [Terminal](#terminal).
 The platform supported are :
-- macOS, Linux and Windows (referred as 'Computer')
+- macOS, Linux and Windows
 - [IOS](#ios) (with [Pyto](https://pyto.app) and/or [a-shell](https://holzschu.github.io/a-Shell_iOS/) with [Working Copy](https://workingcopyapp.com/))
 
 ### Configuration
@@ -113,6 +114,8 @@ At the first run, you will be asked to configure some key and specific path.
 3. <u>share</u> : You can change the `share` key. By default, it's `share`
 4. <u>Index key:</u> Support for citation of [pagination index pages](#folder-note). By default, it uses `(i)`
 5. <u>Default blog folder:</u> By default, the notes will be in `docs/notes` but you can change that, or use `/` for root. 
+
+The file will be in `site-packages/mkdocs_obsidian`  
 
 ### Terminal 
 ```bash
@@ -141,7 +144,7 @@ It will :
 - Convert one file, regardless of what is the `share` state.
 
 #### Share all file : `obs2mk`
-You can share multiple documents at once with scanning your Vault, looking for the `share: true`. It will convert automatically these files.
+You can share multiple documents at once with scanning your Vault, looking for the `share: true`. It will convert automatically these files.  
 Only file with modification since the last sharing will be updated.
 
 #### Options
@@ -158,11 +161,10 @@ You could create :
 2. A command to publish one specific file : alias `Publish {{title}}` with `obs2mk --obsidian --f {{file_path:absolute}}`
 3. Event shortcuts for file menu event : `Publish {{event_file_name}}`: `obs2mk --obsidian --f "{{event_file_path:absolute}}
 4. Folder Note event (folder menu event): `Publish {{event_folder_name}}`: `obs2mk --obsidian --f "{{event_folder_path:relative}}\{{event_folder_name}}.md"`
+ 
 You can create a button with :
 - [Customizable Sidebar](https://github.com/phibr0/obsidian-customizable-sidebar)    
 - [Obsidian Customizable Menu](https://github.com/kzhovn/obsidian-customizable-menu)
-
-The file will be in `site-packages/mkdocs_obsidian`  
 
 ### IOS
 The script support IOS using :
@@ -170,7 +172,7 @@ The script support IOS using :
 - [Pyto](https://pyto.app) ($3 lite version / $10 complete version) [^4]
 - [Working Copy](https://workingcopyapp.com/) (Free for student / $19)
 
->The option `mobile` will **never** push. You need to use Working Copy to push the converted file.
+> The option `mobile` will **never** push. You need to use Working Copy to push the converted file.
 
 You can :
 1. Share the entire vault : `obs2mk --mobile`
