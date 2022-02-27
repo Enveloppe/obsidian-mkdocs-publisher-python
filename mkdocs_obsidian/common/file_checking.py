@@ -37,7 +37,9 @@ def delete_not_exist():
             excluded.append(os.path.basename(note))
     for file in glob.iglob(str(docs), recursive=True):
         if not any(i in file for i in important_folder):
-            if not re.search("(README|index|CNAME|tags|tag)", os.path.basename(file)) and (
+            if not re.search(
+                "(README|index|CNAME|tags|tag)", os.path.basename(file)
+            ) and (
                 os.path.basename(file) not in vault_file
                 or os.path.basename(file) in excluded
             ):  # or if file in file_excluded

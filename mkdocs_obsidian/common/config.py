@@ -14,6 +14,7 @@ from rich import print
 import mkdocs_obsidian as obs
 import platform
 
+
 def pyto_environment(console):
     """
     Use pyto bookmark to get path on IOS
@@ -28,12 +29,12 @@ def pyto_environment(console):
     sleep(5)  # The user needs to read the message !
     vault = bm.FolderBookmark()
     vault_path = vault.path
-    console.print(f'[u]Vault:[/][i] {vault_path}[/]\n')
+    console.print(f"[u]Vault:[/][i] {vault_path}[/]\n")
     console.print("Please provide the [u bold]blog[/] repository path: ")
     sleep(5)  # The user needs to read the message !
     blog = bm.FolderBookmark()
     blog_path = blog.path
-    console.print(f'[u]Blog:[/][i] {blog_path}[/]\n')
+    console.print(f"[u]Blog:[/][i] {blog_path}[/]\n")
     return vault_path, blog_path
 
 
@@ -55,20 +56,22 @@ def legacy_environment(console):
         )
     return vault, blog
 
+
 def PC_environment(console):
     import tkinter.filedialog
+
     vault = ""
     blog = ""
     while vault == "":
         console.print("Please provide your [u bold]obsidian vault[/] path")
         sleep(1)
         vault = tkinter.filedialog.askdirectory()
-    console.print(f'[u]Vault:[/][i] {vault}[/]\n')
+    console.print(f"[u]Vault:[/][i] {vault}[/]\n")
     while blog == "":
         console.print("Please provide the [u bold]blog[/] repository path")
         sleep(1)
         blog = tkinter.filedialog.askdirectory()
-    console.print(f'[u]Blog:[/][i] {blog}[/]\n')
+    console.print(f"[u]Blog:[/][i] {blog}[/]\n")
     return vault, blog
 
 
@@ -87,14 +90,14 @@ def ashell_environment(console):
     # Now, the os.getcwd() change for the pickedFolder
     vault = os.getcwd()
     sleep(3)
-    console.print(f'[u]Vault:[/][i] {vault}[/]\n')
+    console.print(f"[u]Vault:[/][i] {vault}[/]\n")
     console.print("Please provide the [u bold]blog[/] repository path: ")
     sleep(3)  # The user needs to read the message !
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
     sleep(10)
     console.input("Press any key to continue...")
     blog = os.getcwd()
-    console.print(f'[u]Blog:[/][i] {blog}[/]\n')
+    console.print(f"[u]Blog:[/][i] {blog}[/]\n")
     # return to default environment
     cmd = "cd ~/Documents"
     subprocess.Popen(cmd, stdout=subprocess.PIPE)
@@ -144,6 +147,7 @@ def create_env():
         pyto_check = False
     try:
         import subprocess
+
         process = subprocess.Popen("echo $TERM_PROGRAM", stdout=subprocess.PIPE)
         output, error = process.communicate()
         ashell = output.decode("utf-8").strip() == "a-Shell"
