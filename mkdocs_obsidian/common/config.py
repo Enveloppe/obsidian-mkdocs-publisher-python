@@ -46,7 +46,7 @@ def legacy_environment(console):
     """
     vault = ""
     blog = ""
-    while vault == "" or not os.path.isdir(vault):
+    while vault == "" or not os.path.isdir(vault) or not right_path(vault):
         vault = str(
             console.input("Please provide your [u bold]obsidian vault[/] path: ")
         )
@@ -62,7 +62,7 @@ def PC_environment(console):
 
     vault = ""
     blog = ""
-    while vault == "":
+    while vault == "" or not right_path(vault):
         console.print("Please provide your [u bold]obsidian vault[/] path")
         sleep(1)
         vault = tkinter.filedialog.askdirectory()
@@ -126,7 +126,11 @@ def check_url(blog_path: str):
         pass
     return web
 
-
+def right_path(vault):
+    config_vault = os.path.join(vault, '.obsidian')
+    if os.path.isdir(config_vault):
+        return True
+    return False
 def create_env():
     """
     Create environment variable with:
@@ -191,9 +195,12 @@ def create_env():
         env.write(f"index_key={index_key}\n")
     post = Path(f"{blog}/docs/notes")
     img = Path(f"{blog}/docs/assets/img/")
-    img.mkdir(exist_ok=True)
-    post.mkdir(exist_ok=True)
-    sys.exit("Environment created.")
+    try:
+        img.mkdir(exist_ok=True) #Assets must exist, raise a file not found error if not.
+        post.mkdir(exist_ok=True, parents=True) #Notes is needed in this configuration ;
+        sys.exit("Environment created.")
+    except FileNotFoundError:
+        sys.exit('Error in configuration, please, retry with the correct path. ')
 
 
 def git_push(
