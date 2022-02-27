@@ -126,11 +126,14 @@ def check_url(blog_path: str):
         pass
     return web
 
+
 def right_path(vault):
-    config_vault = os.path.join(vault, '.obsidian')
+    config_vault = os.path.join(vault, ".obsidian")
     if os.path.isdir(config_vault):
         return True
     return False
+
+
 def create_env():
     """
     Create environment variable with:
@@ -196,11 +199,15 @@ def create_env():
     post = Path(f"{blog}/docs/notes")
     img = Path(f"{blog}/docs/assets/img/")
     try:
-        img.mkdir(exist_ok=True) #Assets must exist, raise a file not found error if not.
-        post.mkdir(exist_ok=True, parents=True) #Notes is needed in this configuration ;
+        img.mkdir(
+            exist_ok=True
+        )  # Assets must exist, raise a file not found error if not.
+        post.mkdir(
+            exist_ok=True, parents=True
+        )  # Notes is needed in this configuration ;
         sys.exit("Environment created.")
     except FileNotFoundError:
-        sys.exit('Error in configuration, please, retry with the correct path. ')
+        sys.exit("Error in configuration, please, retry with the correct path. ")
 
 
 def git_push(
