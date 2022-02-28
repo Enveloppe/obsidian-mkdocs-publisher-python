@@ -63,13 +63,7 @@ You can customize :
 You don't need to touch anything in `features ; markdown_extensions…`
 
 ## Local testing
-To locally build template, you need to run `pip install -r requirements.txt` after cloning : 
-```bash
-git clone git@github.com:your_username/your_blog_name.git
-cd your_blog_name
-pip install -r requirements.txt
-```
-To run locally the blog : `mkdocs serve`
+To run locally the blog : `mkdocs serve`. To install requirements, check the [Quick Installation](#Quick-installation-tutorial)
 
 The blog will be published through [GitHub Page](https://pages.github.com/) using the `gh-page` branch. Everything is already configured by the template for that.
 
@@ -79,22 +73,21 @@ The script's goal is to move an authorized file (or multiple authorized file) fr
 - Convert the **code block** [Admonition](https://github.com/valentine195/obsidian-admonition) to [material Admonition](https://squidfunk.github.io/mkdocs-material/reference/admonitions/)[^1]
 - Remove Obsidian's comments as `%% comments %%`
 - Copy the file in `docs` or a specific folder structure. 
-- Add custom CSS based on markdown attribute or tags ([CM6 Live Preview](https://github.com/nothingislost/obsidian-cm6-attributes) ; [Markdown Attribute](https://github.com/valentine195/obsidian-markdown-attributes) and [Contextual Typography](https://github.com/mgmeyers/obsidian-contextual-typography)). 
+- Add custom CSS based on  [markdown attribute or tags](#Custom-attribute-example) ([CM6 Live Preview](https://github.com/nothingislost/obsidian-cm6-attributes) ; [Markdown Attribute](https://github.com/valentine195/obsidian-markdown-attributes) and [Contextual Typography](https://github.com/mgmeyers/obsidian-contextual-typography)). 
 
 Furthermore, it will also carry :
 - Of the support of [Folder Note — Pagination Indexes](#folder-note)
-- Copy a link to the blog converted file
+- Copy a link to the blog converted file (only if one file is converted)
 
 ## File's front matter
 The script relies on the front matter** of the notes you want to publish. 
 1. `share: true` allow publishing the file[^2]
-2. `category` to choose where the file will be after conversion ; allowing categorization for the blog. 
+2. `category` to choose where the file will be after conversion ; allowing categorization for the blog.[^6]
     - `category: false` will **hide** the file from navigation.
     - `category: hidden` will do the same.
     - `category: folder1/folder2/` will move the file in `folder2`, under `folder1`
     - `category: folder1/folder2/filename` will rename the file `index` and allow support of [section's index page](https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#section-index-pages)  
-    You can customize the folder with [Awesome Pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
-3. `update: false` prevent to update the file after the first publishing
+3. `update: false` prevent to update the file after the first publication
 4. `description` : Add a description to the file (for meta-tag sharing)[^3]
 5. `title` : Change the title in the navigation.
 6. `image` : Add an image for meta-tags sharing.[^3] It needs to be the name of the file, as `image.png`. 
@@ -280,3 +273,4 @@ If you have more question, don't forget to read the [Q&A](https://github.com/Mar
 [^3]: **Meta tags** are snippets of text that describe a page’s content; the meta tags don’t appear on the page itself, but only in the page’s source code. Meta tags are essentially little content descriptors that help tell search engines what a web page is about. [Source](https://www.wordstream.com/meta-tags)
 [^4]: Using Pyto you need to add the writing authorization for your vault and blog repository. You can access it in parameters > Runtime. Also, the configuration file will be in `site_package` directly.
 [^5]: Beware, if it exists a file with the same name, it will take the first found. 
+[^6]: You can customize the folder with [Awesome Pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
