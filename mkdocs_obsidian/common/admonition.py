@@ -9,6 +9,7 @@ from itertools import zip_longest
 from pathlib import Path
 
 import yaml
+from rich import print
 
 from mkdocs_obsidian.common import global_value as config
 
@@ -117,11 +118,11 @@ def admonition_trad(file_data: list):
             try:
                 custom = yaml.safe_load(stream)
             except yaml.YAMLError:
-                sys.exit(
-                    f"Error in {admonition_custom} : Your YAML frontmatter doesn't seem"
+                print(
+                    f"[red bold] Error in [u]{admonition_custom}[/] : Your YAML frontmatter doesn't seem"
                     " valid! Use https://jsonformatter.org/yaml-validator to"
-                    " correct it!"
-                )
+                    " correct it!")
+                sys.exit(2)
     adm_list = adm_list + custom
     for i in range(0, len(file_data)):
         if re.search("[`?!]{3}( ?)\w+(.*)", file_data[i]):

@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import (
     conversion as convert,
     config as setup,
     global_value as value,
-)
+    )
 
 
 def convert_one(ori, git: bool, meta: int, obsidian=False):
@@ -65,8 +65,11 @@ def convert_one(ori, git: bool, meta: int, obsidian=False):
                     f" {file_name.lower()}"
                 )
     except yaml.YAMLError:
-        sys.exit(
-            f"Error in {file_name} : Your YAML frontmatter doesn't seem valid! Use"
-            " https://jsonformatter.org/yaml-validator to correct it!"
-        )
+        if obsidian:
+            print(f"Error in {file_name} : Your YAML frontmatter doesn't seem valid! Use"
+            " https://jsonformatter.org/yaml-validator to correct it!")
+        else:
+            print(f"Error in [i u]{file_name}[/]: Your YAML frontmatter doesn't seem valid! Use"
+            " https://jsonformatter.org/yaml-validator to correct it!")
+        sys.exit(2)
     sys.exit()

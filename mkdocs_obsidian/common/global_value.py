@@ -2,11 +2,13 @@
 Get the environment variables
 """
 
-from pathlib import Path
-import sys
 import glob
 import os
+import sys
+from pathlib import Path
+
 from dotenv import dotenv_values
+from rich import print
 
 import mkdocs_obsidian as obs
 from mkdocs_obsidian.common import config
@@ -93,7 +95,8 @@ try:
     VAULT = VAULT.expanduser()
     BASEDIR = BASEDIR.expanduser()
 except RuntimeError:
-    sys.exit("Please provide a valid path for all config items")
+    print('[red bold] Please provide a valid path for all config items')
+    sys.exit(3)
 if DEFAULT_NOTES == "/":
     DEFAULT_NOTES = ""
 POST = Path(f"{BASEDIR}/docs/{DEFAULT_NOTES}")

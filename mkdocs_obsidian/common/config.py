@@ -293,9 +293,11 @@ def create_env():
             exist_ok=True
         )  # Assets must exist, raise a file not found error if not.
         post.mkdir(exist_ok=True, parents=True)
-        sys.exit("Environment created.")
+        print('[green] Environment created ![/]')
+        sys.exit()
     except FileNotFoundError:
-        sys.exit("Error in configuration, please, retry with the correct path. ")
+        print('[red bold] Error in configuration, please, retry with the correct path.')
+        sys.exit(3)
 
 
 def git_push(
