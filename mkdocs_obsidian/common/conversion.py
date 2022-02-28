@@ -210,7 +210,7 @@ def convert_hashtags(final_text: str):
                     + final_text.replace("#", "").strip()
                     + "**{: "
                     + token[i]
-                    + "}  \n"
+                    + "}\n"
                 )
             else:
                 ial = "**" + final_text.strip() + "**{: " + token[i] + "}  \n"
@@ -221,9 +221,11 @@ def convert_hashtags(final_text: str):
                 + token[i].replace("#", " ").strip()
                 + "**{: "
                 + token[i].strip()
-                + "}{: .hash}  \n"
+                + " .hash}  \n"
             )
+
             final_text = final_text.replace(token[i], ial, 1)
+
     return final_text
 
 
