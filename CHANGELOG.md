@@ -2,6 +2,22 @@
 
 <!--next-version-placeholder-->
 
+## v2.0.1 (2022-02-28)
+### Fix
+* **exit:** Better docs for exits ([`d99a821`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d99a8215f8468d82bc0a20e6a081432758a1e428))
+* **main:** Import before argparse break help ([`d99ea83`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d99ea83a13a2cf48c9b84d6d8541e0a033dd286f))
+
+### Documentation
+* **readme:** Update readme ([`1cf9090`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1cf9090387ea46e0175e2c9909c60eddc1d2e8a1))
+* **readme:** Typo ([`c823396`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c8233964e8ba8a1cc215bba8db6ceea6700f1fb8))
+* Fix typo ([`88c2df4`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/88c2df48261f8a4e0ccdb5f0a8ecaaea0cdb667f))
+* **readme:** Fix footnote ([`9fe1404`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/9fe1404a74dcf432651133f384ce82f122bb3864))
+* **readme:** Typo ([`7f01034`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/7f01034850d08b915d812fdbbd1d078279dc9a6c))
+* **readme:** Typo ([`71fe99e`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/71fe99e93c7505534b43b9644b0769a4e380431a))
+* **readme:** Fix typo ([`c1be14c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c1be14cfe9d65d2f320e85dbe8a6d78a62cef0e5))
+* **readme:** Refactoring all the doc ([`9c347db`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/9c347db640e4ebb741a1e1cc2fb3b214ff273b1c))
+* **docstring:**  Reformat docstring ([`7380fb4`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/7380fb459675477e4b1f9f5fd067be48946335f2))
+
 ## v2.0.0 (2022-02-27)
 ### Feature
 * **exclude:** Add important file in excluded ([`032ae7d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/032ae7d2e7c2dba9619b27545e92935976cb86be))
