@@ -40,14 +40,13 @@ You need :
 - Optional *(Windows)*: [Windows Terminal](https://docs.microsoft.com/fr-fr/windows/terminal/)
 
 ## Quick installation tutorial
-1. Click on [use this template](https://github.com/Mara-Li/mkdocs_obsidian_template/generate) ; Use the name of your choice.[^7]
-2. Click on [code](https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories) → SSH ; Copy the link
-3. Run (in terminal):
+1. Click on [use this template](https://github.com/Mara-Li/mkdocs_obsidian_template/generate)[^7]
+2. Use the name of your choice.
+3. Click on [code](https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories) → SSH ; Copy the link
+4. Run (in terminal):
 ```bash
 git clone [[PASTE THE LINK HERE]] publish_blog
-cd publish_blog
 pip install obs2mk --upgrade
-pip install -r requirements.txt
 ```
 
 # Creating the blog
@@ -55,7 +54,7 @@ pip install -r requirements.txt
 In your new `publish_blog` folder, you will spot a `mkdocs.yml`. This file allows you to customize your blog! The most important to edit :
 1. `site_name` 
 2. `site_description`
-3. `site_url` (critical) : By default, it's `https://github_username.io/repo_name`
+3. `site_url` (critical) : By default, it's `https://github_username.io/repo_name`[^8]
 
 To edit the logo and the favicon, first put the chosen file in `assets/logo`, and change `logo` and `favicon` :
 1. `logo: assets/logo/logo_name.png`
@@ -70,8 +69,14 @@ You can customize :
 
 You don't need to touch anything in `features` ; `markdown_extensions…`
 
-## Local testing
-To run locally the blog : `mkdocs serve`. To install requirements, check the [Quick Installation](#Quick-installation-tutorial)
+## Local testing (optional)
+
+To run locally the blog, you need to install the requirements and run `mkdocs serve`.
+```
+cd publish_blog
+pip install -r requirements.txt
+mkdocs serve
+```
 
 The blog will be published through [GitHub Page](https://pages.github.com/) using the `gh-page` branch. Everything is already configured by the template for that.
 
@@ -277,4 +282,5 @@ If you have more question, don't forget to read the [Q&A](https://github.com/Mar
 [^4]: Using Pyto you need to add the writing authorization for your vault and blog repository. You can access it in parameters > Runtime. 
 [^5]: Beware, if it exists a file with the same name, it will take the first found. 
 [^6]: You can customize the folder with [Awesome Pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
-[^7]: You must be connected to copy the template ! You can test locally through clone -> https : `git clone https://github.com/Mara-Li/mkdocs_obsidian_template.git` or [with downloading the ZIP](https://github.com/Mara-Li/mkdocs_obsidian_template/archive/refs/heads/main.zip)
+[^7]: You must be connected to copy the template ! You can test locally through clone > https : `git clone https://github.com/Mara-Li/mkdocs_obsidian_template.git` or [with downloading the ZIP](https://github.com/Mara-Li/mkdocs_obsidian_template/archive/refs/heads/main.zip)
+[^8]: You can found the link in Repository settings > Pages. 
