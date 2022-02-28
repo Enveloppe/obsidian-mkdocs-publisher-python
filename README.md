@@ -25,16 +25,24 @@ Mkdocs Obsidian is an association between a python script and a Material mkdocs 
 
 </details>
 
+# TLDR
+1. Install / update with `pip install obs2mk --upgrade`
+2. Template the blog, clone it and configure the blog. 
+3. Configure the script (first run)
+4. Add `share: true` in Obsidian's note frontmatter
+5. Customize the `category` key in Obsidian's note frontmatter
+6. Run the script `obs2mk`
+
 # Prerequisites
 You need : 
-- [Git](https://git-scm.com/)
+- [Git](https://git-scm.com/) and a [Github Account](https://github.com/)
 - [Python](https://www.python.org/)
 - Optional *(Windows)*: [Windows Terminal](https://docs.microsoft.com/fr-fr/windows/terminal/)
 
 ## Quick installation tutorial
-1. Click on [use this template](https://github.com/Mara-Li/mkdocs_obsidian_template/generate) ; Use the name of your choice.
+1. Click on [use this template](https://github.com/Mara-Li/mkdocs_obsidian_template/generate) ; Use the name of your choice.[^7]
 2. Click on [code](https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories) → SSH ; Copy the link
-3. Run : 
+3. Run (in terminal):
 ```bash
 git clone [[PASTE THE LINK HERE]] publish_blog
 cd publish_blog
@@ -54,13 +62,13 @@ To edit the logo and the favicon, first put the chosen file in `assets/logo`, an
 2. `favicon: assets/logo/favicon.png`
 
 You can customize :
-- font
+- Font
 - Color scheme, palette, icons 
 - Language  
-  
+
 [Check the documentation to get more information](https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/)
 
-You don't need to touch anything in `features ; markdown_extensions…`
+You don't need to touch anything in `features` ; `markdown_extensions…`
 
 ## Local testing
 To run locally the blog : `mkdocs serve`. To install requirements, check the [Quick Installation](#Quick-installation-tutorial)
@@ -96,7 +104,8 @@ The script relies on the front matter** of the notes you want to publish.
 The script can be use :
 - Directly in Obsidian, using [Obsidian Shell Commands](https://github.com/Taitava/obsidian-shellcommands) (see [Obsidian Shell's configuration](#obsidian-shell-configuration))
 - In [Terminal](#terminal).
-The platform supported are :
+
+The supported system are :
 - macOS, Linux and Windows
 - [IOS](#ios) (with [Pyto](https://pyto.app) and/or [a-shell](https://holzschu.github.io/a-Shell_iOS/) with [Working Copy](https://workingcopyapp.com/))
 
@@ -108,7 +117,7 @@ At the first run, you will be asked to configure some key and specific path.
 4. <u>Index key:</u> Support for citation of [pagination index pages](#folder-note). By default, it uses `(i)`
 5. <u>Default blog folder:</u> By default, the notes will be in `docs/notes` but you can change that, or use `/` for root. 
 
-The file will be in `site-packages/mkdocs_obsidian`  
+The file will be in `site-packages/mkdocs_obsidian/.mkdocs_obsidian` (unless for Pyto : the `.env` will be directly in `site_package/.mkdocs_obsidian`)
 
 ### Terminal 
 ```bash
@@ -258,19 +267,14 @@ category:
 - The script will not manually move the file if you change a `category` : you need to delete it manually to prevent duplicate.
 - ⚠️You must use `shortlinks` in Obsidian configuration. 
 
-# TLDR
-1. Install / update with `pip install obs2mk --upgrade`
-2. Add `share: true` in front matter
-3. Customize the `category` key in front matter
-4. Run the script `obs2mk`
 
 If you have more question, don't forget to read the [Q&A](https://github.com/Mara-Li/mkdocs_obsidian_template/wiki/Q&A/) !
-
 
 
 [^1]: No support for nested admonition and [Microsoft Document Syntax](https://github.com/valentine195/obsidian-admonition#microsoft-document-syntax)
 [^2]: This key can be configured 
 [^3]: **Meta tags** are snippets of text that describe a page’s content; the meta tags don’t appear on the page itself, but only in the page’s source code. Meta tags are essentially little content descriptors that help tell search engines what a web page is about. [Source](https://www.wordstream.com/meta-tags)
-[^4]: Using Pyto you need to add the writing authorization for your vault and blog repository. You can access it in parameters > Runtime. Also, the configuration file will be in `site_package` directly.
+[^4]: Using Pyto you need to add the writing authorization for your vault and blog repository. You can access it in parameters > Runtime. 
 [^5]: Beware, if it exists a file with the same name, it will take the first found. 
 [^6]: You can customize the folder with [Awesome Pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
+[^7]: You must be connected to copy the template ! You can test locally through clone -> https : `git clone https://github.com/Mara-Li/mkdocs_obsidian_template.git` or [with downloading the ZIP](https://github.com/Mara-Li/mkdocs_obsidian_template/archive/refs/heads/main.zip)
