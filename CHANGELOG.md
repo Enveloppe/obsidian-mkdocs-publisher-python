@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.0.2 (2022-02-28)
+### Fix
+* **hashtag:** Fix not multiple IAL support ([`54b29be`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/54b29be699ca0cb91e4133859648f406b979ec97))
+
 ## v2.0.1 (2022-02-28)
 ### Fix
 * **exit:** Better docs for exits ([`d99a821`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d99a8215f8468d82bc0a20e6a081432758a1e428))
