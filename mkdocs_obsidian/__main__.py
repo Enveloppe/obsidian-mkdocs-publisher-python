@@ -2,10 +2,11 @@ import argparse
 import os
 import sys
 from datetime import datetime
-from rich.markdown import Markdown
-from rich.console import Console
-from rich import print
 from pathlib import Path
+
+from rich import print
+from rich.console import Console
+from rich.markdown import Markdown
 
 try:
     sys.stdin.reconfigure(encoding="utf-8")
@@ -14,12 +15,11 @@ except AttributeError:
     pass
 
 from mkdocs_obsidian.common import (
-    config as setup,
     global_value as value,
     convert_all as all,
     convert_one as one,
-    file_checking as check,
-)
+    file_checking as check
+    )
 
 
 def search_shortcuts(file):
@@ -51,7 +51,7 @@ def obsidian_shell(file="0", meta_update=0, vault_share=0, git=True):
         file = search_shortcuts(file)
         if not file:
             print("File not found.")
-            sys.exit()
+            sys.exit(1)
         one.convert_one(file, git, meta_update)
     elif file != "0" and os.path.exists(Path(file)):
         one.convert_one(file, git, meta_update)
@@ -66,17 +66,17 @@ def mobile_shortcuts(file="0", meta_update=0, vault_share=0):
     :param vault_share: int (bool)
     :return: None
     """
+    from mkdocs_obsidian.common import config as setup
     if file == "0":
         all.convert_all(False, False, 1, 0, vault_share)
     elif not os.path.exists(Path(file)):
         file = search_shortcuts(file)
         if not file:
             print("[u red]File not found.")
-            sys.exit()
+            sys.exit(1)
         one.convert_one(file, False, meta_update)
     elif file == "--c":
         setup.create_env()
-        sys.exit()
     elif file != "0" and os.path.exists(Path(file)):
         one.convert_one(file, False, meta_update)
 
@@ -149,6 +149,7 @@ def main():
     console = Console()
     args = parser.parse_args()
     if args.config:
+        from mkdocs_obsidian.common import config as setup
         setup.create_env()
         sys.exit()
     ori = args.filepath
@@ -201,7 +202,7 @@ def main():
             one.convert_one(ori, ng, meta_update)
         else:
             print(f"[red bold]Error :[/] [u]{ori}[/] [red bold]doesn't exist.")
-            sys.exit()
+            sys.exit(1)
     else:
         if args.mobile:
             mobile_shortcuts("0", meta_update, share_vault)
