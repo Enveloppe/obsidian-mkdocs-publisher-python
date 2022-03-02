@@ -11,10 +11,6 @@ from pathlib import Path
 import yaml
 from rich import print
 
-from mkdocs_obsidian.common import global_value as config
-
-BASEDIR = config.BASEDIR
-
 
 def code_blocks(start_list: list, end_list: list):
     """Check all code blocks in the contents
@@ -55,11 +51,13 @@ def code_blocks(start_list: list, end_list: list):
     return merged
 
 
-def admonition_trad(file_data: list):
+def admonition_trad(BASEDIR, file_data: list):
     """Change all admonition to material admonition
 
     Parameters
     ----------
+    BASEDIR: str | Path
+        Basedirectory from configuration
     file_data : list
         Contents of the file
 

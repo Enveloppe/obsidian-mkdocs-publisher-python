@@ -14,26 +14,18 @@ import unidecode
 
 from mkdocs_obsidian.common import (
     file_checking as check,
-    global_value as config,
     metadata as mt,
     admonition as adm,
-)
-
-BASEDIR = Path(config.BASEDIR)
-VAULT = Path(config.VAULT)
-VAULT_FILE = config.VAULT_FILE
-SHARE = config.SHARE
-POST = config.POST
-DEFAULT_NOTES = config.DEFAULT_NOTES
+    )
 
 
-def get_image(image):
+def get_image(configuration,image):
     """Check if the image exists in the VAULT
 
     Parameters
     ----------
-    image :
-        str
+    configuration: dict
+    image : str
 
     Returns
     -------
@@ -41,6 +33,7 @@ def get_image(image):
         Path to image if True, False otherwise
 
     """
+    VAULT_FILE = configuration['vault_file']
     shortname = unidecode.unidecode(os.path.splitext(image)[0])
     assets = [x for x in VAULT_FILE if not x.endswith(".md")]
     for filepath in assets:
@@ -50,15 +43,17 @@ def get_image(image):
     return False
 
 
-def copy_image(final_text):
+def copy_image(configuration,final_text):
     """Copy the image in assets if exist
 
     Parameters
     ----------
+    configuration: dict
     final_text : str
         Line readed
 
     """
+    IMG = configuration['img']
     list_text = final_text.split("!")
     if len(list_text) > 0:
         for i in list_text:
@@ -66,22 +61,23 @@ def copy_image(final_text):
             if link:
                 final_text = re.sub("(!?|\(|(%20)|\[|\]|\))", "", i)
                 final_text = os.path.basename(final_text.split("|")[0])
-                image_path = get_image(final_text)
+                image_path = get_image(configuration,final_text)
                 if (
                     image_path
                     and os.path.isfile(image_path)
                     and not image_path.endswith(".md")
                 ):
                     shutil.copyfile(
-                        image_path, Path(f"{config.IMG}/{os.path.basename(image_path)}")
+                        image_path, Path(f"{IMG}/{os.path.basename(image_path)}")
                     )
 
 
-def clipboard(filepath, folder):
+def clipboard(configuration,filepath, folder):
     """Copy file URL to clipboard
 
     Parameters
     ----------
+    configuration: dict
     filepath : str
         Path to the file
     folder: str
@@ -93,7 +89,7 @@ def clipboard(filepath, folder):
     if filename == folder:
         filename = ""
     paste = url.quote(f"{folder_key}/{filename}")
-    clip = f"{config.WEB}{paste}"
+    clip = f"{configuration['web']}{paste}"
     if platform.architecture()[1] == "":
         try:
             import pasteboard  # work with pyto
@@ -114,11 +110,12 @@ def clipboard(filepath, folder):
             )
 
 
-def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
+def file_write(configuration,filepath, contents: list, folder, preserve=0, meta_update=1):
     """Write the new converted file and update metadata if meta_update is 0
 
     Parameters
     ----------
+    configuration: dict
     filepath : str, Path
         file to convert
     contents: list
@@ -136,6 +133,7 @@ def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
         True if file is created, False otherwise
 
     """
+    SHARE=configuration['share']
     file_name = os.path.basename(filepath)
     shortname = unidecode.unidecode(os.path.splitext(file_name)[0])
     foldername = unidecode.unidecode(Path(folder).name)
@@ -159,7 +157,7 @@ def file_write(filepath, contents: list, folder, preserve=0, meta_update=1):
     return True
 
 
-def read_custom():
+def read_custom(BASEDIR):
     """read custom css, selection of id for custom attribute (special hashtags)
 
     Parameters
@@ -180,11 +178,12 @@ def read_custom():
     return id_css
 
 
-def convert_hashtags(final_text: str):
+def convert_hashtags(configuration,final_text: str):
     """Convert configured hashtags with inline attribute CSS from custom.css
 
     Parameters
     ----------
+    configuration: dict
     final_text: str
         A line of the contents to convert if contains hashtags
 
@@ -195,7 +194,7 @@ def convert_hashtags(final_text: str):
         converted line
 
     """
-    css = read_custom()
+    css = read_custom(configuration['basedir'])
     token = re.findall("#\w+", final_text)
     token = list(set(token))
     for i in range(0, len(token)):
@@ -229,7 +228,7 @@ def convert_hashtags(final_text: str):
     return final_text
 
 
-def index_path(file_name):
+def index_path(file_name, VAULT_FILE):
     """
     Get the path of a founded index.md
 
@@ -237,6 +236,7 @@ def index_path(file_name):
     ----------
     file_name: str
         File found to be an index
+    VAULT_FILE: list
 
     Returns
     -------
@@ -255,7 +255,7 @@ def index_path(file_name):
     return index
 
 
-def index_citation(final_text: str):
+def index_citation(final_text: str, configuration):
     """
     Allow the citation of index.md by citation with configured INDEX_KEY.
     Invert the alias and filename, replace filename by `category/index`
@@ -267,6 +267,7 @@ def index_citation(final_text: str):
 
     Parameters
     ----------
+    configuration: dict
     final_text : str
         Line to check, wikilinks or MD links
 
@@ -276,7 +277,8 @@ def index_citation(final_text: str):
         Return the line with alias and file name inverted
 
     """
-    INDEX_KEY = config.INDEX_KEY
+    INDEX_KEY = configuration['index_key']
+    VAULT_FILE = configuration['vault_file']
     if ") [" in final_text:
         cited = (
             re.search(
@@ -321,7 +323,7 @@ def index_citation(final_text: str):
                         .replace("[", "")
                         .replace(INDEX_KEY, "")
                     )
-                index = index_path(file_name)
+                index = index_path(file_name, VAULT_FILE)
                 cite = f"[[{index}|" + file_name.strip()
                 final_text = final_text.replace(i, cite)
             elif re.search(r"(.*)" + re.escape(INDEX_KEY) + r"(.*)\]", i):
@@ -334,7 +336,7 @@ def index_citation(final_text: str):
                 )
                 if len(file_name) == 0:
                     file_name = re.search("\]\((.*)", i).group(1).replace(")", "")
-                index = index_path(file_name)
+                index = index_path(file_name, VAULT_FILE)
                 cite = "[" + file_name + f"]({index})"
                 final_text = (
                     final_text.replace(i, cite)
@@ -345,11 +347,12 @@ def index_citation(final_text: str):
     return final_text
 
 
-def file_convert(filepath, force=0):
+def file_convert(configuration,filepath, force=0):
     """Read the filepath and convert each line based on regex condition.
 
     Parameters
     ----------
+    configuration: dict
     filepath : str
         path to file
     force : int, default: 0
@@ -362,12 +365,14 @@ def file_convert(filepath, force=0):
 
     """
     final = []
-    INDEX_KEY = config.INDEX_KEY
+
+    INDEX_KEY = configuration['index_key']
+    SHARE = configuration['share']
     meta = frontmatter.load(filepath)
     lines = meta.content.splitlines(True)
     if force != 1 and not meta.get(SHARE):
         return final
-    lines = adm.admonition_trad(lines)
+    lines = adm.admonition_trad(configuration['basedir'],lines)
     for line in lines:
         final_text = line
         if not final_text.strip().endswith("%%") and not final_text.strip().startswith(
@@ -375,7 +380,7 @@ def file_convert(filepath, force=0):
         ):
             # Skip obsidian comments
             # Check and copy image
-            copy_image(final_text)
+            copy_image(configuration,final_text)
             if not "`" in final_text:
                 final_text = re.sub(
                     "\%{2}(.*)\%{2}", "", final_text
@@ -396,12 +401,12 @@ def file_convert(filepath, force=0):
                 rf"\[\[?(.*)" + re.escape(INDEX_KEY) + r"(.*)\]\]?", final_text
             ):
                 # fix pagination.indexes page citation, exclude image/embed file
-                final_text = index_citation(final_text)
+                final_text = index_citation(final_text, configuration)
             if re.search("#\w+", final_text) and not re.search(
                 "(`|\[{2}|\()(.*)#(.*)(`|\]{2}|\))", final_text
             ):  # search hashtags not in link
                 # Convert hashtags
-                final_text = convert_hashtags(final_text)
+                final_text = convert_hashtags(configuration,final_text)
             elif re.fullmatch(
                 "\\\\", final_text.strip()
             ):  # New line when using "\" in obsidian filepath

@@ -5,29 +5,24 @@ Update metadata in the file, if option is used.
 import os
 import re
 import urllib.parse as url
-from pathlib import Path
 
 import frontmatter
 
-from mkdocs_obsidian.common import global_value as config
 
-BASEDIR = Path(config.BASEDIR)
-WEB = config.WEB
-SHARE = config.SHARE
-
-
-def update_frontmatter(filepath, link=1):
+def update_frontmatter(filepath, configuration,link=1):
     """If link = 1, update the frontmatter with new publish URL
     Also, update the share state if convert_one.
 
     Parameters
     ----------
-    filepath: str, Path
+    configuration: dict
+    filepath: str | Path
         path to source file
     link: int, default: 1
         if 1 add link to the metadata
 
     """
+    SHARE = configuration['share']
     with open(filepath, "r", encoding="utf8") as metadata:
         meta = frontmatter.load(metadata)
     if meta.get("tag"):
@@ -38,7 +33,7 @@ def update_frontmatter(filepath, link=1):
         tag = ""
     meta.metadata.pop("tag", None)
     meta.metadata.pop("tags", None)
-    folder = meta.metadata.get("category", config.DEFAULT_NOTES)
+    folder = meta.metadata.get("category", configuration['default_note'])
 
     with open(filepath, "w", encoding="utf-8") as f:
         filename = os.path.basename(filepath)
@@ -46,7 +41,7 @@ def update_frontmatter(filepath, link=1):
         if filename == os.path.basename(folder):
             filename = ""
         path_url = url.quote(f"{folder}/{filename}")
-        clip = f"{WEB}{path_url}"
+        clip = f"{configuration['web']}{path_url}"
         meta["link"] = clip
         update = frontmatter.dumps(meta, sort_keys=False)
         meta = frontmatter.loads(update)

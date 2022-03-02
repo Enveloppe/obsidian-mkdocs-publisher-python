@@ -16,62 +16,58 @@ except AttributeError:
     pass
 
 from mkdocs_obsidian.common import (
-    global_value as value,
     convert_all as all,
     convert_one as one,
     file_checking as check,
 )
 
 
-def search_shortcuts(file):
+def search_shortcuts(VAULT_FILE, file):
     """
-    Search a specific file in vault, using shortcuts on IOS
-    :param file: str (filepath)
-    :return: str (filepath) / False
     """
     if not file.endswith(".md"):
         file = file + ".md"
-    for md in value.VAULT_FILE:
+    for md in VAULT_FILE:
         if os.path.basename(md) == os.path.basename(file):
             return md
     return False
 
 
-def obsidian_shell(file="0", meta_update=0, vault_share=0, git=True, delete_option=False):
+def obsidian_shell(configuration, file="0", meta_update=0, vault_share=0, git=True, delete_option=False):
     """
     """
-
+    VAULT_FILE = configuration['vault_file']
     if file == "0":
-        all.obsidian_simple(delete_option, git, 1, 0, vault_share)
+        all.obsidian_simple(configuration,delete_option, git, 1, 0, vault_share)
     elif not os.path.exists(Path(file)):
-        file = search_shortcuts(file)
+        file = search_shortcuts(VAULT_FILE,file)
         if not file:
             print("File not found.")
             sys.exit(1)
-        one.convert_one(file, git, meta_update)
+        one.convert_one(file, configuration,git, meta_update)
     elif file != "0" and os.path.exists(Path(file)):
-        one.convert_one(file, git, meta_update)
+        one.convert_one(file, configuration, git, meta_update)
     sys.exit()
 
 
-def mobile_shortcuts(file="0", meta_update=0, vault_share=0, delete_option=False):
+def mobile_shortcuts(configuration,file="0", meta_update=0, vault_share=0, delete_option=False):
     """
 
     """
     from mkdocs_obsidian.common import config as setup
-
+    VAULT_FILE = configuration['vault_file']
     if file == "0":
-        all.convert_all(delete_option, False, 1, 0, vault_share)
+        all.convert_all(configuration,delete_option, False, 1, 0, vault_share)
     elif not os.path.exists(Path(file)):
-        file = search_shortcuts(file)
+        file = search_shortcuts(VAULT_FILE,file)
         if not file:
             print("[u red]File not found.")
             sys.exit(1)
-        one.convert_one(file, False, meta_update)
+        one.convert_one(file, configuration, False, meta_update)
     elif file == "--c":
         setup.create_env()
     elif file != "0" and os.path.exists(Path(file)):
-        one.convert_one(file, False, meta_update)
+        one.convert_one(file, configuration,False, meta_update)
 
 def keep(obsidian, console):
     info = check.delete_not_exist()
@@ -123,18 +119,18 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent(
             """Global options :
-        - `--git` : No commit and push to git ;
-        - `--mobile` : Use mobile shortcuts instead of `--git`
-        - `--meta` : Update frontmatter of source files
-        - `--keep` : Don't delete files in blog folder
-        - `--shell` : Remove Rich printing
+        - --git : No commit and push to git ;
+        - --mobile : Use mobile shortcuts instead of `--git`
+        - --meta : Update frontmatter of source files
+        - --keep : Don't delete files in blog folder
+        - --shell : Remove Rich printing
     Commands and specific options : 
         - configuration :
-            - `--new configuration_name` : Create a specific configuration for some files
+            - --new configuration_name : Create a specific configuration for some files
         - publish : Share all vault
-            - `--force` : Force updating
-            - `--vault` : Share all vault file, ignoring the share state.
-        - `file [file*]` : Share only one file
+            - --force : Force updating
+            - --vault : Share all vault file, ignoring the share state.
+        - file [file*] : Share only one file
         """
         ),
     )
@@ -180,45 +176,64 @@ def main():
         help="Keep deleted file from vault and removed shared file",
         action="store_true",
         )
+    parser.add_argument(
+        "--use",
+        "--config",
+        help="Use a different config from default",
+        action = "store",
+        metavar = 'configuration_name'
+    )
     parser.add_argument("--obsidian", "--shell", help=argparse.SUPPRESS, action='store_true')
     console = Console()
     args = parser.parse_args()
-    meta_update = int(args.meta)
-    no_git = args.git
-    if not args.keep:
-        stop_share = (args.obsidian, console)
-    else:
-        stop_share = 0
-    cmd = args.cmd
-    if cmd == 'config':
-        from mkdocs_obsidian.common import config as setup
+    from mkdocs_obsidian.common import config as setup
 
-        setup.create_env()
+    cmd = args.cmd
+
+    configuration_name = args.use or "0"
+    if cmd == 'config':
+        configuration_name = args.new or "0"
+        setup.create_env(configuration_name)
         sys.exit()
     #meta-update
-
-    elif cmd == "file":
-        file_source = args.filepath
-        if args.obsidian:
-            obsidian_shell(file_source,meta_update, git=no_git)
-            sys.exit()
-        elif args.mobile:
-            mobile_shortcuts(file_source, meta_update)
-            sys.exit()
-        elif os.path.exists(Path(file_source)):
-            one.convert_one(file_source, no_git, meta_update)
+    else:
+        configuration = setup.open_value(
+            configuration_name
+            )
+        meta_update = int(args.meta)
+        no_git = args.git
+        if not args.keep:
+            stop_share = (args.obsidian, console)
         else:
-            print(f"[red bold]Error :[/] [u]{file_source}[/] [red bold]doesn't exist.")
-            sys.exit(1)
+            stop_share = 0
+        if cmd == "file":
+            file_source = args.filepath
+            if args.obsidian:
+                obsidian_shell(configuration,file_source,meta_update, git=no_git)
+                sys.exit()
+            elif args.mobile:
+                mobile_shortcuts(configuration,file_source, meta_update)
+                sys.exit()
+            elif os.path.exists(Path(file_source)):
+                one.convert_one(file_source, configuration, no_git, meta_update)
+            else:
+                print(f"[red bold]Error :[/] [u]{file_source}[/] [red bold]doesn't exist.")
+                sys.exit(1)
 
-    elif cmd=="all":
-        vault_share = int(args.vault)
-        delete_option = args.force
-        if args.mobile:
-            mobile_shortcuts("0", meta_update, vault_share, delete_option)
-        elif args.obsidian:
-            obsidian_shell("0", meta_update, vault_share, delete_option)
+        elif cmd=="all":
+            vault_share = int(args.vault)
+            delete_option = args.force
+            if args.mobile:
+                mobile_shortcuts(configuration,"0", meta_update, vault_share, delete_option)
+            elif args.obsidian:
+                obsidian_shell(configuration,"0", meta_update, vault_share, delete_option)
+            else:
+                all.convert_all(configuration,delete_option, no_git, stop_share, meta_update, vault_share)
         else:
-            all.convert_all(delete_option, no_git, stop_share, meta_update, vault_share)
+            all.convert_all(
+                configuration, False, no_git, stop_share, meta_update, 0
+                )
+
+
 if __name__ == "__main__":
     main()
