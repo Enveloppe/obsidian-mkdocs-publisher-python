@@ -8,7 +8,7 @@ with open("requirements.txt") as f:
     required = f.read().splitlines()
 setup(
     name="obs2mk",
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     version=version,
     description="A script to share your obsidian vault (in partial way) using mkdocs",
     author="Mara-Li",
@@ -23,10 +23,6 @@ setup(
         "Topic :: Text Processing :: Markup :: Markdown",
         "License :: OSI Approved :: GNU Affero General Public License v3 or later"
         " (AGPLv3+)",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
     long_description=long_description,
