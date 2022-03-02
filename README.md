@@ -134,9 +134,9 @@ Global options :
 - `--shell` : Remove Rich printing
 
 Commands and specific options :
-- **configuration** : (*it will ignore `--use configuration_name`*)
+- **config** : (*it will ignore `--use configuration_name`*)
     - `--new configuration_name` : Create a specific configuration for some files
-- **publish** : Share all vault
+- **all** : Share all vault
     - `--force` : Force updating (ignore the difference between the source and blog file)
     - `--vault` : Share all vault file, ignoring the share state.
 - **`file [file*]`** : Share only one file
@@ -160,6 +160,14 @@ options:
   --use configuration_name, --config configuration_name
                         Use a different config from default
 ```
+
+The commands order is :
+`obs2mk (global_options) [all|config|file FILEPATH] (specific_options)`
+Where :
+- Global and specific options are optional
+- `all`, `config` and `file`[^9] are required
+You can use the command without argument with `obs2mk` to share every `share: true` file in your vault.
+
 
 #### Share one file : `obs2mk file FILEPATH`
 It will :
@@ -303,3 +311,4 @@ If you have more question, don't forget to read the [Q&A](https://github.com/Mar
 [^6]: You can customize the folder with [Awesome Pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
 [^7]: You must be connected to copy the template ! You can test locally through clone > https : `git clone https://github.com/Mara-Li/mkdocs_obsidian_template.git` or [with downloading the ZIP](https://github.com/Mara-Li/mkdocs_obsidian_template/archive/refs/heads/main.zip)
 [^8]: You can found the link in Repository settings > Pages. 
+[^9]: For `file` you need to add the filepath of the file you want to share : `obs2mk (global_option) file "filepath" (specific_options)`
