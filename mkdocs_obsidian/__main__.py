@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+import textwrap
 from datetime import datetime
 from pathlib import Path
 
@@ -18,8 +19,8 @@ from mkdocs_obsidian.common import (
     global_value as value,
     convert_all as all,
     convert_one as one,
-    file_checking as check
-    )
+    file_checking as check,
+)
 
 
 def search_shortcuts(file):
@@ -36,17 +37,12 @@ def search_shortcuts(file):
     return False
 
 
-def obsidian_shell(file="0", meta_update=0, vault_share=0, git=True):
+def obsidian_shell(file="0", meta_update=0, vault_share=0, git=True, delete_option=False):
     """
-    :param file: Filepath. 0 for all shared files
-    :param meta_update: Disable-enable metadata update in source file
-    :param vault_share: Share all vault.
-    :param git: If true, push to git
-    :return: /
     """
 
     if file == "0":
-        all.obsidian_simple(False, git, 1, 0, vault_share)
+        all.obsidian_simple(delete_option, git, 1, 0, vault_share)
     elif not os.path.exists(Path(file)):
         file = search_shortcuts(file)
         if not file:
@@ -58,17 +54,14 @@ def obsidian_shell(file="0", meta_update=0, vault_share=0, git=True):
     sys.exit()
 
 
-def mobile_shortcuts(file="0", meta_update=0, vault_share=0):
+def mobile_shortcuts(file="0", meta_update=0, vault_share=0, delete_option=False):
     """
-    Main function using on mobile
-    :param meta_update: Enable the metadata update
-    :param file: File to convert
-    :param vault_share: int (bool)
-    :return: None
+
     """
     from mkdocs_obsidian.common import config as setup
+
     if file == "0":
-        all.convert_all(False, False, 1, 0, vault_share)
+        all.convert_all(delete_option, False, 1, 0, vault_share)
     elif not os.path.exists(Path(file)):
         file = search_shortcuts(file)
         if not file:
@@ -80,138 +73,152 @@ def mobile_shortcuts(file="0", meta_update=0, vault_share=0):
     elif file != "0" and os.path.exists(Path(file)):
         one.convert_one(file, False, meta_update)
 
+def keep(obsidian, console):
+    info = check.delete_not_exist()
+    if len(info) > 1:
+        info_str = "\n- " + "\n- ".join(info)
+        if not obsidian:
+            console.print(
+                f'[[i not bold sky_blue2]{datetime.now().strftime("%H:%M:%S")}[/]]'
+                " 🗑️[u red bold]Delete from blog :[/]",
+                Markdown(info_str),
+                end="",
+                )
+        else:
+            print(
+                f'[{datetime.now().strftime("%H:%M:%Sf")}] 🗑️ Delete from blog:'
+                f" {info_str}"
+                )
+    elif len(info) == 1:
+        info_str = info[0]
+        if not obsidian:
+            console.print(
+                f"🗑️ [u red bold] Delete[/] [bold red i] {info_str}[/] [u red"
+                " bold]from blog[/]"
+                )
+        else:
+            print(f"Delete {info_str} from blog.")
+    return 1
 
 def main():
     """
     Main function using in CLI
+    Global options :
+        - --git : No commit and push to git ;
+        - --mobile : Use mobile shortcuts instead of `--git`
+        - --meta : Update frontmatter of source files
+        - --keep : Don't delete files in blog folder
+        - --shell : Remove Rich printing
+    Commands and specific options :
+        - configuration :
+            - --new configuration_name : Create a specific configuration for some files
+        - publish : Share all vault
+            - --force : Force updating
+        - vault: Share all file in vault
+            - --force : Force updating
+        - file [file] : Share only one file
     :return: None
     """
     parser = argparse.ArgumentParser(
-        description=(
-            "Create file in docs and relative folder, move image in assets, convert"
-            " admonition code_blocks, add links and push."
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent(
+            """Global options :
+        - `--git` : No commit and push to git ;
+        - `--mobile` : Use mobile shortcuts instead of `--git`
+        - `--meta` : Update frontmatter of source files
+        - `--keep` : Don't delete files in blog folder
+        - `--shell` : Remove Rich printing
+    Commands and specific options : 
+        - configuration :
+            - `--new configuration_name` : Create a specific configuration for some files
+        - publish : Share all vault
+            - `--force` : Force updating
+            - `--vault` : Share all vault file, ignoring the share state.
+        - `file [file*]` : Share only one file
+        """
+        ),
+    )
+
+    subparser = parser.add_subparsers(dest="cmd")
+    config = subparser.add_parser(
+        "config",
+        help=(
+            "Configure the script : Add or edit your vault and blog absolute path,"
+            " change some keys."
+        ),
+    )
+    config.add_argument(
+        "--new",
+        help="Create a new configuration",
+        action="store",
+        metavar="configuration_name",
+    )
+    publish = subparser.add_parser("all", help="Publish multiple files")
+    publish.add_argument(
+        "--force", action="store_true", help="Force updating all files"
+    )
+    publish.add_argument(
+        '--vault', action="store_true", help="Publish all file in your vault, ignoring the share state. "
         )
-    )
-    group_files = parser.add_mutually_exclusive_group()
+
+    files_cmd = subparser.add_parser("file", help="Publish only one file")
+    files_cmd.add_argument("filepath", action="store")
     group_git = parser.add_mutually_exclusive_group()
-    group_git.add_argument(
-        "--git", "--g", "--G", help="No commit and no push to git", action="store_false"
-    )
     group_git.add_argument(
         "--mobile",
         "--shortcuts",
-        "--s",
-        "--S",
-        help="Use mobile shortcuts fonction without push.",
-        action="store_true",
-    )
-    parser.add_argument(
-        "--meta",
-        "--m",
-        "--M",
-        help="Update the frontmatter with link",
-        action="store_true",
-    )
+        help="Use mobile shortcuts, without push",
+        action="store_true"
+        )
+    group_git.add_argument("--git", "--g", '--G', help="No commit and no push to git", action="store_false")
+
+    parser.add_argument('--meta', '--m', '--M', help='Update the frontmatter of the source file with the link to the note', action="store_false")
     parser.add_argument(
         "--keep",
         "--k",
         "--K",
         help="Keep deleted file from vault and removed shared file",
         action="store_true",
-    )
-    parser.add_argument(
-        "--config", "--c", "--C", help="Edit the config file", action="store_true"
-    )
-    parser.add_argument("--obsidian", help=argparse.SUPPRESS, action="store_true")
-    parser.add_argument(
-        "--force",
-        "--d",
-        "--D",
-        help="Force conversion - only work if path not specified",
-        action="store_true",
-    )
-    group_files.add_argument(
-        "--filepath",
-        "--f",
-        help="Filepath of the file you want to convert",
-        action="store",
-        required=False,
-    )
-    group_files.add_argument(
-        "--ignore",
-        "--ignore-share",
-        "--no-share",
-        "--i",
-        "--vault",
-        help="Convert the entire vault without relying on share state.",
-        action="store_true",
-    )
+        )
+    parser.add_argument("--obsidian", "--shell", help=argparse.SUPPRESS, action='store_true')
     console = Console()
     args = parser.parse_args()
-    if args.config:
-        from mkdocs_obsidian.common import config as setup
-        setup.create_env()
-        sys.exit()
-    ori = args.filepath
-    meta_update = 1
-    if args.meta:
-        meta_update = 0
-    delopt = False
-    if args.force:
-        delopt = True
-    ng = args.git
-    share_vault = 0
-    if args.ignore:
-        share_vault = 1
+    meta_update = int(args.meta)
+    no_git = args.git
     if not args.keep:
-        info = check.delete_not_exist()
-        if len(info) > 1:
-            info_str = "\n- " + "\n- ".join(info)
-            if not args.obsidian:
-                console.print(
-                    f'[[i not bold sky_blue2]{datetime.now().strftime("%H:%M:%S")}[/]]'
-                    " 🗑️[u red bold]Delete from blog :[/]",
-                    Markdown(info_str),
-                    end="",
-                )
-            else:
-                print(
-                    f'[{datetime.now().strftime("%H:%M:%Sf")}] 🗑️ Delete from blog:'
-                    f" {info_str}"
-                )
-        elif len(info) == 1:
-            info_str = info[0]
-            if not args.obsidian:
-                console.print(
-                    f"🗑️ [u red bold] Delete[/] [bold red i] {info_str}[/] [u red"
-                    " bold]from blog[/]"
-                )
-            else:
-                print(f"Delete {info_str} from blog.")
-        stop_share = 1
+        stop_share = (args.obsidian, console)
     else:
         stop_share = 0
-    if ori:
+    cmd = args.cmd
+    if cmd == 'config':
+        from mkdocs_obsidian.common import config as setup
+
+        setup.create_env()
+        sys.exit()
+    #meta-update
+
+    elif cmd == "file":
+        file_source = args.filepath
         if args.obsidian:
-            obsidian_shell(ori, meta_update, share_vault, ng)
+            obsidian_shell(file_source,meta_update, git=no_git)
             sys.exit()
         elif args.mobile:
-            mobile_shortcuts(ori, meta_update, share_vault)
+            mobile_shortcuts(file_source, meta_update)
             sys.exit()
-        elif os.path.exists(Path(ori)):  # Share ONE
-            one.convert_one(ori, ng, meta_update)
+        elif os.path.exists(Path(file_source)):
+            one.convert_one(file_source, no_git, meta_update)
         else:
-            print(f"[red bold]Error :[/] [u]{ori}[/] [red bold]doesn't exist.")
+            print(f"[red bold]Error :[/] [u]{file_source}[/] [red bold]doesn't exist.")
             sys.exit(1)
-    else:
+
+    elif cmd=="all":
+        vault_share = int(args.vault)
+        delete_option = args.force
         if args.mobile:
-            mobile_shortcuts("0", meta_update, share_vault)
-            sys.exit()
+            mobile_shortcuts("0", meta_update, vault_share, delete_option)
         elif args.obsidian:
-            obsidian_shell("0", meta_update, share_vault)
-            sys.exit()
-        all.convert_all(delopt, ng, stop_share, meta_update, share_vault)
-
-
+            obsidian_shell("0", meta_update, vault_share, delete_option)
+        else:
+            all.convert_all(delete_option, no_git, stop_share, meta_update, vault_share)
 if __name__ == "__main__":
     main()
