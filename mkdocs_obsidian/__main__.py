@@ -130,7 +130,7 @@ def main():
         - publish : Share all vault
             - --force : Force updating
             - --vault : Share all vault file, ignoring the share state.
-        - file [file*] : Share only one file
+        - file [file] : Share only one file
         """
         ),
     )
