@@ -125,32 +125,45 @@ At the first run, you will be asked to configure some key and specific path.
 The file will be in `site-packages/mkdocs_obsidian/.mkdocs_obsidian` (unless for Pyto : the `.env` will be directly in `site_package/.mkdocs_obsidian`)
 
 ### Terminal 
-```bash
-usage: obs2mk [-h] [--git | --mobile] [--meta] [--keep] [--config] [--force] [--filepath FILEPATH | --ignore]
 
-Create file in docs and relative folder, move image in assets, convert admonition code_blocks, add links and push.
+Global options :
+- `--git` : No commit and push to git ;
+- `--mobile` : Use mobile shortcuts instead of `--git`
+- `--meta` : Update frontmatter of source files
+- `--keep` : Don't delete files in blog folder
+- `--shell` : Remove Rich printing
+Commands and specific options : 
+- configuration :
+    - `--new configuration_name` : Create a specific configuration for some files
+- publish : Share all vault
+    - `--force` : Force updating
+    - `--vault` : Share all vault file, ignoring the share state.
+- `file [file*]` : Share only one file
+
+```bash
+usage: __main__.py [-h] [--mobile | --git] [--meta] [--keep] {config,all,file} ...
+
+positional arguments:
+  {config,all,file}
+    config              Configure the script : Add or edit your vault and blog absolute path, change some keys.
+    all                 Publish multiple files
+    file                Publish only one file
 
 options:
   -h, --help            show this help message and exit
+  --mobile, --shortcuts
+                        Use mobile shortcuts, without push
   --git, --g, --G       No commit and no push to git
-  --mobile, --shortcuts, --s, --S
-                        Use mobile shortcuts fonction without push.
-  --meta, --m, --M      Update the frontmatter with link
+  --meta, --m, --M      Update the frontmatter of the source file with the link to the note
   --keep, --k, --K      Keep deleted file from vault and removed shared file
-  --config, --c, --C    Edit the config file
-  --force, --d, --D     Force conversion - only work if path not specified
-  --filepath FILEPATH, --f FILEPATH
-                        Filepath of the file you want to convert
-  --ignore, --ignore-share, --no-share, --i, --vault
-                        Convert the entire vault without relying on share state.
 ```
 
-#### Share one file : `obs2mk --f FILEPATH`
+#### Share one file : `obs2mk file FILEPATH`
 It will :
 - Update the `share` state in original file
 - Convert one file, regardless of what is the `share` state.
 
-#### Share all file : `obs2mk`
+#### Share all file : `obs2mk all`
 You can share multiple documents at once with scanning your Vault, looking for the `share: true`. It will convert automatically these files.  
 Only file with modification since the last sharing will be updated.
 
