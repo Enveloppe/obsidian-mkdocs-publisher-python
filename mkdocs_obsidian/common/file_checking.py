@@ -48,7 +48,7 @@ def exclude(filepath: str, key: str):
             try:
                 folder = yaml.safe_load(file_config)
             except yaml.YAMLError as exc:
-                print(f'[red bold]Error in [u]{folder}[/] : {exc}')
+                print(f"[red bold]Error in [u]{folder}[/] : {exc}")
                 sys.exit(2)
         excluded_folder = folder.get(key, "")
         return any(str(Path(file)) in filepath for file in excluded_folder)

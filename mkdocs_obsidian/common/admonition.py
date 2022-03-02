@@ -119,9 +119,10 @@ def admonition_trad(file_data: list):
                 custom = yaml.safe_load(stream)
             except yaml.YAMLError:
                 print(
-                    f"[red bold] Error in [u]{admonition_custom}[/] : Your YAML frontmatter doesn't seem"
-                    " valid! Use https://jsonformatter.org/yaml-validator to"
-                    " correct it!")
+                    f"[red bold] Error in [u]{admonition_custom}[/] : Your YAML"
+                    " frontmatter doesn't seem valid! Use"
+                    " https://jsonformatter.org/yaml-validator to correct it!"
+                )
                 sys.exit(2)
     adm_list = adm_list + custom
     for i in range(0, len(file_data)):

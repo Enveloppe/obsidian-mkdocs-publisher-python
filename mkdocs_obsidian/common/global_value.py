@@ -95,7 +95,7 @@ try:
     VAULT = VAULT.expanduser()
     BASEDIR = BASEDIR.expanduser()
 except RuntimeError:
-    print('[red bold] Please provide a valid path for all config items')
+    print("[red bold] Please provide a valid path for all config items")
     sys.exit(3)
 if DEFAULT_NOTES == "/":
     DEFAULT_NOTES = ""
