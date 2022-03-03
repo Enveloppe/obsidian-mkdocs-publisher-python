@@ -15,7 +15,7 @@ from mkdocs_obsidian.common import (
     file_checking as check,
     conversion as convert,
     config as setup,
-    )
+)
 
 
 def convert_one(ori, configuration, git, meta, obsidian=False):

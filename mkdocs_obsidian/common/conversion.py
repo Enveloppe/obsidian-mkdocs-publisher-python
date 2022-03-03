@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import (
     file_checking as check,
     metadata as mt,
     admonition as adm,
-    )
+)
 
 
 def get_image(configuration, image):
@@ -109,9 +109,7 @@ def clipboard(configuration, filepath, folder):
             )
 
 
-def file_write(
-    configuration, filepath, contents, folder, preserve=0, meta_update=1
-):
+def file_write(configuration, filepath, contents, folder, preserve=0, meta_update=1):
     """Write the new converted file and update metadata if meta_update is 0
 
     Parameters

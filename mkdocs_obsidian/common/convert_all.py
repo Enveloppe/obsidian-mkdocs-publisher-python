@@ -19,7 +19,7 @@ from mkdocs_obsidian.common import (
     config,
     file_checking as check,
     conversion as convert,
-    )
+)
 
 
 def dest(filepath, folder):
