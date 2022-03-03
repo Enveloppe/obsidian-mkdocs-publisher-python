@@ -2,6 +2,28 @@
 
 <!--next-version-placeholder-->
 
+## v3.0.0 (2022-03-03)
+### Feature
+* Multiple configuration ([`0312ee0`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/0312ee09878006d5c084a3e04b1052335e89147e))
+* Convert folder to Path directly in open value ([`f983729`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/f983729ddb2e71e9795d9eaa157ae36e82f18617))
+* Add support for multiple blog based on different vault. ([`b6d9a60`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b6d9a6064baddee06d66b48f6162b3df58650ef3))
+* Rework all command of the cli ([`0488cec`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/0488cec412d6c93fba5c0ba16368939c3e37b496))
+
+### Fix
+* **all:** Adding missing variable in file_write calling ([`d4277b3`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d4277b3f23dc53573435133f63783486fc56a201))
+* Keep don't used ([`23682e7`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/23682e789f22e0761a2ee06572c8f3338866c17e))
+* **docstring:** Fix error in python for some docstring ([`d42c18a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d42c18a96c5fa05dd9c030a870d5cf1d2c8ba6d0))
+
+### Breaking
+* Multiple configuration ([`0312ee0`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/0312ee09878006d5c084a3e04b1052335e89147e))
+* Change command of the cli  ([`0488cec`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/0488cec412d6c93fba5c0ba16368939c3e37b496))
+
+### Documentation
+* **readme:** Fix typo ([`d29610d`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d29610dcd069c2e52c79210658d748d0eb1cd8c2))
+* **readme:** Add more info for command order ([`e922658`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e92265882e6e3ebee774c459c7f292900476a1a6))
+* **readme:** Add support for multiple blog based on different vault. ([`6b1dfdb`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6b1dfdb7165d4bca9b2aa016f026293e21c98b43))
+* **readme:** Update for reworking cli ([`ffd977c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ffd977c235f3a1cf9b7583f77202492c08057f1e))
+
 ## v2.0.2 (2022-02-28)
 ### Fix
 * **hashtag:** Fix not multiple IAL support ([`54b29be`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/54b29be699ca0cb91e4133859648f406b979ec97))
