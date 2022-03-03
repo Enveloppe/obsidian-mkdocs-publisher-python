@@ -118,15 +118,17 @@ def search_share(
                                 configuration, filepath, vault_share
                             )
                             if check.diff_file(filepath, folder, contents, update):
-                                check_file = convert.file_write(configuration,
-                                    filepath, contents, folder, meta
+                                check_file = convert.file_write(
+                                    configuration, filepath, contents, folder, meta
                                 )
                             else:
                                 check_file = False
                     elif preserve == 1:  # force deletions
-                        contents = convert.file_convert(configuration,filepath, vault_share)
-                        check_file = convert.file_write(configuration,
-                            filepath, contents, folder, meta
+                        contents = convert.file_convert(
+                            configuration, filepath, vault_share
+                        )
+                        check_file = convert.file_write(
+                            configuration, filepath, contents, folder, meta
                         )
                     msg_folder = os.path.basename(folder)
                     destination = dest(filepath, folder)
@@ -202,13 +204,13 @@ def obsidian_simple(
             f"[{time_now}] STARTING CONVERT ALL\n\n- {git_info}\n- Force"
             f" deletion{msg_info}"
         )
-        new_files, clipkey = search_share(configuration,
-            1, stop_share, meta, vault_share, obsidian=True
+        new_files, clipkey = search_share(
+            configuration, 1, stop_share, meta, vault_share, obsidian=True
         )
     else:
         print(f"[{time_now}] STARTING CONVERT ALL\n- {git_info}\n{msg_info}")
-        new_files, clipkey = search_share(configuration,
-            0, stop_share, meta, vault_share, obsidian=True
+        new_files, clipkey = search_share(
+            configuration, 0, stop_share, meta, vault_share, obsidian=True
         )
     if len(new_files) > 0:
         add_msg = ""
