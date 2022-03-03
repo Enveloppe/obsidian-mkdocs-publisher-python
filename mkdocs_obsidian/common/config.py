@@ -498,14 +498,14 @@ def open_value(configuration_name):
         if os.path.isfile(x)
     ]
     configuration = {
-        'basedir': BASEDIR,
-        'vault': VAULT,
-        'web': WEB,
-        'share': SHARE,
-        'index_key': INDEX_KEY,
-        'default_note': DEFAULT_NOTES,
-        'post' : POST,
-        'img' : IMG,
-        'vault_file' : VAULT_FILE
-        }
+        "basedir": Path(BASEDIR),
+        "vault": Path(VAULT),
+        "web": WEB,
+        "share": SHARE,
+        "index_key": INDEX_KEY,
+        "default_note": DEFAULT_NOTES,
+        "post": POST,
+        "img": IMG,
+        "vault_file": VAULT_FILE,
+    }
     return configuration
