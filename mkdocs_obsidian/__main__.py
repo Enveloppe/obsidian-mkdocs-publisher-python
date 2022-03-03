@@ -267,7 +267,7 @@ def main():
         meta_update = int(args.meta)
         no_git = args.git
         if not args.keep:
-            stop_share = (args.obsidian, console)
+            stop_share = keep(args.obsidian, console, configuration)
         else:
             stop_share = 0
         if cmd == "file":
