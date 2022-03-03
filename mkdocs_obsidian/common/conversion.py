@@ -19,7 +19,7 @@ from mkdocs_obsidian.common import (
     )
 
 
-def get_image(configuration,image):
+def get_image(configuration, image):
     """Check if the image exists in the VAULT
 
     Parameters
@@ -29,11 +29,11 @@ def get_image(configuration,image):
 
     Returns
     -------
-    bool, str:
+    str:
         Path to image if True, False otherwise
 
     """
-    VAULT_FILE = configuration['vault_file']
+    VAULT_FILE = configuration["vault_file"]
     shortname = unidecode.unidecode(os.path.splitext(image)[0])
     assets = [x for x in VAULT_FILE if not x.endswith(".md")]
     for filepath in assets:
@@ -43,7 +43,7 @@ def get_image(configuration,image):
     return False
 
 
-def copy_image(configuration,final_text):
+def copy_image(configuration, final_text):
     """Copy the image in assets if exist
 
     Parameters
@@ -51,9 +51,8 @@ def copy_image(configuration,final_text):
     configuration: dict
     final_text : str
         Line readed
-
     """
-    IMG = configuration['img']
+    IMG = configuration["img"]
     list_text = final_text.split("!")
     if len(list_text) > 0:
         for i in list_text:
@@ -61,7 +60,7 @@ def copy_image(configuration,final_text):
             if link:
                 final_text = re.sub("(!?|\(|(%20)|\[|\]|\))", "", i)
                 final_text = os.path.basename(final_text.split("|")[0])
-                image_path = get_image(configuration,final_text)
+                image_path = get_image(configuration, final_text)
                 if (
                     image_path
                     and os.path.isfile(image_path)
@@ -72,7 +71,7 @@ def copy_image(configuration,final_text):
                     )
 
 
-def clipboard(configuration,filepath, folder):
+def clipboard(configuration, filepath, folder):
     """Copy file URL to clipboard
 
     Parameters
@@ -110,7 +109,9 @@ def clipboard(configuration,filepath, folder):
             )
 
 
-def file_write(configuration,filepath, contents: list, folder, preserve=0, meta_update=1):
+def file_write(
+    configuration, filepath, contents, folder, preserve=0, meta_update=1
+):
     """Write the new converted file and update metadata if meta_update is 0
 
     Parameters
@@ -133,7 +134,7 @@ def file_write(configuration,filepath, contents: list, folder, preserve=0, meta_
         True if file is created, False otherwise
 
     """
-    SHARE=configuration['share']
+    SHARE = configuration["share"]
     file_name = os.path.basename(filepath)
     shortname = unidecode.unidecode(os.path.splitext(file_name)[0])
     foldername = unidecode.unidecode(Path(folder).name)
@@ -162,6 +163,7 @@ def read_custom(BASEDIR):
 
     Parameters
     ----------
+    BASEDIR: Path
 
     Returns
     -------
@@ -178,7 +180,7 @@ def read_custom(BASEDIR):
     return id_css
 
 
-def convert_hashtags(configuration,final_text: str):
+def convert_hashtags(configuration, final_text):
     """Convert configured hashtags with inline attribute CSS from custom.css
 
     Parameters
@@ -186,15 +188,13 @@ def convert_hashtags(configuration,final_text: str):
     configuration: dict
     final_text: str
         A line of the contents to convert if contains hashtags
-
-
     Returns
     -------
     final_text: str
         converted line
 
     """
-    css = read_custom(configuration['basedir'])
+    css = read_custom(configuration["basedir"])
     token = re.findall("#\w+", final_text)
     token = list(set(token))
     for i in range(0, len(token)):
@@ -236,7 +236,7 @@ def index_path(file_name, VAULT_FILE):
     ----------
     file_name: str
         File found to be an index
-    VAULT_FILE: list
+    VAULT_FILE: list[str]
 
     Returns
     -------
@@ -255,7 +255,7 @@ def index_path(file_name, VAULT_FILE):
     return index
 
 
-def index_citation(final_text: str, configuration):
+def index_citation(final_text, configuration):
     """
     Allow the citation of index.md by citation with configured INDEX_KEY.
     Invert the alias and filename, replace filename by `category/index`
@@ -277,8 +277,8 @@ def index_citation(final_text: str, configuration):
         Return the line with alias and file name inverted
 
     """
-    INDEX_KEY = configuration['index_key']
-    VAULT_FILE = configuration['vault_file']
+    INDEX_KEY = configuration["index_key"]
+    VAULT_FILE = configuration["vault_file"]
     if ") [" in final_text:
         cited = (
             re.search(
@@ -347,7 +347,7 @@ def index_citation(final_text: str, configuration):
     return final_text
 
 
-def file_convert(configuration,filepath, force=0):
+def file_convert(configuration, filepath, force=0):
     """Read the filepath and convert each line based on regex condition.
 
     Parameters
@@ -366,13 +366,13 @@ def file_convert(configuration,filepath, force=0):
     """
     final = []
 
-    INDEX_KEY = configuration['index_key']
-    SHARE = configuration['share']
+    INDEX_KEY = configuration["index_key"]
+    SHARE = configuration["share"]
     meta = frontmatter.load(filepath)
     lines = meta.content.splitlines(True)
     if force != 1 and not meta.get(SHARE):
         return final
-    lines = adm.admonition_trad(configuration['basedir'],lines)
+    lines = adm.admonition_trad(configuration["basedir"], lines)
     for line in lines:
         final_text = line
         if not final_text.strip().endswith("%%") and not final_text.strip().startswith(
@@ -380,7 +380,7 @@ def file_convert(configuration,filepath, force=0):
         ):
             # Skip obsidian comments
             # Check and copy image
-            copy_image(configuration,final_text)
+            copy_image(configuration, final_text)
             if not "`" in final_text:
                 final_text = re.sub(
                     "\%{2}(.*)\%{2}", "", final_text
@@ -406,7 +406,7 @@ def file_convert(configuration,filepath, force=0):
                 "(`|\[{2}|\()(.*)#(.*)(`|\]{2}|\))", final_text
             ):  # search hashtags not in link
                 # Convert hashtags
-                final_text = convert_hashtags(configuration,final_text)
+                final_text = convert_hashtags(configuration, final_text)
             elif re.fullmatch(
                 "\\\\", final_text.strip()
             ):  # New line when using "\" in obsidian filepath

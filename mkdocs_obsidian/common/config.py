@@ -19,7 +19,7 @@ from rich.markdown import Markdown
 import mkdocs_obsidian as obs
 
 
-def pyto_environment(console) -> tuple[str, str]:
+def pyto_environment(console):
     """(IOS) Use Pyto [1]_ bookmark to get folder path
 
     Parameters
@@ -29,7 +29,7 @@ def pyto_environment(console) -> tuple[str, str]:
 
     Returns
     -------
-    tuple: [str, str]
+    tuple [str, str]:
          vault:
             vault absolute path
          blog:
@@ -54,17 +54,17 @@ def pyto_environment(console) -> tuple[str, str]:
     return vault_path, blog_path
 
 
-def legacy_environment(console) -> tuple[str, str]:
+def legacy_environment(console):
     """(Other platform) Ask environment ; rely only on console.
 
     Parameters
     ----------
-    console : print
+    console :
         rich console
 
     Returns
     -------
-    tuple: [str, str]
+    tuple [str, str]:
         vault:
             vault absolute path
         blog:
@@ -83,7 +83,7 @@ def legacy_environment(console) -> tuple[str, str]:
     return vault, blog
 
 
-def PC_environment(console) -> tuple[str, str]:
+def PC_environment(console):
     """Create environment for computer (Windows, Linux, macOS) using filedialog (tkinter) and askdirectory.
     Parameters
     ----------
@@ -92,7 +92,7 @@ def PC_environment(console) -> tuple[str, str]:
 
     Returns
     -------
-    tuple: [str, str]
+    tuple [str, str]:
         vault:
             vault absolute path
         blog:
@@ -116,7 +116,7 @@ def PC_environment(console) -> tuple[str, str]:
     return vault, blog
 
 
-def ashell_environment(console) -> tuple[str, str]:
+def ashell_environment(console):
     """
     (IOS) Use pickFolder [1]_ in **ashell** to help to create the environment
 
@@ -127,7 +127,7 @@ def ashell_environment(console) -> tuple[str, str]:
 
     Returns
     -------
-    tuple: [str, str]
+    tuple [str, str]:
         vault:
             vault absolute path
         blog:
@@ -162,12 +162,12 @@ def ashell_environment(console) -> tuple[str, str]:
     return vault, blog
 
 
-def check_url(blog_path: str):
+def check_url(blog_path):
     """check if the url is in the config file and return it
 
     Parameters
     ----------
-    blog_path :
+    blog_path : str
         Publish absolute path
 
     Returns
@@ -222,10 +222,8 @@ def create_env(config_name="0"):
     Write the variable in `.env` file.
     Parameters
     ----------
-    Returns
-    -------
-
-
+    config_name: str, default: "0"
+        Create a new configuration environment using the provided name
     """
     BASEDIR = obs.__path__[0]
     try:
@@ -249,9 +247,9 @@ def create_env(config_name="0"):
         computer = True
     console = Console()
     if config_name == "0":
-        config_name = '.mkdocs_obsidian'
+        config_name = ".mkdocs_obsidian"
     else:
-        config_name = '.' + config_name
+        config_name = "." + config_name
     env_path = Path(f"{BASEDIR}/{config_name}")
     print(f"[bold]Creating environnement in [u]{env_path}[/][/]\n")
     if pyto_check:
@@ -307,14 +305,14 @@ def create_env(config_name="0"):
 
 
 def git_push(
-    commit: str, obsidian=False, add_info="", rmv_info="", add_msg="", remove_msg=""
+    commit, obsidian=False, add_info="", rmv_info="", add_msg="", remove_msg=""
 ):
     """
     git push the modified files and print a message result
 
     Parameters
     ----------
-    commit:
+    commit: str
         Commit information
     obsidian : bool, default: False
         Message without markup
@@ -378,8 +376,31 @@ def git_push(
             )
 
 
-
 def open_value(configuration_name):
+    """
+    Return the configuration value
+    Parameters
+    ----------
+    configuration_name: str
+        The configuration name. If "0", use the default configuration, aka : .mkdocs_obsidian ;
+        Else use ".configuration_name"
+
+    Returns
+    -------
+    dict [Path, Path, str, str, str, str, Path, Path, list[str]]:
+        - basedir: Path
+        - vault : Path
+        - web: str
+        - share: str
+        - index_key: str
+        - default_note: str
+        - post: Path
+            Post folder absolute path
+        - img : Path
+            Image folder absolute path
+        - vault_file: list[str]
+            List of all files in vault
+    """
     BASEDIR = obs.__path__[0]
     try:
         import pyto
@@ -488,4 +509,3 @@ def open_value(configuration_name):
         'vault_file' : VAULT_FILE
         }
     return configuration
-

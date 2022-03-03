@@ -22,7 +22,7 @@ from mkdocs_obsidian.common import (
     )
 
 
-def dest(filepath: str, folder):
+def dest(filepath, folder):
     """
     Returns the final destination path of the file.
 
@@ -42,7 +42,9 @@ def dest(filepath: str, folder):
     return str(destination)
 
 
-def search_share(configuration,preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False):
+def search_share(
+    configuration, preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
+):
     """Search file to publish, convert and write them.
 
     Parameters
@@ -79,9 +81,9 @@ def search_share(configuration,preserve=0, stop_share=1, meta=0, vault_share=0, 
 
     """
 
-    DEFAULT_NOTES=configuration['default_note']
-    VAULT_FILE=configuration['vault_file']
-    SHARE = configuration['share']
+    DEFAULT_NOTES = configuration["default_note"]
+    VAULT_FILE = configuration["vault_file"]
+    SHARE = configuration["share"]
     filespush = []
     check_file = False
     clipkey = DEFAULT_NOTES
@@ -92,7 +94,7 @@ def search_share(configuration,preserve=0, stop_share=1, meta=0, vault_share=0, 
         if (
             filepath.endswith(".md")
             and "excalidraw" not in filepath
-            and not check.exclude(filepath, "folder", configuration['basedir'])
+            and not check.exclude(filepath, "folder", configuration["basedir"])
         ):
             try:
                 yaml_front = frontmatter.load(filepath)
@@ -100,7 +102,7 @@ def search_share(configuration,preserve=0, stop_share=1, meta=0, vault_share=0, 
                 if not clipkey:
                     clipkey = "hidden"
                 if yaml_front.get(SHARE) or vault_share == 1:
-                    folder = check.create_folder(clipkey, configuration,0)
+                    folder = check.create_folder(clipkey, configuration, 0)
                     if preserve == 0:  # preserve
                         if yaml_front.get("update") is False:
                             update = 1
@@ -112,7 +114,9 @@ def search_share(configuration,preserve=0, stop_share=1, meta=0, vault_share=0, 
                         ) or not check.modification_time(filepath, folder, update):
                             check_file = False
                         else:
-                            contents = convert.file_convert(configuration,filepath, vault_share)
+                            contents = convert.file_convert(
+                                configuration, filepath, vault_share
+                            )
                             if check.diff_file(filepath, folder, contents, update):
                                 check_file = convert.file_write(configuration,
                                     filepath, contents, folder, meta
@@ -133,7 +137,7 @@ def search_share(configuration,preserve=0, stop_share=1, meta=0, vault_share=0, 
                             f" [{msg_folder}]"
                         )
                 elif stop_share == 1:
-                    folder = check.create_folder(clipkey, configuration,1)
+                    folder = check.create_folder(clipkey, configuration, 1)
                     file_name = os.path.basename(filepath).replace(".md", "")
                     if file_name == os.path.basename(folder):
                         filepath = filepath.replace(file_name, "index")
@@ -155,8 +159,11 @@ def search_share(configuration,preserve=0, stop_share=1, meta=0, vault_share=0, 
     return filespush, clipkey
 
 
-def obsidian_simple(configuration,delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
-    """Convert file without markup for obsidian shell command.
+def obsidian_simple(
+    configuration, delopt=False, git=True, stop_share=0, meta=0, vault_share=0
+):
+    """
+    Convert file without markup for obsidian shell command.
 
     Parameters
     ----------
@@ -224,7 +231,7 @@ def obsidian_simple(configuration,delopt=False, git=True, stop_share=0, meta=0, 
             if len(new_files) == 1:
                 commit = "".join(new_files)
                 markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
-                convert.clipboard(configuration,markdown_msg, clipkey)
+                convert.clipboard(configuration, markdown_msg, clipkey)
             commit = f"Updated :\n\n {commit}\n"
             config.git_push(
                 commit,
@@ -244,7 +251,9 @@ def obsidian_simple(configuration,delopt=False, git=True, stop_share=0, meta=0, 
     sys.exit()
 
 
-def convert_all(configuration, delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
+def convert_all(
+    configuration, delopt=False, git=True, stop_share=0, meta=0, vault_share=0
+):
     """Convert all shared file with relying on rich markup library.
 
     Parameters
@@ -295,7 +304,9 @@ def convert_all(configuration, delopt=False, git=True, stop_share=0, meta=0, vau
             new_line_start=True,
             justify="full",
         )
-        new_files, clipkey = search_share(configuration,1, stop_share, meta, vault_share)
+        new_files, clipkey = search_share(
+            configuration, 1, stop_share, meta, vault_share
+        )
     else:
         console.print(
             Rule(
@@ -309,7 +320,9 @@ def convert_all(configuration, delopt=False, git=True, stop_share=0, meta=0, vau
             " ",
             new_line_start=True,
         )
-        new_files, clipkey = search_share(configuration,0, stop_share, meta, vault_share)
+        new_files, clipkey = search_share(
+            configuration, 0, stop_share, meta, vault_share
+        )
     if len(new_files) > 0:
         add_msg = ""
         remove_msg = ""
@@ -331,7 +344,7 @@ def convert_all(configuration, delopt=False, git=True, stop_share=0, meta=0, vau
             if len(new_files) == 1:
                 commit = "".join(new_files)
                 markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
-                convert.clipboard(configuration,markdown_msg, clipkey)
+                convert.clipboard(configuration, markdown_msg, clipkey)
             commit = f"**Updated** : \n {commit}\n"
             config.git_push(
                 commit,

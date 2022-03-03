@@ -12,7 +12,7 @@ import yaml
 from rich import print
 
 
-def code_blocks(start_list: list, end_list: list):
+def code_blocks(start_list, end_list):
     """Check all code blocks in the contents
 
     Parameters
@@ -21,7 +21,6 @@ def code_blocks(start_list: list, end_list: list):
         List of all started codeblocs
     end_list : list
         list of all ended code blocks
-
 
     Returns
     -------
@@ -56,17 +55,15 @@ def admonition_trad(BASEDIR, file_data: list):
 
     Parameters
     ----------
-    BASEDIR: str | Path
+    BASEDIR: Path
         Basedirectory from configuration
     file_data : list
         Contents of the file
-
 
     Returns
     -------
     list:
        All file contents with admonition converted
-
     """
     code_index = 0
     code_dict = {}
