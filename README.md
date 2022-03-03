@@ -16,7 +16,7 @@ Mkdocs Obsidian is an association between a python script and a Material mkdocs 
 
 <p align="center"><a href="https://www.mara-li.fr">Owlly Seed (My Blog ; In French)</a></p>
 
-<details><summary><u><b>Screenshot</u></b> </summary>
+<details><summary><u><b>Screenshot</b></u></summary>
 
 ![image_1](screenshot/image_1.png)
 ![image_2](screenshot/image_2.png)
@@ -125,49 +125,77 @@ At the first run, you will be asked to configure some key and specific path.
 The file will be in `site-packages/mkdocs_obsidian/.mkdocs_obsidian` (unless for Pyto : the `.env` will be directly in `site_package/.mkdocs_obsidian`)
 
 ### Terminal 
-```bash
-usage: obs2mk [-h] [--git | --mobile] [--meta] [--keep] [--config] [--force] [--filepath FILEPATH | --ignore]
 
-Create file in docs and relative folder, move image in assets, convert admonition code_blocks, add links and push.
+Global options :
+- `--git` : No commit and push to git ; 
+- `--mobile` : Use mobile shortcuts instead of `--git`
+- `--meta` : Update frontmatter of source files
+- `--keep` : Don't delete files in blog folder
+- `--shell` : Remove Rich printing
+
+Commands and specific options :
+- **config** : (*it will ignore `--use configuration_name`*)
+    - `--new configuration_name` : Create a specific configuration for some files
+- **all** : Share all vault
+    - `--force` : Force updating (ignore the difference between the source and blog file)
+    - `--vault` : Share all vault file, ignoring the share state.
+- **`file [file*]`** : Share only one file
+
+```bash
+usage: __main__.py [-h] [--mobile | --git] [--meta] [--keep] [--use configuration_name] {config,all,file} ...
+
+positional arguments:
+  {config,all,file}
+    config              Configure the script : Add or edit your vault and blog absolute path, change some keys.
+    all                 Publish multiple files
+    file                Publish only one file
 
 options:
   -h, --help            show this help message and exit
+  --mobile, --shortcuts
+                        Use mobile shortcuts, without push
   --git, --g, --G       No commit and no push to git
-  --mobile, --shortcuts, --s, --S
-                        Use mobile shortcuts fonction without push.
-  --meta, --m, --M      Update the frontmatter with link
+  --meta, --m, --M      Update the frontmatter of the source file, adding the note blog's link
   --keep, --k, --K      Keep deleted file from vault and removed shared file
-  --config, --c, --C    Edit the config file
-  --force, --d, --D     Force conversion - only work if path not specified
-  --filepath FILEPATH, --f FILEPATH
-                        Filepath of the file you want to convert
-  --ignore, --ignore-share, --no-share, --i, --vault
-                        Convert the entire vault without relying on share state.
+  --use configuration_name, --config configuration_name
+                        Use a different config from default
 ```
 
-#### Share one file : `obs2mk --f FILEPATH`
+The commands order is :
+`obs2mk (global_options) [all|config|file FILEPATH] (specific_options)`
+Where :
+- Global and specific options are optional
+- `all`, `config` and `file`[^9] are required
+You can use the command without argument with `obs2mk` to share every `share: true` file in your vault.
+
+
+#### Share one file : `obs2mk file FILEPATH`
 It will :
 - Update the `share` state in original file
 - Convert one file, regardless of what is the `share` state.
 
-#### Share all file : `obs2mk`
+#### Share all file : `obs2mk all` or `obs2mk`
 You can share multiple documents at once with scanning your Vault, looking for the `share: true`. It will convert automatically these files.  
 Only file with modification since the last sharing will be updated.
 
-#### Options
-1. `--vault` : This option allows sharing the entire vault, regardless of the `share` key.
-2. `--mobile` : See [iOS](#ios) for more information.
-3. `--git` : Forbid push ;
-4. `--keep` : Keep deleted file from vault and removed shared file.
-5. `--force` : Force conversion (in case the vault's file and blog's file are the same)
-6. `--config` : Reconfigure the environment (path and key)
+You can :
+- Share entirely your vault (that's ignore the `share` state) with : `obs2mk all --vault`
+- Ignore the difference between the source file and the blog's file with :  `obs2mk all --force`
+Also, you can combine the two options. 
+
+### Configuration
+You can use and create multiple configuration files. This allows to have multiple site based on one vault, or different vault accross one site... 
+1. To create a new configuration file : `obs2mk config --new configuration_name`
+2. To use a configuration use : `--use configuration_name` 
+    For example : `obs2mk --use configuration_name` 
+
 
 ### Obsidian Shell Configuration
 You could create :
 1. A command to publish everything : alias `Publish` with `obs2mk --obsidian`
-2. A command to publish one specific file : alias `Publish {{title}}` with `obs2mk --obsidian --f {{file_path:absolute}}`
-3. Event shortcuts for file menu event : `Publish {{event_file_name}}`: `obs2mk --obsidian --f "{{event_file_path:absolute}}
-4. Folder Note event (folder menu event): `Publish {{event_folder_name}}`: `obs2mk --obsidian --f "{{event_folder_path:relative}}\{{event_folder_name}}.md"`
+2. A command to publish one specific file : alias `Publish {{title}}` with `obs2mk --obsidian file {{file_path:absolute}}`
+3. Event shortcuts for file menu event : `Publish {{event_file_name}}`: `obs2mk --obsidian file "{{event_file_path:absolute}}`
+4. Folder Note event (folder menu event): `Publish {{event_folder_name}}`: `obs2mk --obsidian file "{{event_folder_path:relative}}\{{event_folder_name}}.md"`
  
 You can create a button with :
 - [Customizable Sidebar](https://github.com/phibr0/obsidian-customizable-sidebar)    
@@ -182,10 +210,9 @@ The script support IOS using :
 > The option `mobile` will **never** push. You need to use Working Copy to push the converted file.
 
 You can :
-1. Share the entire vault : `obs2mk --mobile`
-2. Share a specific file, using its name : `obs2mk --mobile --f "filename"`.[^5] This option can be used especially with [Shortcuts](https://support.apple.com/guide/shortcuts/welcome/ios)
+1. Share the entire vault : `obs2mk --mobile all --vault`
+2. Share a specific file, using its name : `obs2mk --mobile file "filename"`.[^5] This option can be used especially with [Shortcuts](https://support.apple.com/guide/shortcuts/welcome/ios)
 
-Mobile supports all previous option, including `--ignore`.
 
 ### Customization
 - You can prevent the script to share file in specific folder, with editing `folder` list in `exclude.yml`
@@ -284,3 +311,4 @@ If you have more question, don't forget to read the [Q&A](https://github.com/Mar
 [^6]: You can customize the folder with [Awesome Pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
 [^7]: You must be connected to copy the template ! You can test locally through clone > https : `git clone https://github.com/Mara-Li/mkdocs_obsidian_template.git` or [with downloading the ZIP](https://github.com/Mara-Li/mkdocs_obsidian_template/archive/refs/heads/main.zip)
 [^8]: You can found the link in Repository settings > Pages. 
+[^9]: For `file` you need to add the filepath of the file you want to share : `obs2mk (global_option) file "filepath" (specific_options)`

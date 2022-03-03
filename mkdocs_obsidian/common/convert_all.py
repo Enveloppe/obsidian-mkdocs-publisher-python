@@ -17,21 +17,12 @@ from rich.rule import Rule
 
 from mkdocs_obsidian.common import (
     config,
-    global_value as gl,
     file_checking as check,
     conversion as convert,
 )
 
-BASEDIR = gl.BASEDIR
-VAULT = gl.VAULT
-VAULT_FILE = gl.VAULT_FILE
-SHARE = gl.SHARE
-INDEX_KEY = gl.INDEX_KEY
-DEFAULT_NOTES = gl.DEFAULT_NOTES
-POST = gl.POST
 
-
-def dest(filepath: str, folder: str):
+def dest(filepath, folder):
     """
     Returns the final destination path of the file.
 
@@ -39,7 +30,7 @@ def dest(filepath: str, folder: str):
     ----------
     filepath : str
         file to convert
-    folder : str
+    folder : str | Path
         final folder
 
     Returns
@@ -51,11 +42,24 @@ def dest(filepath: str, folder: str):
     return str(destination)
 
 
-def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False):
+def search_share(
+    configuration, preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
+):
     """Search file to publish, convert and write them.
 
     Parameters
     ----------
+    configuration: dict
+        configuration value with :
+        - basedir
+        - vault
+        - web
+        - share
+        - index_key
+        - default_note
+        - post
+        - img
+        - vault_file
     obsidian: bool, default: False
         Use normal printing for obsidian_shell (Default value = False)
     preserve: int, default: 1
@@ -76,6 +80,10 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
             Category key
 
     """
+
+    DEFAULT_NOTES = configuration["default_note"]
+    VAULT_FILE = configuration["vault_file"]
+    SHARE = configuration["share"]
     filespush = []
     check_file = False
     clipkey = DEFAULT_NOTES
@@ -86,7 +94,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
         if (
             filepath.endswith(".md")
             and "excalidraw" not in filepath
-            and not check.exclude(filepath, "folder")
+            and not check.exclude(filepath, "folder", configuration["basedir"])
         ):
             try:
                 yaml_front = frontmatter.load(filepath)
@@ -94,7 +102,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
                 if not clipkey:
                     clipkey = "hidden"
                 if yaml_front.get(SHARE) or vault_share == 1:
-                    folder = check.create_folder(clipkey, 0)
+                    folder = check.create_folder(clipkey, configuration, 0)
                     if preserve == 0:  # preserve
                         if yaml_front.get("update") is False:
                             update = 1
@@ -106,17 +114,21 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
                         ) or not check.modification_time(filepath, folder, update):
                             check_file = False
                         else:
-                            contents = convert.file_convert(filepath, vault_share)
+                            contents = convert.file_convert(
+                                configuration, filepath, vault_share
+                            )
                             if check.diff_file(filepath, folder, contents, update):
                                 check_file = convert.file_write(
-                                    filepath, contents, folder, meta
+                                    configuration, filepath, contents, folder, meta
                                 )
                             else:
                                 check_file = False
                     elif preserve == 1:  # force deletions
-                        contents = convert.file_convert(filepath, vault_share)
+                        contents = convert.file_convert(
+                            configuration, filepath, vault_share
+                        )
                         check_file = convert.file_write(
-                            filepath, contents, folder, meta
+                            configuration, filepath, contents, folder, meta
                         )
                     msg_folder = os.path.basename(folder)
                     destination = dest(filepath, folder)
@@ -127,7 +139,7 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
                             f" [{msg_folder}]"
                         )
                 elif stop_share == 1:
-                    folder = check.create_folder(clipkey, 1)
+                    folder = check.create_folder(clipkey, configuration, 1)
                     file_name = os.path.basename(filepath).replace(".md", "")
                     if file_name == os.path.basename(folder):
                         filepath = filepath.replace(file_name, "index")
@@ -149,11 +161,25 @@ def search_share(preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
     return filespush, clipkey
 
 
-def obsidian_simple(delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
-    """Convert file without markup for obsidian shell command.
+def obsidian_simple(
+    configuration, delopt=False, git=True, stop_share=0, meta=0, vault_share=0
+):
+    """
+    Convert file without markup for obsidian shell command.
 
     Parameters
     ----------
+    configuration: dict
+        configuration value with :
+        - basedir
+        - vault
+        - web
+        - share
+        - index_key
+        - default_note
+        - post
+        - img
+        - vault_file
     delopt : bool, default: False
         Force deletion if True
     git: bool, default: True
@@ -179,12 +205,12 @@ def obsidian_simple(delopt=False, git=True, stop_share=0, meta=0, vault_share=0)
             f" deletion{msg_info}"
         )
         new_files, clipkey = search_share(
-            1, stop_share, meta, vault_share, obsidian=True
+            configuration, 1, stop_share, meta, vault_share, obsidian=True
         )
     else:
         print(f"[{time_now}] STARTING CONVERT ALL\n- {git_info}\n{msg_info}")
         new_files, clipkey = search_share(
-            0, stop_share, meta, vault_share, obsidian=True
+            configuration, 0, stop_share, meta, vault_share, obsidian=True
         )
     if len(new_files) > 0:
         add_msg = ""
@@ -207,7 +233,7 @@ def obsidian_simple(delopt=False, git=True, stop_share=0, meta=0, vault_share=0)
             if len(new_files) == 1:
                 commit = "".join(new_files)
                 markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
-                convert.clipboard(markdown_msg, clipkey)
+                convert.clipboard(configuration, markdown_msg, clipkey)
             commit = f"Updated :\n\n {commit}\n"
             config.git_push(
                 commit,
@@ -227,11 +253,24 @@ def obsidian_simple(delopt=False, git=True, stop_share=0, meta=0, vault_share=0)
     sys.exit()
 
 
-def convert_all(delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
+def convert_all(
+    configuration, delopt=False, git=True, stop_share=0, meta=0, vault_share=0
+):
     """Convert all shared file with relying on rich markup library.
 
     Parameters
     ----------
+    configuration: dict
+        configuration value with :
+        - basedir
+        - vault
+        - web
+        - share
+        - index_key
+        - default_note
+        - post
+        - img
+        - vault_file
     delopt: bool, default: False
         Force deletion if True
     git: bool, default: True
@@ -267,7 +306,9 @@ def convert_all(delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
             new_line_start=True,
             justify="full",
         )
-        new_files, clipkey = search_share(1, stop_share, meta, vault_share)
+        new_files, clipkey = search_share(
+            configuration, 1, stop_share, meta, vault_share
+        )
     else:
         console.print(
             Rule(
@@ -281,7 +322,9 @@ def convert_all(delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
             " ",
             new_line_start=True,
         )
-        new_files, clipkey = search_share(0, stop_share, meta, vault_share)
+        new_files, clipkey = search_share(
+            configuration, 0, stop_share, meta, vault_share
+        )
     if len(new_files) > 0:
         add_msg = ""
         remove_msg = ""
@@ -303,7 +346,7 @@ def convert_all(delopt=False, git=True, stop_share=0, meta=0, vault_share=0):
             if len(new_files) == 1:
                 commit = "".join(new_files)
                 markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
-                convert.clipboard(markdown_msg, clipkey)
+                convert.clipboard(configuration, markdown_msg, clipkey)
             commit = f"**Updated** : \n {commit}\n"
             config.git_push(
                 commit,

@@ -11,28 +11,35 @@ import frontmatter
 import yaml
 from unidecode import unidecode
 
-from mkdocs_obsidian.common import global_value as settings
 from mkdocs_obsidian.common import metadata as mt
 
-BASEDIR = settings.BASEDIR
-POST = settings.POST
-VAULT = settings.VAULT
-VAULT_FILE = settings.VAULT_FILE
 
+def config_exclude(BASEDIR):
+    """
+    A simple script to add compatibility with older version : the renaming of .exclude_folder to .exclude
+    Parameters
+    ----------
+    BASEDIR : Path
+        Base folder
+    Returns
+    -------
+    config_folder: Path
+        The path of exclude.yml
 
-def config_exclude():
-    """ """
+    """
     config_folder = Path(f"{BASEDIR}/exclude_folder.yml")
     if not os.path.exists(config_folder):
         config_folder = Path(f"{BASEDIR}/exclude.yml")
     return config_folder
 
 
-def exclude(filepath: str, key: str):
+def exclude(filepath, key, BASEDIR):
     """
     Check if a file is in `exclude.yml`.
     Parameters
     ----------
+    BASEDIR: Path
+        Base directory absolute path
     filepath: str
         Path to the file to check
     key: str
@@ -42,28 +49,33 @@ def exclude(filepath: str, key: str):
     bool:
         True if filepath is in the list.
     """
-    config_folder = config_exclude()
+    config_folder = config_exclude(BASEDIR)
     if os.path.exists(config_folder):
         with open(config_folder, "r", encoding="utf-8") as file_config:
             try:
                 folder = yaml.safe_load(file_config)
             except yaml.YAMLError as exc:
-                print(f'[red bold]Error in [u]{folder}[/] : {exc}')
+                print(f"[red bold]Error in [u]{folder}[/] : {exc}")
                 sys.exit(2)
         excluded_folder = folder.get(key, "")
         return any(str(Path(file)) in filepath for file in excluded_folder)
     return False
 
 
-def delete_not_exist():
+def delete_not_exist(configuration):
     """
     Removes files that have been deleted from the vault unless they are in `exclude.yml[files]` and always delete if founded file is in `exclude.yml[folder]`
-
+    Parameters
+    ----------
+    configuration: dict
+        dictionnary configuration
     Returns
     -------
     info: list[str]
         List of deleted file
     """
+    BASEDIR = configuration["basedir"]
+    VAULT_FILE = configuration["vault_file"]
     vault_file = []
     info = []
     excluded = []
@@ -71,12 +83,12 @@ def delete_not_exist():
     docs = Path(f"{BASEDIR}/docs/**")
     for note in VAULT_FILE:
         vault_file.append(os.path.basename(note))
-        if exclude(note, "folder"):
+        if exclude(note, "folder", BASEDIR):
             excluded.append(os.path.basename(note))
     for file in glob.iglob(str(docs), recursive=True):
         if (
             not any(i in file for i in important_folder)
-            and not exclude(file, "files")
+            and not exclude(file, "files", BASEDIR)
             and (
                 os.path.basename(file) not in vault_file
                 or os.path.basename(file) in excluded
@@ -97,7 +109,7 @@ def delete_not_exist():
     return info
 
 
-def diff_file(filepath: str, folder: str, contents: list, update=0):
+def diff_file(filepath, folder, contents, update=0):
     """Check the difference between file in vault and file in publish.
     Check if the new converted file = the file on publish.
 
@@ -105,7 +117,7 @@ def diff_file(filepath: str, folder: str, contents: list, update=0):
     ----------
     filepath : str
         filepath of source file
-    folder: str
+    folder: str | Path
         folder found in category of the source file
     contents: list[str]
         Contents of the file to check
@@ -154,7 +166,7 @@ def retro(file, opt=0):
 
     Parameters
     ----------
-    file: str, list
+    file: str | Path | list
     opt: int, default: 0
         if file is a list (note's content) or a filepath
         - 0: Filepath
@@ -181,11 +193,13 @@ def retro(file, opt=0):
     return notes
 
 
-def create_folder(category: str, share=0):
+def create_folder(category, configuration, share=0):
     """
     create a folder based on the category key as 'folder1/folder2/.../' and return the folder path. Return default path in case of error/none category
     Parameters
     ----------
+    configuration : dict
+        Configuration dictionnary.
     category : str
         Category frontmatter key
     share: int, default: 0
@@ -196,6 +210,9 @@ def create_folder(category: str, share=0):
         Created folder path
 
     """
+    BASEDIR = configuration["basedir"]
+    POST = configuration["post"]
+
     if category != "":
         folder = Path(f"{BASEDIR}/docs/{category}")
         try:
@@ -208,14 +225,14 @@ def create_folder(category: str, share=0):
     return folder
 
 
-def modification_time(filepath: str, folder: str, update: int):
+def modification_time(filepath, folder, update):
     """check the modification time : return true if file modified since the last push.
 
     Parameters
     ----------
     filepath : str
         filepath's file to check
-    folder: str
+    folder: str | Path
         folder in the blog
     update : int
         skip check if 0 (force update)
@@ -235,21 +252,22 @@ def modification_time(filepath: str, folder: str, update: int):
     return True  # file doesn't exist
 
 
-def skip_update(filepath: str, folder: str, update: int):
+def skip_update(filepath, folder, update):
     """check if file exist + update is false
 
     Parameters
     ----------
     filepath: str
         file's filepath to check existence
-    folder: str
+    folder: str | Path
         folder's path
     update: int
         Update key state
 
     Returns
     -------
-
+    bool:
+        Return True if file exist and update is False, False otherwise
     """
     filepath = Path(filepath)
     return update == 1 and check_file(filepath, folder) == "EXIST"
@@ -282,17 +300,17 @@ def check_file(filepath, folder: str):
     return "NE"
 
 
-def delete_file(filepath: str, folder: str, meta_update=1) -> bool:
+def delete_file(filepath, folder, meta_update=1):
     """Delete the requested file
 
     Parameters
     ----------
-    filepath :
+    filepath : str | Path
         filepath
-    folder :
+    folder : str|Path
         folder path
-    meta_update :
-        update the metadata if 0 (Default value = 1)
+    meta_update : int (default: 1)
+        update the metadata if 0
 
     Returns
     -------
@@ -308,7 +326,7 @@ def delete_file(filepath: str, folder: str, meta_update=1) -> bool:
             if filecheck == filename:
                 os.remove(Path(f"{path}/{file}"))
                 if meta_update == 0:
-                    mt.update_frontmatter(filepath, 0)
+                    mt.update_frontmatter(filepath, configuration, 0)
                 return True
         if len(os.listdir(path)) == 0:
             os.rmdir(path)

@@ -11,12 +11,8 @@ from pathlib import Path
 import yaml
 from rich import print
 
-from mkdocs_obsidian.common import global_value as config
 
-BASEDIR = config.BASEDIR
-
-
-def code_blocks(start_list: list, end_list: list):
+def code_blocks(start_list, end_list):
     """Check all code blocks in the contents
 
     Parameters
@@ -25,7 +21,6 @@ def code_blocks(start_list: list, end_list: list):
         List of all started codeblocs
     end_list : list
         list of all ended code blocks
-
 
     Returns
     -------
@@ -55,20 +50,20 @@ def code_blocks(start_list: list, end_list: list):
     return merged
 
 
-def admonition_trad(file_data: list):
+def admonition_trad(BASEDIR, file_data: list):
     """Change all admonition to material admonition
 
     Parameters
     ----------
+    BASEDIR: Path
+        Basedirectory from configuration
     file_data : list
         Contents of the file
-
 
     Returns
     -------
     list:
        All file contents with admonition converted
-
     """
     code_index = 0
     code_dict = {}
@@ -119,9 +114,10 @@ def admonition_trad(file_data: list):
                 custom = yaml.safe_load(stream)
             except yaml.YAMLError:
                 print(
-                    f"[red bold] Error in [u]{admonition_custom}[/] : Your YAML frontmatter doesn't seem"
-                    " valid! Use https://jsonformatter.org/yaml-validator to"
-                    " correct it!")
+                    f"[red bold] Error in [u]{admonition_custom}[/] : Your YAML"
+                    " frontmatter doesn't seem valid! Use"
+                    " https://jsonformatter.org/yaml-validator to correct it!"
+                )
                 sys.exit(2)
     adm_list = adm_list + custom
     for i in range(0, len(file_data)):
