@@ -326,8 +326,9 @@ def git_pull(configuration, git=True):
                 return True
             except git.GitCommandError as exc:
                 console.print(f"Unexpected error : {exc}", style="bold white on red")
+                return False
         except ImportError:
-            pass
+            return False
 
 def git_push(
     commit, configuration, obsidian=False, add_info="", rmv_info="", add_msg="", remove_msg=""
