@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.1.1 (2022-03-08)
+### Fix
+* **git:** Adding return on git pull ([`dbbaff4`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/dbbaff4d793d798ddac7b9b8122fc0c2edcedace))
+
 ## v3.1.0 (2022-03-08)
 ### Feature
 * Git pull ([`ad51e95`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ad51e9593bdd6819ce0717d702658272252177ab))
