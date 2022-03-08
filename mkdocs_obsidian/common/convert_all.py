@@ -19,7 +19,7 @@ from mkdocs_obsidian.common import (
     config,
     file_checking as check,
     conversion as convert,
-)
+    )
 
 
 def dest(filepath, folder):
@@ -237,6 +237,7 @@ def obsidian_simple(
             commit = f"Updated :\n\n {commit}\n"
             config.git_push(
                 commit,
+                configuration,
                 True,
                 add_info=add_info,
                 rmv_info=remove_info,
@@ -350,6 +351,7 @@ def convert_all(
             commit = f"**Updated** : \n {commit}\n"
             config.git_push(
                 commit,
+                configuration,
                 add_info=add_info,
                 rmv_info=remove_info,
                 add_msg=add_msg,

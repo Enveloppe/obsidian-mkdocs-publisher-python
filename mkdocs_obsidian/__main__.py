@@ -261,7 +261,6 @@ def main():
         configuration_name = args.new or "0"
         setup.create_env(configuration_name)
         sys.exit()
-    # meta-update
     else:
         configuration = setup.open_value(configuration_name)
         meta_update = int(args.meta)
@@ -273,17 +272,17 @@ def main():
         if cmd == "file":
             file_source = args.filepath
             if args.obsidian:
+                setup.git_pull(configuration, no_git)
                 obsidian_shell(configuration, file_source, meta_update, git=no_git)
                 sys.exit()
             elif args.mobile:
                 mobile_shortcuts(configuration, file_source, meta_update)
                 sys.exit()
             elif os.path.exists(Path(file_source)):
+                setup.git_pull(configuration, no_git)
                 one.convert_one(file_source, configuration, no_git, meta_update)
             else:
-                print(
-                    f"[red bold]Error :[/] [u]{file_source}[/] [red bold]doesn't exist."
-                )
+                console.print(f"ERROR: {file_source} doesn't exist", style="bold white on red")
                 sys.exit(1)
 
         elif cmd == "all":
@@ -294,10 +293,12 @@ def main():
                     configuration, "0", meta_update, vault_share, delete_option
                 )
             elif args.obsidian:
+                setup.git_pull(configuration, no_git)
                 obsidian_shell(
-                    configuration, "0", meta_update, vault_share, delete_option
+                    configuration, "0", meta_update, vault_share, no_git, delete_option
                 )
             else:
+                setup.git_pull(configuration, no_git)
                 all.convert_all(
                     configuration,
                     delete_option,
@@ -307,6 +308,7 @@ def main():
                     vault_share,
                 )
         else:
+            setup.git_pull(configuration, no_git)
             all.convert_all(configuration, False, no_git, stop_share, meta_update, 0)
 
 

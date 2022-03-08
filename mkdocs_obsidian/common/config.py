@@ -303,9 +303,34 @@ def create_env(config_name="0"):
         print("[red bold] Error in configuration, please, retry with the correct path.")
         sys.exit(3)
 
+def git_pull(configuration, git=True):
+    """
+    Commande to pull the repository
+    if no_git or import error : pass
+    Parameters
+    ----------
+    configuration: dict
+        Dictionary containing the basedir
+    git: bool, default: true
+        If true, pull the repo
+    """
+    console = Console()
+    if git:
+        try:
+            import git
+            BASEDIR = configuration['basedir']
+            try:
+                repo = git.Repo(Path(f"{BASEDIR}"))
+                update = repo.remotes.origin
+                update.pull()
+                return True
+            except git.GitCommandError as exc:
+                console.print(f"Unexpected error : {exc}", style="bold white on red")
+        except ImportError:
+            pass
 
 def git_push(
-    commit, obsidian=False, add_info="", rmv_info="", add_msg="", remove_msg=""
+    commit, configuration, obsidian=False, add_info="", rmv_info="", add_msg="", remove_msg=""
 ):
     """
     git push the modified files and print a message result
@@ -314,6 +339,7 @@ def git_push(
     ----------
     commit: str
         Commit information
+    configuration: dict
     obsidian : bool, default: False
         Message without markup
     add_info : str, default: ""
@@ -327,9 +353,7 @@ def git_push(
     console = Console()
     try:
         import git
-        from mkdocs_obsidian.common import global_value as gl
-
-        BASEDIR = gl.BASEDIR
+        BASEDIR = configuration['basedir']
         try:
             repo = git.Repo(Path(f"{BASEDIR}/.git"))
             repo.git.add(".")
@@ -376,7 +400,7 @@ def git_push(
             )
 
 
-def open_value(configuration_name):
+def open_value(configuration_name="0"):
     """
     Return the configuration value
     Parameters
