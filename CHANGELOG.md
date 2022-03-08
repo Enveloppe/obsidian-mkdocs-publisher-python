@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.1.0 (2022-03-08)
+### Feature
+* Git pull ([`ad51e95`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ad51e9593bdd6819ce0717d702658272252177ab))
+
 ## v3.0.0 (2022-03-03)
 ### Feature
 * Multiple configuration ([`0312ee0`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/0312ee09878006d5c084a3e04b1052335e89147e))
