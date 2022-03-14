@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.2.0 (2022-03-14)
+### Feature
+* Support Obsidian callout / Microsoft mkdocs ([`488ac84`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/488ac84c73eb124510d47d8c40e674c398fdf9bf))
+
 ## v3.1.1 (2022-03-08)
 ### Fix
 * **git:** Adding return on git pull ([`dbbaff4`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/dbbaff4d793d798ddac7b9b8122fc0c2edcedace))
