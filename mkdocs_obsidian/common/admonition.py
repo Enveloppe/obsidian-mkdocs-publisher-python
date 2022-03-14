@@ -97,7 +97,6 @@ def admonition_trad(BASEDIR, file_data: list):
         "bug",
         "example",
         "exemple",
-        "abstract",
         "quote",
         "cite",
     ]
@@ -197,3 +196,81 @@ def admonition_trad(BASEDIR, file_data: list):
             file_data[ad_start] = file_data[ad_start].lstrip()
             file_data[ad_end] = file_data[ad_end].lstrip()
     return file_data
+
+def custom_callout(BASEDIR):
+    admonition_custom = False
+    if os.path.exists(Path(f"{BASEDIR}/assets/script/custom_admonition.yml")):
+        admonition_custom = Path(f"{BASEDIR}/assets/script/custom_admonition.yml")
+    elif os.path.exists(Path(f"{BASEDIR}/custom_admonition.yml")):
+        admonition_custom = Path(f"{BASEDIR}/custom_admonition.yml")
+
+    if admonition_custom:
+        with open(admonition_custom, "r", encoding="utf-8") as stream:
+            try:
+                custom = yaml.safe_load(stream)
+            except yaml.YAMLError:
+                print(
+                    f"[red bold] Error in [u]{admonition_custom}[/] : Your YAML"
+                    " frontmatter doesn't seem valid! Use"
+                    " https://jsonformatter.org/yaml-validator to correct it!"
+                    )
+                sys.exit(2)
+    callout_list = [
+        "note",
+        "abstract",
+        "summary",
+        "tldr",
+        "info",
+        "todo",
+        "tip",
+        "hint",
+        "important",
+        "success",
+        "check",
+        "done",
+        "question",
+        "help",
+        "faq",
+        "warning",
+        "caution",
+        "attention",
+        "failure",
+        "fail",
+        "missing",
+        "danger",
+        "error",
+        "bug",
+        "example",
+        "exemple",
+        "quote",
+        "cite",
+    ]
+    callout = callout_list + custom
+    return callout
+
+def parse_title(line, basedir):
+    callout = custom_callout(basedir)
+    title = re.search("> \[!(.*)\]", line)
+    rest_line = re.sub("> \[!(.*)\][\+\-]?", "", line)
+    if title.group(1).lower() not in callout:
+        title = "NOTE"
+    else:
+        title =  title.group(1)
+    if ']-' in line:
+        title = "??? " + title
+    elif "]+" in line:
+         title = "???+ " + title
+    else:
+        title = "!!! " + title
+    if len(rest_line) > 1:
+        title = title + " \"" + rest_line.strip() + "\""
+    return title + '\n'
+
+def callout_conversion(line, callout_state):
+    final_text = line
+    if callout_state:
+        if line.startswith('>'):
+            final_text = line.replace('>', '\t')
+        else:
+            callout_state=final_text
+    return final_text, callout_state

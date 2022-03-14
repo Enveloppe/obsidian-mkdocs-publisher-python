@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import (
     file_checking as check,
     metadata as mt,
     admonition as adm,
-)
+    )
 
 
 def get_image(configuration, image):
@@ -371,6 +371,7 @@ def file_convert(configuration, filepath, force=0):
     if force != 1 and not meta.get(SHARE):
         return final
     lines = adm.admonition_trad(configuration["basedir"], lines)
+    callout_state= False
     for line in lines:
         final_text = line
         if not final_text.strip().endswith("%%") and not final_text.strip().startswith(
@@ -395,6 +396,10 @@ def file_convert(configuration, filepath, force=0):
                     .decode("utf-16")
                 )
                 final_text = re.sub(r"\\U\w+", convert_emojiz, final_text)
+            if final_text.startswith('> [!'):
+                callout_state = True
+                final_text = adm.parse_title(line, configuration['basedir'])
+            final_text, callout_state = adm.callout_conversion(final_text, callout_state)
             if re.search(
                 rf"\[\[?(.*)" + re.escape(INDEX_KEY) + r"(.*)\]\]?", final_text
             ):
