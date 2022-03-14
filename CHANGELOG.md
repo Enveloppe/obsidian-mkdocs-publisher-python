@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v3.2.1 (2022-03-14)
+### Fix
+* Custom admonition ([`ae95f27`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ae95f2723f509646a32b195740a6fff8f80a4a4d))
+
+### Documentation
+* Update docs to follow update ([`c76d3c3`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c76d3c3aacae4341cbada4069010e58e3f441e94))
+
 ## v3.2.0 (2022-03-14)
 ### Feature
 * Support Obsidian callout / Microsoft mkdocs ([`488ac84`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/488ac84c73eb124510d47d8c40e674c398fdf9bf))
