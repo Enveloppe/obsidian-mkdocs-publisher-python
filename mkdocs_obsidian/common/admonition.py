@@ -2,15 +2,50 @@
 A terrifing code to convert admonition code blocks to material code blocks.
 """
 
-import os
 import re
-import sys
 from itertools import zip_longest
 from pathlib import Path
 
-import yaml
-from rich import print
 
+def custom_callout(BASEDIR):
+    custom = []
+    with open(Path(BASEDIR, "docs", "assets", "css", "custom_attributes.css"), "r", encoding="utf-8") as s:
+        for i in s.readlines():
+            if i.strip().startswith('--md-admonition-icon'):
+                css =i.replace("--md-admonition-icon--", "")
+                custom.append((re.sub(":.*", '', css)).strip())
+    callout_list = [
+        "note",
+        "abstract",
+        "summary",
+        "tldr",
+        "info",
+        "todo",
+        "tip",
+        "hint",
+        "important",
+        "success",
+        "check",
+        "done",
+        "question",
+        "help",
+        "faq",
+        "warning",
+        "caution",
+        "attention",
+        "failure",
+        "fail",
+        "missing",
+        "danger",
+        "error",
+        "bug",
+        "example",
+        "exemple",
+        "quote",
+        "cite",
+    ]
+    callout = callout_list + custom
+    return callout
 
 def code_blocks(start_list, end_list):
     """Check all code blocks in the contents
@@ -69,56 +104,7 @@ def admonition_trad(BASEDIR, file_data: list):
     code_dict = {}
     start_list = []
     end_list = []
-    adm_list = [
-        "note",
-        "seealso",
-        "abstract",
-        "summary",
-        "tldr",
-        "info",
-        "todo",
-        "tip",
-        "hint",
-        "important",
-        "success",
-        "check",
-        "done",
-        "question",
-        "help",
-        "faq",
-        "warning",
-        "caution",
-        "attention",
-        "failure",
-        "fail",
-        "missing",
-        "danger",
-        "error",
-        "bug",
-        "example",
-        "exemple",
-        "quote",
-        "cite",
-    ]
-    custom = []
-    admonition_custom = False
-    if os.path.exists(Path(f"{BASEDIR}/assets/script/custom_admonition.yml")):
-        admonition_custom = Path(f"{BASEDIR}/assets/script/custom_admonition.yml")
-    elif os.path.exists(Path(f"{BASEDIR}/custom_admonition.yml")):
-        admonition_custom = Path(f"{BASEDIR}/custom_admonition.yml")
-
-    if admonition_custom:
-        with open(admonition_custom, "r", encoding="utf-8") as stream:
-            try:
-                custom = yaml.safe_load(stream)
-            except yaml.YAMLError:
-                print(
-                    f"[red bold] Error in [u]{admonition_custom}[/] : Your YAML"
-                    " frontmatter doesn't seem valid! Use"
-                    " https://jsonformatter.org/yaml-validator to correct it!"
-                )
-                sys.exit(2)
-    adm_list = adm_list + custom
+    adm_list = custom_callout(BASEDIR)
     for i in range(0, len(file_data)):
         if re.search("[`?!]{3}( ?)\w+(.*)", file_data[i]):
             start = i
@@ -197,56 +183,7 @@ def admonition_trad(BASEDIR, file_data: list):
             file_data[ad_end] = file_data[ad_end].lstrip()
     return file_data
 
-def custom_callout(BASEDIR):
-    admonition_custom = False
-    if os.path.exists(Path(f"{BASEDIR}/assets/script/custom_admonition.yml")):
-        admonition_custom = Path(f"{BASEDIR}/assets/script/custom_admonition.yml")
-    elif os.path.exists(Path(f"{BASEDIR}/custom_admonition.yml")):
-        admonition_custom = Path(f"{BASEDIR}/custom_admonition.yml")
 
-    if admonition_custom:
-        with open(admonition_custom, "r", encoding="utf-8") as stream:
-            try:
-                custom = yaml.safe_load(stream)
-            except yaml.YAMLError:
-                print(
-                    f"[red bold] Error in [u]{admonition_custom}[/] : Your YAML"
-                    " frontmatter doesn't seem valid! Use"
-                    " https://jsonformatter.org/yaml-validator to correct it!"
-                    )
-                sys.exit(2)
-    callout_list = [
-        "note",
-        "abstract",
-        "summary",
-        "tldr",
-        "info",
-        "todo",
-        "tip",
-        "hint",
-        "important",
-        "success",
-        "check",
-        "done",
-        "question",
-        "help",
-        "faq",
-        "warning",
-        "caution",
-        "attention",
-        "failure",
-        "fail",
-        "missing",
-        "danger",
-        "error",
-        "bug",
-        "example",
-        "exemple",
-        "quote",
-        "cite",
-    ]
-    callout = callout_list + custom
-    return callout
 
 def parse_title(line, basedir):
     callout = custom_callout(basedir)
