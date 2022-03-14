@@ -84,6 +84,7 @@ The blog will be published through [GitHub Page](https://pages.github.com/) usin
 The script's goal is to move an authorized file (or multiple authorized file) from your Obsidian's vault to your blog's repository. It will :
 - Move linked image in `docs/assets/img`
 - Convert the **code block** [Admonition](https://github.com/valentine195/obsidian-admonition) to [material Admonition](https://squidfunk.github.io/mkdocs-material/reference/admonitions/)[^1]
+- Convert the [Callout Syntax](https://help.obsidian.md/How+to/Use+callouts) to [material Admonition](https://squidfunk.github.io/mkdocs-material/reference/admonitions/).
 - Remove Obsidian's comments as `%% comments %%`
 - Copy the file in `docs` or a specific folder structure. 
 - Add custom CSS based on  [markdown attribute or tags](#Custom-attribute-example) ([CM6 Live Preview](https://github.com/nothingislost/obsidian-cm6-attributes) ; [Markdown Attribute](https://github.com/valentine195/obsidian-markdown-attributes) and [Contextual Typography](https://github.com/mgmeyers/obsidian-contextual-typography)). 
@@ -253,6 +254,35 @@ Some examples of citation and their transformation :
 | `[(i) Alias](Real file) ` | `[Alias](index)`      |
 | `[(i)](real file)`        | `[real file](index)`  | 
 
+## Admonition & callout customizable
+
+The script support custom admonition. For that, you first need to edit [custom_attributes](https://github.com/Mara-Li/mkdocs_obsidian_template/blob/main/docs/assets/css/custom_attributes.css) with adding the support, as follow in [Admonition's docs](https://squidfunk.github.io/mkdocs-material/reference/admonitions/#customization).
+For example, to add a `dictionnary` admonition:
+```css
+:root {
+    --md-admonition-icon--dictionnary: url('data:image/svg+xml;charset=utf-8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12z"/></svg>')
+}
+.md-typeset .admonition.dictionnary,
+.md-typeset details.dictionnary {
+  border-color: rgb(43, 155, 70);
+}
+.md-typeset .dictionnary > .admonition-title,
+.md-typeset .dictionnary > .summary {
+  background-color: rgba(43, 155, 70, 0.1);
+  border-color: rgb(43, 155, 70);
+}
+.md-typeset .dictionnary > .admonition-title::before,
+.md-typeset .dictionnary > summary::before {
+  background-color: rgb(43, 155, 70);
+  -webkit-mask-image: var(--md-admonition-icon--dictionnary);
+          mask-image: var(--md-admonition-icon--dictionnary);
+
+```
+It will give you : 
+![img.png](screenshot/callout_admo.png)
+
+The `dictionnary` will be recognized, and converted !
+
 # Obsidian
 **Some useful plugin to support the script** : 
 - [Metacopy](https://github.com/Mara-Li/obsidian-metacopy)
@@ -303,7 +333,7 @@ category:
 If you have more question, don't forget to read the [Q&A](https://github.com/Mara-Li/mkdocs_obsidian_template/wiki/Q&A/) !
 
 
-[^1]: No support for nested admonition and [Microsoft Document Syntax](https://github.com/valentine195/obsidian-admonition#microsoft-document-syntax)
+[^1]: No support for nested admonition
 [^2]: This key can be configured 
 [^3]: **Meta tags** are snippets of text that describe a page’s content; the meta tags don’t appear on the page itself, but only in the page’s source code. Meta tags are essentially little content descriptors that help tell search engines what a web page is about. [Source](https://www.wordstream.com/meta-tags)
 [^4]: Using Pyto you need to add the writing authorization for your vault and blog repository. You can access it in parameters > Runtime. 
