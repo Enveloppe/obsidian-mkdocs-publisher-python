@@ -1,4 +1,4 @@
-# mkdocs_obsidian_publish
+# OBSIDIAN TO MKDOCS
 Publish your obsidian vault through a python script
 
 <p align="center"><a href="https://github.com/Mara-Li/obsidian_mkdocs#readme">PROJECT DOCUMENTATION</a></p>
