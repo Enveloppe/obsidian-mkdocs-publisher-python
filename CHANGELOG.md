@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v3.2.2 (2022-03-22)
+### Fix
+* **callout:** More compliant to error (adding or not whitespace) in callout title ([`258cffc`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/258cffc45711e168aa0d259093d9e73c510bd8a7))
+
+### Documentation
+* Adding links and only script readme ([`3e67f39`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3e67f39168a30831ad5b146b56d58a3fc724a478))
+* Delete readme and docs ([`7e47950`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/7e4795031abbd9f3e00e3a75c95151909370b1ed))
+
 ## v3.2.1 (2022-03-14)
 ### Fix
 * Custom admonition ([`ae95f27`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ae95f2723f509646a32b195740a6fff8f80a4a4d))
