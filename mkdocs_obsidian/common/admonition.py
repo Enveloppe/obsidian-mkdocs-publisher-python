@@ -187,8 +187,8 @@ def admonition_trad(BASEDIR, file_data: list):
 
 def parse_title(line, basedir):
     callout = custom_callout(basedir)
-    title = re.search("> \[!(.*)\]", line)
-    rest_line = re.sub("> \[!(.*)\][\+\-]?", "", line)
+    title = re.search("> ?\[!(.*)\]", line)
+    rest_line = re.sub("> ?\[!(.*)\][\+\-]?", "", line)
     if title.group(1).lower() not in callout:
         title = "NOTE"
     else:

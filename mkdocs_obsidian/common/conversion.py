@@ -396,7 +396,7 @@ def file_convert(configuration, filepath, force=0):
                     .decode("utf-16")
                 )
                 final_text = re.sub(r"\\U\w+", convert_emojiz, final_text)
-            if final_text.startswith('> [!'):
+            if final_text.startswith('> [!') or final_text.startswith('>[!'):
                 callout_state = True
                 final_text = adm.parse_title(line, configuration['basedir'])
             final_text, callout_state = adm.callout_conversion(final_text, callout_state)
