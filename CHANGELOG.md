@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.2.3 (2022-04-01)
+### Fix
+* Fix space after > for obsidian callout ([`672f3d7`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/672f3d7340bb7d43d6c4ca55d63901b2e947fd5f))
+
 ## v3.2.2 (2022-03-22)
 ### Fix
 * **callout:** More compliant to error (adding or not whitespace) in callout title ([`258cffc`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/258cffc45711e168aa0d259093d9e73c510bd8a7))
