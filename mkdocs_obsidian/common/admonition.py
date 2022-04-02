@@ -9,11 +9,15 @@ from pathlib import Path
 
 def custom_callout(BASEDIR):
     custom = []
-    with open(Path(BASEDIR, "docs", "assets", "css", "custom_attributes.css"), "r", encoding="utf-8") as s:
+    with open(
+        Path(BASEDIR, "docs", "assets", "css", "custom_attributes.css"),
+        "r",
+        encoding="utf-8",
+    ) as s:
         for i in s.readlines():
-            if i.strip().startswith('--md-admonition-icon'):
-                css =i.replace("--md-admonition-icon--", "")
-                custom.append((re.sub(":.*", '', css)).strip())
+            if i.strip().startswith("--md-admonition-icon"):
+                css = i.replace("--md-admonition-icon--", "")
+                custom.append((re.sub(":.*", "", css)).strip())
     callout_list = [
         "note",
         "abstract",
@@ -46,6 +50,7 @@ def custom_callout(BASEDIR):
     ]
     callout = callout_list + custom
     return callout
+
 
 def code_blocks(start_list, end_list):
     """Check all code blocks in the contents
@@ -184,30 +189,50 @@ def admonition_trad(BASEDIR, file_data: list):
     return file_data
 
 
+def parse_title(line, basedir, nb):
+    """
+    Parse the type and title of an Obsidian's callout.
+    Parameters
+    ----------
+    line: str
+        Parsed line
+    basedir: Path
+    nb: int
+        Count the number of '>' in the line
 
-def parse_title(line, basedir):
+    Returns
+    -------
+    str:
+        The parsed title of the callout.
+    """
     callout = custom_callout(basedir)
-    title = re.search("> ?\[!(.*)\]", line)
-    rest_line = re.sub("> ?\[!(.*)\][\+\-]?", "", line)
+    title = re.search("^( ?>*)*\[!(.*)\]", line)
+    rest_line = re.sub("^( ?>*)*\[!(.*)\][\+\-]?", "", line)
     if title.group(1).lower() not in callout:
         title = "NOTE"
     else:
-        title =  title.group(1)
-    if ']-' in line:
+        title = title.group(1)
+    if "]-" in line:
         title = "??? " + title
     elif "]+" in line:
-         title = "???+ " + title
+        title = "???+ " + title
     else:
         title = "!!! " + title
     if len(rest_line) > 1:
-        title = title + " \"" + rest_line.strip() + "\""
-    return title + '\n'
+        title = title + ' "' + rest_line.strip() + '"'
+    if nb > 1:
+        title = "\t" * nb + title
+    return title + "\n"
+
 
 def callout_conversion(line, callout_state):
     final_text = line
     if callout_state:
-        if line.startswith('>'):
-            final_text = re.sub('> ?', '\t', line)
+        if line.startswith(">"):
+            nb = line.count(">")
+            final_text = re.sub("> ?", "\t", line)
+            if nb > 1:
+                final_text = "\t" + final_text
         else:
-            callout_state=final_text
+            callout_state = final_text
     return final_text, callout_state
