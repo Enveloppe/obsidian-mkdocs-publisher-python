@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.2.4 (2022-04-02)
+### Fix
+* Error with regex ([`757b8da`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/757b8da40396bcc6d48b21e7871af8d550db4a02))
+
 ## v3.2.3 (2022-04-01)
 ### Fix
 * Fix space after > for obsidian callout ([`672f3d7`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/672f3d7340bb7d43d6c4ca55d63901b2e947fd5f))
