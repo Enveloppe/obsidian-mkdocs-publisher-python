@@ -15,7 +15,7 @@ from mkdocs_obsidian.common import (
     file_checking as check,
     conversion as convert,
     config as setup,
-    )
+)
 
 
 def convert_one(ori, configuration, git, meta, obsidian=False):
@@ -62,7 +62,7 @@ def convert_one(ori, configuration, git, meta, obsidian=False):
         checkfile = convert.file_write(configuration, ori, contents, priv, 1, meta)
         if checkfile and git:
             commit = f"Pushed {file_name.lower()} to blog"
-            setup.git_push(commit, configuration,obsidian, "Push", file_name)
+            setup.git_push(commit, configuration, obsidian, "Push", file_name)
             convert.clipboard(configuration, ori, clipkey)
         elif checkfile and not git:
             if not obsidian:

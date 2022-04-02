@@ -282,7 +282,9 @@ def main():
                 setup.git_pull(configuration, no_git)
                 one.convert_one(file_source, configuration, no_git, meta_update)
             else:
-                console.print(f"ERROR: {file_source} doesn't exist", style="bold white on red")
+                console.print(
+                    f"ERROR: {file_source} doesn't exist", style="bold white on red"
+                )
                 sys.exit(1)
 
         elif cmd == "all":

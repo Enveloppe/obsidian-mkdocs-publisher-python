@@ -303,6 +303,7 @@ def create_env(config_name="0"):
         print("[red bold] Error in configuration, please, retry with the correct path.")
         sys.exit(3)
 
+
 def git_pull(configuration, git=True):
     """
     Commande to pull the repository
@@ -318,7 +319,8 @@ def git_pull(configuration, git=True):
     if git:
         try:
             import git
-            BASEDIR = configuration['basedir']
+
+            BASEDIR = configuration["basedir"]
             try:
                 repo = git.Repo(Path(f"{BASEDIR}"))
                 update = repo.remotes.origin
@@ -330,8 +332,15 @@ def git_pull(configuration, git=True):
         except ImportError:
             return False
 
+
 def git_push(
-    commit, configuration, obsidian=False, add_info="", rmv_info="", add_msg="", remove_msg=""
+    commit,
+    configuration,
+    obsidian=False,
+    add_info="",
+    rmv_info="",
+    add_msg="",
+    remove_msg="",
 ):
     """
     git push the modified files and print a message result
@@ -354,7 +363,8 @@ def git_push(
     console = Console()
     try:
         import git
-        BASEDIR = configuration['basedir']
+
+        BASEDIR = configuration["basedir"]
         try:
             repo = git.Repo(Path(f"{BASEDIR}/.git"))
             repo.git.add(".")
