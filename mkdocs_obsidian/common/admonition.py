@@ -207,7 +207,7 @@ def callout_conversion(line, callout_state):
     final_text = line
     if callout_state:
         if line.startswith('>'):
-            final_text = re.sub('>\w+?', '\t', line)
+            final_text = re.sub('> ?', '\t', line)
         else:
             callout_state=final_text
     return final_text, callout_state
