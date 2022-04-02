@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.3.0 (2022-04-02)
+### Feature
+* Nested callout ([`93ceba7`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/93ceba790dd453ca75c24c6971f93cd16778f591))
+
 ## v3.2.4 (2022-04-02)
 ### Fix
 * Error with regex ([`757b8da`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/757b8da40396bcc6d48b21e7871af8d550db4a02))
