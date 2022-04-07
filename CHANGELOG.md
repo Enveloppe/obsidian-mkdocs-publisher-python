@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.3.2 (2022-04-07)
+### Fix
+* Shell / obsidian option doesn't work ; fix message when git error ([`585a52e`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/585a52ef55765f05a2d5222545d3ccf62c762255))
+
 ## v3.3.1 (2022-04-07)
 ### Fix
 * Callout type not detected ([`84344db`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/84344db1e63b7b01ab54875c57cd4ea4b2845dc0))
