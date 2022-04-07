@@ -67,9 +67,9 @@ def obsidian_shell(
         if not file:
             print("File not found.")
             sys.exit(1)
-        one.convert_one(file, configuration, git, meta_update)
+        one.convert_one(file, configuration, git, meta_update, True)
     elif file != "0" and os.path.exists(Path(file)):
-        one.convert_one(file, configuration, git, meta_update)
+        one.convert_one(file, configuration, git, meta_update, True)
     sys.exit()
 
 

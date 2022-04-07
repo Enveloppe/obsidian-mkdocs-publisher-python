@@ -383,19 +383,38 @@ def git_push(
                     end=" ",
                 )
             else:
+                if add_msg != "":
+                    add_msg = ": " + add_msg
+                if remove_msg != "":
+                    remove_msg = ": " + remove_msg
                 print(
-                    f" 🎉 Successful 🎉 [{datetime.now().strftime('%H:%M:%S')}]"
-                    f" {add_info}:{add_msg}\n{rmv_info}:{remove_msg}\n"
+                    f"🎉 Successful 🎉",
+                    f"[{datetime.now().strftime('%H:%M:%S')}]\n",
+                    f"{add_info}{add_msg}",
+                    f"{rmv_info}{remove_msg}",
                 )
         except git.GitCommandError:
             if not obsidian:
                 console.print(
-                    f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]",
-                    Markdown("*No modification 😶*"),
-                    end=" ",
-                )
+                        f"❌ Nothing to Push ❌",
+                        f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/]\n",
+                        "💡 Converted 💡",
+                        f" {add_info}",
+                        Markdown(add_msg),
+                        rmv_info,
+                        Markdown(remove_msg),
+                        end = " ",
+                        )
             else:
-                print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
+                if remove_msg != "":
+                    remove_msg = ': ' + remove_msg
+                print(
+                        f"❌ Nothing to Push ❌\n",
+                        f"[{datetime.now().strftime('%H:%M:%S')}]",
+                        "💡 Converted 💡\n",
+                        f"{add_msg}",
+                        f"{rmv_info}{remove_msg}",
+                        )
     except ImportError:
         if not obsidian:
             console.print(
