@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.3.1 (2022-04-07)
+### Fix
+* Callout type not detected ([`84344db`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/84344db1e63b7b01ab54875c57cd4ea4b2845dc0))
+
 ## v3.3.0 (2022-04-02)
 ### Feature
 * Nested callout ([`93ceba7`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/93ceba790dd453ca75c24c6971f93cd16778f591))
