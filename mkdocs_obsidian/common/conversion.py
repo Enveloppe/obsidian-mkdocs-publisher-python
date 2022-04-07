@@ -13,9 +13,9 @@ import frontmatter
 import unidecode
 
 from mkdocs_obsidian.common import (
+    admonition as adm,
     file_checking as check,
     metadata as mt,
-    admonition as adm,
 )
 
 
@@ -157,7 +157,8 @@ def file_write(configuration, filepath, contents, folder, preserve=0, meta_updat
 
 
 def read_custom(BASEDIR):
-    """read custom css, selection of id for custom attribute (special hashtags)
+    """
+    read custom css, selection of id for custom attribute (special hashtags)
 
     Parameters
     ----------
@@ -364,7 +365,6 @@ def file_convert(configuration, filepath, force=0):
 
     """
     final = []
-
     INDEX_KEY = configuration["index_key"]
     SHARE = configuration["share"]
     meta = frontmatter.load(filepath)

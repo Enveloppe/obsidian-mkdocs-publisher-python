@@ -208,10 +208,10 @@ def parse_title(line, basedir, nb):
     callout = custom_callout(basedir)
     title = re.search("^( ?>*)*\[!(.*)\]", line)
     rest_line = re.sub("^( ?>*)*\[!(.*)\][\+\-]?", "", line)
-    if title.group(1).lower() not in callout:
+    if title.group(2).lower() not in callout:
         title = "NOTE"
     else:
-        title = title.group(1)
+        title = title.group(2)
     if "]-" in line:
         title = "??? " + title
     elif "]+" in line:
