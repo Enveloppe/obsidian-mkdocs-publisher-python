@@ -278,7 +278,7 @@ def main():
                 setup.git_pull(configuration, no_git)
                 obsidian_shell(configuration, file_source, meta_update, git=no_git)
                 sys.exit()
-            elif args.mobile:
+            elif args.mobile or args.GA:
                 mobile_shortcuts(configuration, file_source, meta_update)
                 sys.exit()
             elif os.path.exists(Path(file_source)):

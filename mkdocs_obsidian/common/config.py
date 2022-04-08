@@ -466,13 +466,14 @@ def open_value(configuration_name="0", actions=False):
         pass
     if actions:
         BASEDIR = os.getcwd()
-        configuration_name = 'source/.github-actions'
     elif configuration_name == "0":
         configuration_name = ".mkdocs_obsidian"
-    elif not actions:
+    else:
         configuration_name = "." + configuration_name
-    ENV_PATH = Path(f"{BASEDIR}/{configuration_name}")
-
+    if not actions:
+        ENV_PATH = Path(f"{BASEDIR}/{configuration_name}")
+    else:
+        ENV_PATH = Path(BASEDIR, 'source', '.github-actions')
     if not os.path.isfile(ENV_PATH):
         create_env()
     else:
@@ -489,9 +490,7 @@ def open_value(configuration_name="0", actions=False):
     # In case of error
     env = dotenv_values(ENV_PATH)
     try:
-        if actions:
-            BASEDIR=os.getcwd()
-        else:
+        if not actions:
             BASEDIR = Path(env["blog_path"]).expanduser()
         VAULT = Path(env["vault"]).expanduser()
         WEB = env["blog"]
@@ -519,9 +518,7 @@ def open_value(configuration_name="0", actions=False):
             basedir_str = "".join(f.readlines(2)).replace("blog_path=", "").rstrip()
 
             VAULT = Path(vault_str)
-            if actions:
-                BASEDIR = Path(os.getcwd())
-            else:
+            if not actions:
                 BASEDIR = Path(basedir_str)
             WEB = "".join(f.readlines(3)).replace("blog=", "")
             SHARE = "".join(f.readlines(4)).replace("share=", "")
@@ -540,9 +537,7 @@ def open_value(configuration_name="0", actions=False):
         if len(vault_str) == 0 or len(basedir_str) == 0 or len(WEB) == 0:
             sys.exit("Please provide a valid path for all config items")
     except RuntimeError:
-        if actions:
-            BASEDIR = os.getcwd()
-        else:
+        if not actions:
          BASEDIR = Path(env["blog_path"])
         VAULT = Path(env["vault"])
         WEB = env["blog"]
