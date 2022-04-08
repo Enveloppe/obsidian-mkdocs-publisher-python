@@ -430,7 +430,7 @@ def git_push(
             )
 
 
-def open_value(configuration_name="0"):
+def open_value(configuration_name="0", actions=False):
     """
     Return the configuration value
     Parameters
@@ -438,7 +438,8 @@ def open_value(configuration_name="0"):
     configuration_name: str
         The configuration name. If "0", use the default configuration, aka : .mkdocs_obsidian ;
         Else use ".configuration_name"
-
+    actions: bool, default: False
+        If run in github actions
     Returns
     -------
     dict [Path, Path, str, str, str, str, Path, Path, list[str]]:
@@ -463,9 +464,12 @@ def open_value(configuration_name="0"):
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pass
-    if configuration_name == "0":
+    if actions:
+        BASEDIR = os.getcwd()
+        configuration_name = 'source/.github-actions'
+    elif configuration_name == "0":
         configuration_name = ".mkdocs_obsidian"
-    else:
+    elif not actions:
         configuration_name = "." + configuration_name
     ENV_PATH = Path(f"{BASEDIR}/{configuration_name}")
 
@@ -485,7 +489,10 @@ def open_value(configuration_name="0"):
     # In case of error
     env = dotenv_values(ENV_PATH)
     try:
-        BASEDIR = Path(env["blog_path"]).expanduser()
+        if actions:
+            BASEDIR=os.getcwd()
+        else:
+            BASEDIR = Path(env["blog_path"]).expanduser()
         VAULT = Path(env["vault"]).expanduser()
         WEB = env["blog"]
         try:
@@ -512,7 +519,10 @@ def open_value(configuration_name="0"):
             basedir_str = "".join(f.readlines(2)).replace("blog_path=", "").rstrip()
 
             VAULT = Path(vault_str)
-            BASEDIR = Path(basedir_str)
+            if actions:
+                BASEDIR = Path(os.getcwd())
+            else:
+                BASEDIR = Path(basedir_str)
             WEB = "".join(f.readlines(3)).replace("blog=", "")
             SHARE = "".join(f.readlines(4)).replace("share=", "")
             INDEX_KEY = "".join(f.readlines(5)).replace("index_key=", "")
@@ -530,7 +540,10 @@ def open_value(configuration_name="0"):
         if len(vault_str) == 0 or len(basedir_str) == 0 or len(WEB) == 0:
             sys.exit("Please provide a valid path for all config items")
     except RuntimeError:
-        BASEDIR = Path(env["blog_path"])
+        if actions:
+            BASEDIR = os.getcwd()
+        else:
+         BASEDIR = Path(env["blog_path"])
         VAULT = Path(env["vault"])
         WEB = env["blog"]
         SHARE = env["share"]

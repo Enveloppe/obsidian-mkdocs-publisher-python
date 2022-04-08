@@ -250,6 +250,9 @@ def main():
     parser.add_argument(
         "--obsidian", "--shell", help=argparse.SUPPRESS, action="store_true"
     )
+    parser.add_argument(
+        "--GA", "--actions", help=argparse.SUPPRESS, action="store_true"
+    )
     console = Console()
     args = parser.parse_args()
     from mkdocs_obsidian.common import config as setup
@@ -262,7 +265,7 @@ def main():
         setup.create_env(configuration_name)
         sys.exit()
     else:
-        configuration = setup.open_value(configuration_name)
+        configuration = setup.open_value(configuration_name, args.GA)
         meta_update = int(args.meta)
         no_git = args.git
         if not args.keep:
