@@ -465,7 +465,7 @@ def open_value(configuration_name="0", actions=False):
     except ModuleNotFoundError:
         pass
     if actions:
-        BASEDIR = os.getcwd()
+        BASEDIR = Path(os.getcwd())
     elif configuration_name == "0":
         configuration_name = ".mkdocs_obsidian"
     else:
