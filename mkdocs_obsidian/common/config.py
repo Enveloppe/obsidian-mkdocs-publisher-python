@@ -571,11 +571,18 @@ def open_value(configuration_name="0", actions=False):
         DEFAULT_NOTES = ""
     POST = Path(f"{BASEDIR}/docs/{DEFAULT_NOTES}")
     IMG = Path(f"{BASEDIR}/docs/assets/img/")
-    VAULT_FILE = [
-        x
-        for x in glob.iglob(str(VAULT) + os.sep + "**", recursive=True)
-        if os.path.isfile(x)
-    ]
+    if actions:
+        VAULT_FILE = [
+            x
+            for x in glob.iglob(str(os.getcwd()) + os.sep + "source"+os.sep+"**", recursive=True)
+            if os.path.isfile(x)
+            ]
+    else:
+        VAULT_FILE = [
+            x
+            for x in glob.iglob(str(VAULT) + os.sep + "**", recursive=True)
+            if os.path.isfile(x)
+        ]
     configuration = {
         "basedir": Path(BASEDIR),
         "vault": Path(VAULT),
