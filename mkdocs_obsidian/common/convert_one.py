@@ -11,11 +11,7 @@ import frontmatter
 import yaml
 from rich.console import Console
 
-from mkdocs_obsidian.common import (
-    file_checking as check,
-    conversion as convert,
-    config as setup,
-)
+from mkdocs_obsidian.common import (config as setup, conversion as convert, file_checking as check)
 
 
 def convert_one(ori, configuration, git, meta, obsidian=False):
@@ -51,13 +47,14 @@ def convert_one(ori, configuration, git, meta, obsidian=False):
         yaml_front = frontmatter.load(ori)
         priv = Path(configuration["post"])
         clipkey = configuration["default_note"]
-        if "category" in yaml_front.keys():
-            if not yaml_front["category"]:
+        CATEGORY = configuration['category_key']
+        if CATEGORY in yaml_front.keys():
+            if not yaml_front[CATEGORY]:
                 priv = check.create_folder("hidden", configuration)
                 clipkey = "hidden"
             else:
-                priv = check.create_folder(yaml_front["category"], configuration)
-                clipkey = yaml_front["category"]
+                priv = check.create_folder(yaml_front[CATEGORY], configuration)
+                clipkey = yaml_front[CATEGORY]
         contents = convert.file_convert(configuration, ori, 1)
         checkfile = convert.file_write(configuration, ori, contents, priv, 1, meta)
         if checkfile and git:

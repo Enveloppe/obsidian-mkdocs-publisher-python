@@ -279,6 +279,9 @@ def create_env(config_name="0"):
             " [i](default: [bold](i)[/])[/]: "
         )
     )
+    category_key = str(console.input("Please, choose the key for the category [i](default: [bold]category[/])[/]: "))
+    if category_key == "":
+        category_key = "category"
     if index_key == "":
         index_key = "(i)"
     with open(env_path, "w", encoding="utf-8") as env:
@@ -288,6 +291,7 @@ def create_env(config_name="0"):
         env.write(f"share={share}\n")
         env.write(f"index_key={index_key}\n")
         env.write(f"default_blog={default_blog}\n")
+        env.write(f"category_key={category_key}\n")
     if default_blog == "/":
         default_blog = ""
     post = Path(f"{blog}/docs/{default_blog}")
@@ -306,7 +310,7 @@ def create_env(config_name="0"):
 
 def git_pull(configuration, git=True):
     """
-    Commande to pull the repository
+    Command to pull the repository
     if no_git or import error : pass
     Parameters
     ----------
@@ -466,6 +470,9 @@ def open_value(configuration_name="0", actions=False):
         pass
     if actions:
         BASEDIR = Path(os.getcwd())
+        VAULT = ""
+        WEB = ""
+        SHARE = ""
     elif configuration_name == "0":
         configuration_name = ".mkdocs_obsidian"
     else:
@@ -476,7 +483,7 @@ def open_value(configuration_name="0", actions=False):
         ENV_PATH = Path(BASEDIR, 'source', '.github-actions')
     if not os.path.isfile(ENV_PATH):
         create_env()
-    else:
+    elif not actions:
         with open(ENV_PATH, encoding="utf-8") as f:
             components = f.read().splitlines()
             if len(components) == 0:
@@ -492,14 +499,14 @@ def open_value(configuration_name="0", actions=False):
     try:
         if not actions:
             BASEDIR = Path(env["blog_path"]).expanduser()
-        VAULT = Path(env["vault"]).expanduser()
-        WEB = env["blog"]
-        try:
-            SHARE = env["share"]
-        except KeyError:
-            SHARE = "share"
-            with open(ENV_PATH, "a", encoding="utf-8") as f:
-                f.write("share=share")
+            VAULT = Path(env["vault"]).expanduser()
+            WEB = env["blog"]
+            try:
+                SHARE = env["share"]
+            except KeyError:
+                SHARE = "share"
+                with open(ENV_PATH, "a", encoding="utf-8") as f:
+                    f.write("share=share")
         try:
             INDEX_KEY = env["index_key"]
         except KeyError:
@@ -512,20 +519,26 @@ def open_value(configuration_name="0", actions=False):
             DEFAULT_NOTES = "notes"
             with open(ENV_PATH, "a", encoding="utf-8") as f:
                 f.write("default_blog=notes")
+        try:
+            CATEGORY = env['category_key']
+        except KeyError:
+            CATEGORY = "category"
+            with open(ENV_PATH, "a", encoding="utf-8") as f:
+                f.write("category_key=category")
     except KeyError:
         with open(ENV_PATH, "r", encoding="utf-8") as f:
-            vault_str = "".join(f.readlines(1)).replace("vault=", "").rstrip()
-            basedir_str = "".join(f.readlines(2)).replace("blog_path=", "").rstrip()
 
-            VAULT = Path(vault_str)
             if not actions:
+                vault_str = "".join(f.readlines(1)).replace("vault=", "").rstrip()
+                basedir_str = "".join(f.readlines(2)).replace("blog_path=", "").rstrip()
                 BASEDIR = Path(basedir_str)
-            WEB = "".join(f.readlines(3)).replace("blog=", "")
-            SHARE = "".join(f.readlines(4)).replace("share=", "")
+                WEB = "".join(f.readlines(3)).replace("blog=", "")
+                SHARE = "".join(f.readlines(4)).replace("share=", "")
             INDEX_KEY = "".join(f.readlines(5)).replace("index_key=", "")
             DEFAULT_NOTES = "".join(f.readlines(6)).replace("default_blog=", "")
+            CATEGORY = "".join(f.readlines(7)).replace("category_key=", "")
         with open(ENV_PATH, "a", encoding="utf-8") as f:
-            if len(SHARE) == 0:
+            if len(SHARE) == 0 and not actions:
                 SHARE = "share"
                 f.write("share=share")
             if len(INDEX_KEY) == 0:
@@ -534,16 +547,20 @@ def open_value(configuration_name="0", actions=False):
             if len(DEFAULT_NOTES) == 0:
                 DEFAULT_NOTES = "notes"
                 f.write("default_blog=notes")
-        if len(vault_str) == 0 or len(basedir_str) == 0 or len(WEB) == 0:
+            if len(CATEGORY) == 0:
+                CATEGORY = "category"
+                f.write("category_key=category")
+        if len(vault_str) == 0 or len(basedir_str) == 0 or len(WEB) == 0 and not actions:
             sys.exit("Please provide a valid path for all config items")
     except RuntimeError:
         if not actions:
-         BASEDIR = Path(env["blog_path"])
-        VAULT = Path(env["vault"])
-        WEB = env["blog"]
-        SHARE = env["share"]
+            BASEDIR = Path(env["blog_path"])
+            VAULT = Path(env["vault"])
+            WEB = env["blog"]
+            SHARE = env["share"]
         INDEX_KEY = env["index_key"]
         DEFAULT_NOTES = env["default_blog"]
+        CATEGORY = env["category_key"]
     try:
         VAULT = VAULT.expanduser()
         BASEDIR = BASEDIR.expanduser()
@@ -569,5 +586,6 @@ def open_value(configuration_name="0", actions=False):
         "post": POST,
         "img": IMG,
         "vault_file": VAULT_FILE,
+        "category_key": CATEGORY,
     }
     return configuration

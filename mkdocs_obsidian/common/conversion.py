@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import (
     admonition as adm,
     file_checking as check,
     metadata as mt,
-)
+    )
 
 
 def get_image(configuration, image):
@@ -227,7 +227,7 @@ def convert_hashtags(configuration, final_text):
     return final_text
 
 
-def index_path(file_name, VAULT_FILE):
+def index_path(file_name, VAULT_FILE, category):
     """
     Get the path of a founded index.md
 
@@ -236,7 +236,8 @@ def index_path(file_name, VAULT_FILE):
     file_name: str
         File found to be an index
     VAULT_FILE: list[str]
-
+    category: str
+        Category keys from frontmatter / configuration
     Returns
     -------
     index: str
@@ -246,8 +247,8 @@ def index_path(file_name, VAULT_FILE):
     index = "index"
     if file:
         metadata = frontmatter.load(file[0])
-        if metadata.get("category") and Path(metadata["category"]).name == file_name:
-            category = str(Path(metadata["category"])).replace(
+        if metadata.get(category) and Path(metadata[category]).name == file_name:
+            category = str(Path(metadata[category])).replace(
                 "\\", "/"
             )  # Normalize path on Windows
             index = "/" + category + "/index.md"
@@ -322,7 +323,7 @@ def index_citation(final_text, configuration):
                         .replace("[", "")
                         .replace(INDEX_KEY, "")
                     )
-                index = index_path(file_name, VAULT_FILE)
+                index = index_path(file_name, VAULT_FILE, configuration['category_key'])
                 cite = f"[[{index}|" + file_name.strip()
                 final_text = final_text.replace(i, cite)
             elif re.search(r"(.*)" + re.escape(INDEX_KEY) + r"(.*)\]", i):
@@ -335,7 +336,7 @@ def index_citation(final_text, configuration):
                 )
                 if len(file_name) == 0:
                     file_name = re.search("\]\((.*)", i).group(1).replace(")", "")
-                index = index_path(file_name, VAULT_FILE)
+                index = index_path(file_name, VAULT_FILE, configuration['category_key'])
                 cite = "[" + file_name + f"]({index})"
                 final_text = (
                     final_text.replace(i, cite)

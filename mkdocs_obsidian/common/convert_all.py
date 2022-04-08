@@ -15,11 +15,7 @@ from rich.markdown import Markdown
 from rich.progress import track
 from rich.rule import Rule
 
-from mkdocs_obsidian.common import (
-    config,
-    file_checking as check,
-    conversion as convert,
-)
+from mkdocs_obsidian.common import (config, conversion as convert, file_checking as check)
 
 
 def dest(filepath, folder):
@@ -84,6 +80,7 @@ def search_share(
     DEFAULT_NOTES = configuration["default_note"]
     VAULT_FILE = configuration["vault_file"]
     SHARE = configuration["share"]
+    CATEGORY = configuration["category_key"]
     filespush = []
     check_file = False
     clipkey = DEFAULT_NOTES
@@ -98,7 +95,7 @@ def search_share(
         ):
             try:
                 yaml_front = frontmatter.load(filepath)
-                clipkey = yaml_front.get("category", DEFAULT_NOTES)
+                clipkey = yaml_front.get(CATEGORY, DEFAULT_NOTES)
                 if not clipkey:
                     clipkey = "hidden"
                 if yaml_front.get(SHARE) or vault_share == 1:

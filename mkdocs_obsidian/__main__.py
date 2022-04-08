@@ -94,7 +94,6 @@ def mobile_shortcuts(
     from mkdocs_obsidian.common import config as setup
 
     VAULT_FILE = configuration["vault_file"]
-    print(file)
     if file == "0":
         all.convert_all(configuration, delete_option, False, 1, 0, vault_share)
     elif not os.path.exists(Path(file)):
