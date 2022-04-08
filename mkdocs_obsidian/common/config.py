@@ -562,8 +562,9 @@ def open_value(configuration_name="0", actions=False):
         DEFAULT_NOTES = env["default_blog"]
         CATEGORY = env["category_key"]
     try:
-        VAULT = VAULT.expanduser()
-        BASEDIR = BASEDIR.expanduser()
+        if not actions:
+            VAULT = VAULT.expanduser()
+            BASEDIR = BASEDIR.expanduser()
     except RuntimeError:
         print("[red bold] Please provide a valid path for all config items")
         sys.exit(3)
