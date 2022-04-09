@@ -23,6 +23,7 @@ def update_frontmatter(filepath, configuration, link=1):
 
     """
     SHARE = configuration["share"]
+    CATEGORY = configuration["category"]
     with open(filepath, "r", encoding="utf8") as metadata:
         meta = frontmatter.load(metadata)
     if meta.get("tag"):
@@ -33,7 +34,7 @@ def update_frontmatter(filepath, configuration, link=1):
         tag = ""
     meta.metadata.pop("tag", None)
     meta.metadata.pop("tags", None)
-    folder = meta.metadata.get("category", configuration["default_note"])
+    folder = meta.metadata.get(CATEGORY, configuration["default_note"])
 
     with open(filepath, "w", encoding="utf-8") as f:
         filename = os.path.basename(filepath)
