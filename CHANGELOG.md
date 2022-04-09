@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v3.4.0 (2022-04-09)
+### Feature
+* Creating Github action ([`fe4ba52`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/fe4ba526120ff56dd6f789af8dcc74270e28726b))
+* Github actions ([`8f2736c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/8f2736ceb5e556a04a6fa360acd6ecad57695ebf))
+
+### Documentation
+* **readme:** Update with adding GA ([`aa5c69c`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/aa5c69c59aa8b3cefb0a48237780f2971ab451d2))
+
 ## v3.3.2 (2022-04-07)
 ### Fix
 * Shell / obsidian option doesn't work ; fix message when git error ([`585a52e`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/585a52ef55765f05a2d5222545d3ccf62c762255))
