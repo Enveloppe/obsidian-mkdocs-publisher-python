@@ -14,10 +14,10 @@ Furthermore, it will also carry :
 - Of the support of [Folder Note — Pagination Indexes](#folder-note)
 - Copy a link to the blog converted file (only if one file is converted)
 
-## File's front matter
+# File's front matter
 The script relies on the front matter** of the notes you want to publish. 
 1. `share: true` allow publishing the file[^3]
-2. `category` to choose where the file will be after conversion ; allowing categorization for the blog.[^4]
+2. `category`[^3] to choose where the file will be after conversion ; allowing categorization for the blog.[^4]
     - `category: false` will **hide** the file from navigation.
     - `category: hidden` will do the same.
     - `category: folder1/folder2/` will move the file in `folder2`, under `folder1`
@@ -27,7 +27,7 @@ The script relies on the front matter** of the notes you want to publish.
 5. `title` : Change the title in the navigation.
 6. `image` : Add an image for meta-tags sharing.[^5] It needs to be the name of the file, as `image.png`. 
 
-## Usage
+# Usage
 The script can be use :
 - Directly in Obsidian, using [Obsidian Shell Commands](https://github.com/Taitava/obsidian-shellcommands) (see [Obsidian Shell's configuration](#obsidian-shell-configuration))
 - In [Terminal](#terminal).
@@ -36,7 +36,7 @@ The supported system are :
 - macOS, Linux and Windows
 - [IOS](#ios) (with [Pyto](https://pyto.app) and/or [a-shell](https://holzschu.github.io/a-Shell_iOS/) with [Working Copy](https://workingcopyapp.com/))
 
-### Configuration
+## Configuration
 At the first run, you will be asked to configure some key and specific path.
 1. <u>Vault</u> : Use the file dialog to choose your vault folder.
 2. <u>Publish repository folder : </u> As vault path, use the file dialog.
@@ -46,7 +46,7 @@ At the first run, you will be asked to configure some key and specific path.
 
 The file will be in `site-packages/mkdocs_obsidian/.mkdocs_obsidian` (unless for Pyto : the `.env` will be directly in `site_package/.mkdocs_obsidian`)
 
-### Terminal 
+# Terminal commands
 
 Global options :
 - `--git` : No commit and push to git ; 
@@ -90,13 +90,19 @@ Where :
 - `all`, `config` and `file`[^6] are required
 You can use the command without argument with `obs2mk` to share every `share: true` file in your vault.
 
+## Configuration
+You can use and create multiple configuration files. This allows to have multiple site based on one vault, or different vault accross one site... 
+1. To create a new configuration file : `obs2mk config --new configuration_name`
+2. To use a configuration use : `--use configuration_name` 
+    For example : `obs2mk --use configuration_name` 
 
-#### Share one file : `obs2mk file FILEPATH`
+## Share
+### Share one file : `obs2mk file FILEPATH`
 It will :
 - Update the `share` state in original file
 - Convert one file, regardless of what is the `share` state.
 
-#### Share all file : `obs2mk all` or `obs2mk`
+### Share all file : `obs2mk all` or `obs2mk`
 You can share multiple documents at once with scanning your Vault, looking for the `share: true`. It will convert automatically these files.  
 Only file with modification since the last sharing will be updated.
 
@@ -105,15 +111,81 @@ You can :
 - Ignore the difference between the source file and the blog's file with :  `obs2mk all --force`
 Also, you can combine the two options. 
 
-### Configuration
-You can use and create multiple configuration files. This allows to have multiple site based on one vault, or different vault accross one site... 
-1. To create a new configuration file : `obs2mk config --new configuration_name`
-2. To use a configuration use : `--use configuration_name` 
-    For example : `obs2mk --use configuration_name` 
+# Github actions 
+
+The plugins can be used as a github action using `--GA` option : `obs2mk —GA --keep file [FILEPATH]`
+
+!!! notes
+    - The `--GA` option remove the `git pull` and `git push`.
+    - The `--GA` use a specific configuration file that will be in [`source/.github-actions`](https://github.com/Mara-Li/mkdocs_obsidian_template/blob/main/source/.github-actions)
+
+Here is an example of worflow using `--GA` : 
+
+```yml
+name: ci
+on:
+  push:
+    branches:
+      - master
+      - main
+jobs:
+  obs2mk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.10.2
+      - name: obs2mk source files
+        run: |
+          pip install obs2mk
+          for f in ${{ github.workspace}}/source/*
+          do
+            if [[ "$f" == *md ]] 
+            then
+              obs2mk --GA --keep file $f
+            fi
+          done
+      - name: clean source files
+        run: rm ${{github.workspace}}/source/*
+      - name: Push new files
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add . 
+          git commit -am "Updated blog 🎉"
+          git push
+```
+
+You can update the building mkdocs page as follow :
+```yml
+name: mkdocs build
+
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.10.2
+      - name: Install Python dependencies
+        uses: py-actions/py-dependency-install@v3
+        with: 
+          path: requirements.txt
+      - run: mkdocs gh-deploy --force --clean
+```
+
+
 
 [^1]: Deprecated ; Will don't be updated and be removed in future version.  
 [^2]: Support nested callout :D  
-[^3]: This key can be configured  
+[^3]: These key can be configured  
 [^4]: You can customize the folder with [Awesome Pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)  
 [^5]: Meta tags are snippets of text that describe a page’s content; the meta tags don’t appear on the page itself, but only in the page’s source code. Meta tags are essentially little content descriptors that help tell search engines what a web page is about. *[(source)](https://www.wordstream.com/meta-tags)*  
 [^6]: For `file` you need to add the filepath of the file you want to share : `obs2mk (global_option) file "filepath" (specific_options)`
