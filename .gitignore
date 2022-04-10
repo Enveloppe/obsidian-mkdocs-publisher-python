@@ -730,3 +730,5 @@ fabric.properties
 /.pylintrc
 
 perf.txt
+
+desktop.ini

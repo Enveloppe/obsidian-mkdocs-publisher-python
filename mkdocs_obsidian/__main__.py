@@ -108,7 +108,7 @@ def mobile_shortcuts(
         one.convert_one(file, configuration, False, meta_update)
 
 
-def keep(obsidian, console, configuration):
+def keep(obsidian, console, configuration, actions=False):
     """
     Keep deleted file and stoped published file (change/remove of the share key)
     Parameters
@@ -118,12 +118,13 @@ def keep(obsidian, console, configuration):
     console:
         Rich console
     configuration: dict
-
+    actions: bool, default: False
+        If we want to keep the file in github actions.
     Returns
     -------
     int
     """
-    info = check.delete_not_exist(configuration)
+    info = check.delete_not_exist(configuration, actions)
     if len(info) > 1:
         info_str = "\n- " + "\n- ".join(info)
         if not obsidian:
@@ -269,7 +270,7 @@ def main():
         meta_update = int(args.meta)
         no_git = args.git
         if not args.keep:
-            stop_share = keep(args.obsidian, console, configuration)
+            stop_share = keep(args.obsidian, console, configuration, args.GA)
         else:
             stop_share = 0
         if cmd == "file":

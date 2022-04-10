@@ -62,7 +62,7 @@ def exclude(filepath, key, BASEDIR):
     return False
 
 
-def delete_not_exist(configuration):
+def delete_not_exist(configuration, actions=False):
     """
     Removes files that have been deleted from the vault unless they are in `exclude.yml[files]` and always delete if founded file is in `exclude.yml[folder]`
     Parameters
@@ -81,6 +81,21 @@ def delete_not_exist(configuration):
     excluded = []
     important_folder = ["assets", "css", "js", "logo", "script"]
     docs = Path(f"{BASEDIR}/docs/**")
+    if actions:
+        VAULT_FILE = Path(os.getcwd(), "source", "vault_published.txt")  # list
+        if os.path.exists(VAULT_FILE):
+            vault_file = ""
+            with open(VAULT_FILE, "r", encoding="utf-8") as file_vault:
+                vault_file = vault_file + file_vault.read()
+                vault_file = (
+                    vault_file.replace("\n", " ")
+                    .replace("]", "")
+                    .replace("[", "")
+                    .replace('"', "")
+                    .replace("'", "")
+                    .split(",")
+                )
+
     for note in VAULT_FILE:
         vault_file.append(os.path.basename(note))
         if exclude(note, "folder", BASEDIR):
