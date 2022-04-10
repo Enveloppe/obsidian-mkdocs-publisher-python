@@ -99,6 +99,8 @@ def delete_not_exist(configuration, actions=False):
                 )
             VAULT_FILE = vault_file
             vault_file = []
+            if len(VAULT_FILE) == 0:
+                return []
         else:
             return []
     for note in VAULT_FILE:
