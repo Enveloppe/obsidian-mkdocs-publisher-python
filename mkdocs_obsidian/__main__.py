@@ -216,6 +216,7 @@ def main():
 
     files_cmd = subparser.add_parser("file", help="Publish only one file")
     files_cmd.add_argument("filepath", action="store")
+    clean = subparser.add_parser("clean", help="Clean all removed files")
     group_git = parser.add_mutually_exclusive_group()
     group_git.add_argument(
         "--mobile",
@@ -265,6 +266,12 @@ def main():
         configuration_name = args.new or "0"
         setup.create_env(configuration_name)
         sys.exit()
+    elif cmd == "clean":
+        configuration = setup.open_value(configuration_name, args.GA)
+        setup.git_pull(configuration, args.git)
+        keep(args.obsidian, console, configuration, args.GA)
+        if not args.git and not args.GA:
+            setup.git_push('clean all removed files', configuration, args.obsidian, rmv_info="Clean all removed files")
     else:
         configuration = setup.open_value(configuration_name, args.GA)
         meta_update = int(args.meta)
