@@ -97,7 +97,8 @@ def delete_not_exist(configuration, actions=False):
                 )
             VAULT_FILE = vault_file
             vault_file = []
-
+        else:
+            return []
     for note in VAULT_FILE:
         vault_file.append(os.path.basename(note))
         if exclude(note, "folder", BASEDIR):

@@ -58,6 +58,9 @@ Global options :
 Commands and specific options :
 - **config** : (*it will ignore `--use configuration_name`*)
     - `--new configuration_name` : Create a specific configuration for some files
+- **clean** : Remove all notes removed from the vault.
+  - With [`--GA`]() and [Obsidian Mkdocs Publication](https://github.com/Mara-Li/obsidian-mkdocs-publication), it will remove all stopped shared note.
+
 - **all** : Share all vault
     - `--force` : Force updating (ignore the difference between the source and blog file)
     - `--vault` : Share all vault file, ignoring the share state.
@@ -67,10 +70,11 @@ Commands and specific options :
 usage: __main__.py [-h] [--mobile | --git] [--meta] [--keep] [--use configuration_name] {config,all,file} ...
 
 positional arguments:
-  {config,all,file}
+  {config,all,file, clean}
     config              Configure the script : Add or edit your vault and blog absolute path, change some keys.
     all                 Publish multiple files
     file                Publish only one file
+    clean               Remove all notes removed from the vault.
 
 options:
   -h, --help            show this help message and exit
@@ -87,7 +91,7 @@ The commands order is :
 `obs2mk (global_options) [all|config|file FILEPATH] (specific_options)`
 Where :
 - Global and specific options are optional
-- `all`, `config` and `file`[^6] are required
+- `all`, `config`, `clean` or `file`[^6] are required
 You can use the command without argument with `obs2mk` to share every `share: true` file in your vault.
 
 
@@ -99,6 +103,10 @@ It will :
 #### Share all file : `obs2mk all` or `obs2mk`
 You can share multiple documents at once with scanning your Vault, looking for the `share: true`. It will convert automatically these files.  
 Only file with modification since the last sharing will be updated.
+
+#### Github Actions : `obs2mk --GA`
+The plugins can be used as a github action using `--GA` option : `obs2mk —GA --keep file [FILEPATH]`
+
 
 You can :
 - Share entirely your vault (that's ignore the `share` state) with : `obs2mk all --vault`
