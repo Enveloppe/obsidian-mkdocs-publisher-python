@@ -163,11 +163,12 @@ def main():
     Commands and specific options :
         - configuration :
             - --new configuration_name : Create a specific configuration for some files
-        - publish : Share all vault
+        - all : Share all vault
             - --force : Force updating
         - vault: Share all file in vault
             - --force : Force updating
         - file [file] : Share only one file
+
     :return: None
     """
     parser = argparse.ArgumentParser(
@@ -179,9 +180,11 @@ def main():
         - --meta : Update frontmatter of source files
         - --keep : Don't delete files in blog folder
         - --shell : Remove Rich printing
+        - --GA: Specify the usage of the script in a github action. 
     Commands and specific options : 
         - configuration :
             - --new configuration_name : Create a specific configuration for some files
+        - clean: Clean all removed files
         - publish : Share all vault
             - --force : Force updating
             - --vault : Share all vault file, ignoring the share state.

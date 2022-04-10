@@ -69,6 +69,8 @@ def delete_not_exist(configuration, actions=False):
     ----------
     configuration: dict
         dictionnary configuration
+    actions: bool, default: False
+        if True use, another configuration to delete files
     Returns
     -------
     info: list[str]
