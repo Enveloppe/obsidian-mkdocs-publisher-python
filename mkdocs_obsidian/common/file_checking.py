@@ -95,6 +95,7 @@ def delete_not_exist(configuration, actions=False):
                     .replace("'", "")
                     .split(",")
                 )
+            VAULT_FILE = vault_file
 
     for note in VAULT_FILE:
         vault_file.append(os.path.basename(note))

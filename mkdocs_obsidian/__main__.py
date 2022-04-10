@@ -268,7 +268,8 @@ def main():
         sys.exit()
     elif cmd == "clean":
         configuration = setup.open_value(configuration_name, args.GA)
-        setup.git_pull(configuration, args.git)
+        if not args.git and not args.GA:
+            setup.git_pull(configuration, args.git)
         keep(args.obsidian, console, configuration, args.GA)
         if not args.git and not args.GA:
             setup.git_push('clean all removed files', configuration, args.obsidian, rmv_info="Clean all removed files")
