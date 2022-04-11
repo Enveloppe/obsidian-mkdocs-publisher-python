@@ -15,7 +15,7 @@ from mkdocs_obsidian.common import (
     config as setup,
     conversion as convert,
     file_checking as check,
-)
+    )
 
 
 def convert_one(ori, configuration, git, meta, obsidian=False):
@@ -48,7 +48,7 @@ def convert_one(ori, configuration, git, meta, obsidian=False):
     file_name = os.path.basename(ori).upper()
     console = Console()
     try:
-        yaml_front = frontmatter.load(ori)
+        yaml_front = frontmatter.load(ori, encoding = "utf-8")
         priv = Path(configuration["post"])
         clipkey = configuration["default_note"]
         CATEGORY = configuration["category_key"]
