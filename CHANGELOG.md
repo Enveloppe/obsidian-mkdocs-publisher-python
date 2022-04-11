@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.1 (2022-04-11)
+### Fix
+* Encoding with ISO 8859-1 in case of error with GA ([`1479368`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1479368a5dbfa4074cc8c2e8dfa494cc8a0e0909))
+
 ## v3.5.0 (2022-04-11)
 ### Feature
 * Adding clean command ([`5f9095b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/5f9095bb02b308ed067834c3366b689bca6a2cac))
