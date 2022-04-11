@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import (
     admonition as adm,
     file_checking as check,
     metadata as mt,
-)
+    )
 
 
 def get_image(configuration, image):
@@ -136,7 +136,10 @@ def file_write(configuration, filepath, contents, folder, preserve=0, meta_updat
     file_name = os.path.basename(filepath)
     shortname = unidecode.unidecode(os.path.splitext(file_name)[0])
     foldername = unidecode.unidecode(Path(folder).name)
-    meta = frontmatter.load(filepath)
+    try:
+        meta = frontmatter.load(filepath)
+    except UnicodeDecodeError :
+        meta = frontmatter.load(filepath, encoding = "iso-8859-1")
     if contents == "":
         return False
     if preserve == 0 and not meta.get(SHARE):
@@ -246,7 +249,10 @@ def index_path(file_name, VAULT_FILE, category):
     file = [x for x in VAULT_FILE if os.path.basename(x) == file_name + ".md"]
     index = "index"
     if file:
-        metadata = frontmatter.load(file[0])
+        try:
+            metadata = frontmatter.load(file[0])
+        except UnicodeDecodeError:
+            metadata = frontmatter.load(file[0], encoding = "iso-8859-1")
         if metadata.get(category) and Path(metadata[category]).name == file_name:
             category = str(Path(metadata[category])).replace(
                 "\\", "/"
@@ -368,7 +374,10 @@ def file_convert(configuration, filepath, force=0):
     final = []
     INDEX_KEY = configuration["index_key"]
     SHARE = configuration["share"]
-    meta = frontmatter.load(filepath)
+    try:
+        meta = frontmatter.load(filepath)
+    except UnicodeDecodeError :
+        meta = frontmatter.load(filepath, encoding = "iso-8859-1")
     lines = meta.content.splitlines(True)
     if force != 1 and not meta.get(SHARE):
         return final
