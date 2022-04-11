@@ -108,7 +108,7 @@ def mobile_shortcuts(
         one.convert_one(file, configuration, False, meta_update)
 
 
-def keep(obsidian, console, configuration):
+def keep(obsidian, console, configuration, actions=False):
     """
     Keep deleted file and stoped published file (change/remove of the share key)
     Parameters
@@ -118,12 +118,13 @@ def keep(obsidian, console, configuration):
     console:
         Rich console
     configuration: dict
-
+    actions: bool, default: False
+        If we want to keep the file in github actions.
     Returns
     -------
     int
     """
-    info = check.delete_not_exist(configuration)
+    info = check.delete_not_exist(configuration, actions)
     if len(info) > 1:
         info_str = "\n- " + "\n- ".join(info)
         if not obsidian:
@@ -162,11 +163,12 @@ def main():
     Commands and specific options :
         - configuration :
             - --new configuration_name : Create a specific configuration for some files
-        - publish : Share all vault
+        - all : Share all vault
             - --force : Force updating
         - vault: Share all file in vault
             - --force : Force updating
         - file [file] : Share only one file
+
     :return: None
     """
     parser = argparse.ArgumentParser(
@@ -178,9 +180,11 @@ def main():
         - --meta : Update frontmatter of source files
         - --keep : Don't delete files in blog folder
         - --shell : Remove Rich printing
+        - --GA: Specify the usage of the script in a github action. 
     Commands and specific options : 
         - configuration :
             - --new configuration_name : Create a specific configuration for some files
+        - clean: Clean all removed files
         - publish : Share all vault
             - --force : Force updating
             - --vault : Share all vault file, ignoring the share state.
@@ -215,6 +219,7 @@ def main():
 
     files_cmd = subparser.add_parser("file", help="Publish only one file")
     files_cmd.add_argument("filepath", action="store")
+    clean = subparser.add_parser("clean", help="Clean all removed files")
     group_git = parser.add_mutually_exclusive_group()
     group_git.add_argument(
         "--mobile",
@@ -264,12 +269,19 @@ def main():
         configuration_name = args.new or "0"
         setup.create_env(configuration_name)
         sys.exit()
+    elif cmd == "clean":
+        configuration = setup.open_value(configuration_name, args.GA)
+        if not args.git and not args.GA:
+            setup.git_pull(configuration, args.git)
+        keep(args.obsidian, console, configuration, args.GA)
+        if not args.git and not args.GA:
+            setup.git_push('clean all removed files', configuration, args.obsidian, rmv_info="Clean all removed files")
     else:
         configuration = setup.open_value(configuration_name, args.GA)
         meta_update = int(args.meta)
         no_git = args.git
         if not args.keep:
-            stop_share = keep(args.obsidian, console, configuration)
+            stop_share = keep(args.obsidian, console, configuration, args.GA)
         else:
             stop_share = 0
         if cmd == "file":

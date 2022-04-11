@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import (
     admonition as adm,
     file_checking as check,
     metadata as mt,
-    )
+)
 
 
 def get_image(configuration, image):
@@ -323,7 +323,7 @@ def index_citation(final_text, configuration):
                         .replace("[", "")
                         .replace(INDEX_KEY, "")
                     )
-                index = index_path(file_name, VAULT_FILE, configuration['category_key'])
+                index = index_path(file_name, VAULT_FILE, configuration["category_key"])
                 cite = f"[[{index}|" + file_name.strip()
                 final_text = final_text.replace(i, cite)
             elif re.search(r"(.*)" + re.escape(INDEX_KEY) + r"(.*)\]", i):
@@ -336,7 +336,7 @@ def index_citation(final_text, configuration):
                 )
                 if len(file_name) == 0:
                     file_name = re.search("\]\((.*)", i).group(1).replace(")", "")
-                index = index_path(file_name, VAULT_FILE, configuration['category_key'])
+                index = index_path(file_name, VAULT_FILE, configuration["category_key"])
                 cite = "[" + file_name + f"]({index})"
                 final_text = (
                     final_text.replace(i, cite)

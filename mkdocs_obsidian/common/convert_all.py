@@ -15,7 +15,7 @@ from rich.markdown import Markdown
 from rich.progress import track
 from rich.rule import Rule
 
-from mkdocs_obsidian.common import (config, conversion as convert, file_checking as check)
+from mkdocs_obsidian.common import config, conversion as convert, file_checking as check
 
 
 def dest(filepath, folder):

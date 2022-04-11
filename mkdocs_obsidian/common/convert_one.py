@@ -11,7 +11,11 @@ import frontmatter
 import yaml
 from rich.console import Console
 
-from mkdocs_obsidian.common import (config as setup, conversion as convert, file_checking as check)
+from mkdocs_obsidian.common import (
+    config as setup,
+    conversion as convert,
+    file_checking as check,
+)
 
 
 def convert_one(ori, configuration, git, meta, obsidian=False):
@@ -47,7 +51,7 @@ def convert_one(ori, configuration, git, meta, obsidian=False):
         yaml_front = frontmatter.load(ori)
         priv = Path(configuration["post"])
         clipkey = configuration["default_note"]
-        CATEGORY = configuration['category_key']
+        CATEGORY = configuration["category_key"]
         if CATEGORY in yaml_front.keys():
             if not yaml_front[CATEGORY]:
                 priv = check.create_folder("hidden", configuration)

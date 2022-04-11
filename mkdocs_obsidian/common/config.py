@@ -279,7 +279,12 @@ def create_env(config_name="0"):
             " [i](default: [bold](i)[/])[/]: "
         )
     )
-    category_key = str(console.input("Please, choose the key for the category [i](default: [bold]category[/])[/]: "))
+    category_key = str(
+        console.input(
+            "Please, choose the key for the category [i](default:"
+            " [bold]category[/])[/]: "
+        )
+    )
     if category_key == "":
         category_key = "category"
     if index_key == "":
@@ -400,25 +405,26 @@ def git_push(
         except git.GitCommandError:
             if not obsidian:
                 console.print(
-                        f"❌ Nothing to Push ❌",
-                        f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/]\n",
-                        "💡 Converted 💡",
-                        f" {add_info}",
-                        Markdown(add_msg),
-                        rmv_info,
-                        Markdown(remove_msg),
-                        end = " ",
-                        )
+                    f"❌ Nothing to Push ❌",
+                    "[[i not bold"
+                    f" sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/]\n",
+                    "💡 Converted 💡",
+                    f" {add_info}",
+                    Markdown(add_msg),
+                    rmv_info,
+                    Markdown(remove_msg),
+                    end=" ",
+                )
             else:
                 if remove_msg != "":
-                    remove_msg = ': ' + remove_msg
+                    remove_msg = ": " + remove_msg
                 print(
-                        f"❌ Nothing to Push ❌\n",
-                        f"[{datetime.now().strftime('%H:%M:%S')}]",
-                        "💡 Converted 💡\n",
-                        f"{add_msg}",
-                        f"{rmv_info}{remove_msg}",
-                        )
+                    f"❌ Nothing to Push ❌\n",
+                    f"[{datetime.now().strftime('%H:%M:%S')}]",
+                    "💡 Converted 💡\n",
+                    f"{add_msg}",
+                    f"{rmv_info}{remove_msg}",
+                )
     except ImportError:
         if not obsidian:
             console.print(
@@ -480,7 +486,7 @@ def open_value(configuration_name="0", actions=False):
     if not actions:
         ENV_PATH = Path(f"{BASEDIR}/{configuration_name}")
     else:
-        ENV_PATH = Path(BASEDIR, 'source', '.github-actions')
+        ENV_PATH = Path(BASEDIR, "source", ".github-actions")
     if not os.path.isfile(ENV_PATH):
         create_env()
     elif not actions:
@@ -520,7 +526,7 @@ def open_value(configuration_name="0", actions=False):
             with open(ENV_PATH, "a", encoding="utf-8") as f:
                 f.write("default_blog=notes")
         try:
-            CATEGORY = env['category_key']
+            CATEGORY = env["category_key"]
         except KeyError:
             CATEGORY = "category"
             with open(ENV_PATH, "a", encoding="utf-8") as f:
@@ -550,7 +556,12 @@ def open_value(configuration_name="0", actions=False):
             if len(CATEGORY) == 0:
                 CATEGORY = "category"
                 f.write("category_key=category")
-        if len(vault_str) == 0 or len(basedir_str) == 0 or len(WEB) == 0 and not actions:
+        if (
+            len(vault_str) == 0
+            or len(basedir_str) == 0
+            or len(WEB) == 0
+            and not actions
+        ):
             sys.exit("Please provide a valid path for all config items")
     except RuntimeError:
         if not actions:
@@ -575,9 +586,11 @@ def open_value(configuration_name="0", actions=False):
     if actions:
         VAULT_FILE = [
             x
-            for x in glob.iglob(str(os.getcwd()) + os.sep + "source"+os.sep+"**", recursive=True)
+            for x in glob.iglob(
+                str(os.getcwd()) + os.sep + "source" + os.sep + "**", recursive=True
+            )
             if os.path.isfile(x)
-            ]
+        ]
     else:
         VAULT_FILE = [
             x

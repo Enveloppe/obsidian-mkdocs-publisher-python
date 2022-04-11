@@ -64,23 +64,41 @@ Commands and specific options :
 - **`file [file*]`** : Share only one file
 
 ```bash
-usage: __main__.py [-h] [--mobile | --git] [--meta] [--keep] [--use configuration_name] {config,all,file} ...
+usage: __main__.py [-h] [--mobile | --git] [--meta] [--keep] [--use configuration_name] {config,all,file,clean} ...
+
+Global options :
+        - --git : No commit and push to git ;
+        - --mobile : Use mobile shortcuts instead of `--git`
+        - --meta : Update frontmatter of source files
+        - --keep : Don't delete files in blog folder
+        - --shell : Remove Rich printing
+        - --GA: Specify the usage of the script in a github action.
+    Commands and specific options :
+        - configuration :
+            - --new configuration_name : Create a specific configuration for some files
+        - clean: Clean all removed files (remove from blog folder)
+        - all : Share all vault
+            - --force : Force updating
+            - --vault : Share all vault file, ignoring the share state.
+        - file [file] : Share only one file
 
 positional arguments:
-  {config,all,file}
+  {config,all,file,clean}
     config              Configure the script : Add or edit your vault and blog absolute path, change some keys.
     all                 Publish multiple files
     file                Publish only one file
+    clean               Clean all removed files
 
 options:
   -h, --help            show this help message and exit
   --mobile, --shortcuts
                         Use mobile shortcuts, without push
   --git, --g, --G       No commit and no push to git
-  --meta, --m, --M      Update the frontmatter of the source file, adding the note blog's link
+  --meta, --m, --M      Update the frontmatter of the source file with the link to the note
   --keep, --k, --K      Keep deleted file from vault and removed shared file
   --use configuration_name, --config configuration_name
                         Use a different config from default
+
 ```
 
 The commands order is :
@@ -95,6 +113,10 @@ You can use and create multiple configuration files. This allows to have multipl
 1. To create a new configuration file : `obs2mk config --new configuration_name`
 2. To use a configuration use : `--use configuration_name` 
     For example : `obs2mk --use configuration_name` 
+
+## Clean
+Remove from your blog the file you delete from your vault, without converting any file. The conversion done that by default (unless you use `--keep`) but sometimes, you just want to clean up.
+
 
 ## Share
 ### Share one file : `obs2mk file FILEPATH`
@@ -115,12 +137,15 @@ Also, you can combine the two options.
 
 The plugins can be used as a github action using `--GA` option : `obs2mk —GA --keep file [FILEPATH]`
 
-!!! notes
-    - The `--GA` option remove the `git pull` and `git push`.
-    - The `--GA` use a specific configuration file that will be in [`source/.github-actions`](https://github.com/Mara-Li/mkdocs_obsidian_template/blob/main/source/.github-actions)
+- The `--GA` option remove the `git pull` and `git push`.
+- The `--GA` use a specific configuration file that will be in [`source/.github-actions`](https://github.com/Mara-Li/mkdocs_obsidian_template/blob/main/source/.github-actions)
 
-Here is an example of worflow using `--GA` : 
-
+The `clean` option work only if you put a `vault_published.txt` file in your `source/` folder. This file contains the list of files that have been published. Every file present in your docs but not in this list will be removed.
+File example : 
+```py
+['Seed/Inbox/Testing.md', 'Seed/master/stage.md', 'Seed/Roleplay/Introduction Kara.md', 'Home.md']
+```
+Here is an example of worflow using `--GA` :
 ```yml
 name: ci
 on:
@@ -146,6 +171,7 @@ jobs:
               obs2mk --GA --keep file $f
             fi
           done
+          obs2mk --GA clean
       - name: clean source files
         run: rm ${{github.workspace}}/source/*
       - name: Push new files

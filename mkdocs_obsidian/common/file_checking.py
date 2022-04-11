@@ -62,13 +62,15 @@ def exclude(filepath, key, BASEDIR):
     return False
 
 
-def delete_not_exist(configuration):
+def delete_not_exist(configuration, actions=False):
     """
     Removes files that have been deleted from the vault unless they are in `exclude.yml[files]` and always delete if founded file is in `exclude.yml[folder]`
     Parameters
     ----------
     configuration: dict
         dictionnary configuration
+    actions: bool, default: False
+        if True use, another configuration to delete files
     Returns
     -------
     info: list[str]
@@ -81,6 +83,26 @@ def delete_not_exist(configuration):
     excluded = []
     important_folder = ["assets", "css", "js", "logo", "script"]
     docs = Path(f"{BASEDIR}/docs/**")
+    if actions:
+        VAULT_FILE = Path(os.getcwd(), "source", "vault_published.txt")  # list
+        if os.path.exists(VAULT_FILE):
+            vault_file = ""
+            with open(VAULT_FILE, "r", encoding="utf-8") as file_vault:
+                vault_file = vault_file + file_vault.read()
+            vault_file = (
+                    vault_file.replace("\n", " ")
+                    .replace("]", "")
+                    .replace("[", "")
+                    .replace('"', "")
+                    .replace("'", "")
+                    .split(",")
+                )
+            VAULT_FILE = vault_file
+            vault_file = []
+            if len(VAULT_FILE) == 0:
+                return []
+        else:
+            return []
     for note in VAULT_FILE:
         vault_file.append(os.path.basename(note))
         if exclude(note, "folder", BASEDIR):
@@ -93,12 +115,12 @@ def delete_not_exist(configuration):
                 os.path.basename(file) not in vault_file
                 or os.path.basename(file) in excluded
             )
-        ):  # or if file in file_excluded
+        ):
             try:
                 if os.path.isfile(Path(file)):
                     os.remove(Path(file))
                     folder = os.path.dirname(Path(file))
-                    if len(os.listdir(folder)) == 0:
+                    if len(os.listdir(folder)) == 0 and os.path.basename(folder) != 'docs':
                         # Delete folder
                         os.rmdir(folder)
                     info.append(os.path.basename(file))
