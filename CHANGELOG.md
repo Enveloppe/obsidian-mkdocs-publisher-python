@@ -2,6 +2,22 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.0 (2022-04-11)
+### Feature
+* Adding clean command ([`5f9095b`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/5f9095bb02b308ed067834c3366b689bca6a2cac))
+* Adding a clean option to just remove files ([`f3edab1`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/f3edab1bb8eb0c0c073e72594a25b0897c60ce96))
+
+### Fix
+* **GA:** Fix deleting everything if vault_published list is present but empty ([`d9422aa`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/d9422aa65fc69f67f3aab237200dbf7c40800c32))
+* **GA:** Adding some security in case of cleaning without list file ([`9c0eaf1`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/9c0eaf19dcfa515f62347fcbfac2305918944983))
+* **GA:** Delete file from a list for GA ([`df2658a`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/df2658a890932e62913d5d341a30517180e5f255))
+* **GA:** Delete file from a list for GA ([`184c429`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/184c429ae86f0d75a30d4fd9cf49ad5fbc365475))
+* **GA:** Delete file from a list for GA ([`5edd963`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/5edd963a3b52b9b71b36ab8d8e7d156d19feca3e))
+
+### Documentation
+* **ci:** Update workflow for actions obs2mk ([`e5d1a79`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/e5d1a793cc71f3c3235d29d04c832c0b49de7260))
+* **readme:** Adding GA clean ([`b61295e`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b61295e8d75f16264107928065e361b9e47c18be))
+
 ## v3.4.0 (2022-04-09)
 ### Feature
 * Creating Github action ([`fe4ba52`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/fe4ba526120ff56dd6f789af8dcc74270e28726b))
