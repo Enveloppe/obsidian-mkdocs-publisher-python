@@ -437,9 +437,16 @@ def file_convert(configuration, filepath, force=0):
                 final_text = final_text + "\n"
 
             final.append(final_text)
+    yaml_special_case = ["{", "}", "[", "]", "&", "*", "#", "?", "|", "-", "<", ">", "=", "!", "%", '@', ':', '`', ',']
     for k, v in meta.metadata.items():
-        if isinstance(v, str):
-            meta.metadata[k] = '"' + v + '"'
+        try:
+            if isinstance(v, str) and any(x in v for x in yaml_special_case):
+                meta.metadata[k] = '"' + v + '"'
+            if isinstance(v, list):
+                    meta.metadata[k] = "\n- " + "\n- ".join(v)
+        except TypeError:
+            meta.metadata[k] = '"' + str(v) + '"'
+
     meta_list = [f"{k}: {v}\n" for k, v in meta.metadata.items()]
     meta_list.insert(0, "---\n")
     meta_list.insert(len(meta_list) + 1, "---\n")

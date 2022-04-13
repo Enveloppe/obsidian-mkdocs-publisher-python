@@ -26,14 +26,12 @@ def update_frontmatter(filepath, configuration, link=1):
     CATEGORY = configuration["category"]
     with open(filepath, "r", encoding="utf8") as metadata:
         meta = frontmatter.load(metadata)
-    if meta.get("tag"):
-        tag = meta["tag"]
-    elif meta.get("tags"):
-        tag = meta["tags"]
+    if meta.get('tag'):
+        tag=meta.metadata.pop("tag", None)
+    elif meta.get('tags'):
+        tag = meta.metadata.pop("tags", None)
     else:
-        tag = ""
-    meta.metadata.pop("tag", None)
-    meta.metadata.pop("tags", None)
+        tag= ''
     folder = meta.metadata.get(CATEGORY, configuration["default_note"])
 
     with open(filepath, "w", encoding="utf-8") as f:
