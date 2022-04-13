@@ -147,6 +147,8 @@ def file_write(configuration, filepath, contents, folder, preserve=0, meta_updat
         return False
     if shortname == foldername:
         file_name = "index.md"
+    if not os.path.isdir(Path(f"{folder}")):
+        folder.mkdir(parents=True, exist_ok=True)
     with open(Path(f"{folder}/{file_name}"), "w", encoding="utf-8") as new_notes:
         for line in contents:
             new_notes.write(line)
