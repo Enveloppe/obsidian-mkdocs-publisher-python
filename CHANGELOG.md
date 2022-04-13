@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.3 (2022-04-13)
+### Fix
+* List for tags ; better escaping characters ([`11ff756`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/11ff756ff0c0c5ae721fa12a2c133e10f433199b))
+
 ## v3.5.2 (2022-04-13)
 ### Fix
 * In GA, crash if default folder doesn't exist ([`0d6b537`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/0d6b537b5d866d2f21064f464d15bc358a386082))
