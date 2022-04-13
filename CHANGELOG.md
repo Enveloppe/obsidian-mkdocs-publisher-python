@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.2 (2022-04-13)
+### Fix
+* In GA, crash if default folder doesn't exist ([`0d6b537`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/0d6b537b5d866d2f21064f464d15bc358a386082))
+
 ## v3.5.1 (2022-04-11)
 ### Fix
 * Encoding with ISO 8859-1 in case of error with GA ([`1479368`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1479368a5dbfa4074cc8c2e8dfa494cc8a0e0909))
