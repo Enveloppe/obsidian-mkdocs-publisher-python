@@ -1,5 +1,5 @@
 
-<h1 style="text-align:center"><a href="https://mara-li.github.io/mkdocs_obsidian_template/">PROJECT DOCUMENTATION</a></h1>
+<h1 align="center"><a href="https://mara-li.github.io/obsidian-mkdocs-publisher-template/documentation/start_here/">DOCUMENTATION</a></h1>
 
 # OBSIDIAN TO MKDOCS
 The script's goal is to move an authorized file (or multiple authorized file) from your Obsidian's vault to your blog's repository. It will :
