@@ -1,66 +1,80 @@
----
-title: Start here
----
+The script can be use :
+- Directly in Obsidian, using [Obsidian Shell Commands](https://github.com/Taitava/obsidian-shellcommands) (see [[obsidian shell|Obsidian shell configuration]])
+- In a [terminal](#commands).
 
-Mkdocs Obsidian is an association between a python script and a Material mkdocs template to get a personal wiki site based on your Obsidian Vault.
+The supported system are :
+- macOS, Linux and Windows
+- [[ios|IOS]] (with [Pyto](https://pyto.app) and/or [a-shell](https://holzschu.github.io/a-Shell_iOS/) with [Working Copy](https://workingcopyapp.com/))
 
-<p align="center">
-	<a href="https://github.com/Mara-Li/mkdocs_obsidian_publish"><img src="https://img.shields.io/github/license/Mara-Li/YAFPA-python"></img></a>
-	<a href="https://www.python.org/"><img src="https://img.shields.io/pypi/pyversions/obs2mk"></img></a>
-	<a href="https://pypi.org/project/obs2mk/"><img src="https://img.shields.io/pypi/v/obs2mk"></img></a>
-	<a href="https://obsidian.md/"><img src="https://img.shields.io/badge/Auxiliary%20Tool-Obsidian-blueviolet"></img></a>
-	<a href="https://github.com/Mara-Li/mkdocs_obsidian_template/wiki/Q&A/"><img src="https://img.shields.io/badge/-Q%26A-blue?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMkM2LjQ4NiAyIDIgNi40ODYgMiAxMnM0LjQ4NiAxMCAxMCAxMCAxMC00LjQ4NiAxMC0xMFMxNy41MTQgMiAxMiAyem0wIDE4Yy00LjQxMSAwLTgtMy41ODktOC04czMuNTg5LTggOC04IDggMy41ODkgOCA4LTMuNTg5IDgtOCA4eiIvPjxwYXRoIGQ9Ik0xMSAxMWgydjZoLTJ6bTAtNGgydjJoLTJ6Ii8+PC9zdmc+"></img></a>
-</p>
-<p align="center"><a href="https://mara-li.github.io/obsidian_mkdocs_publisher_docs/">Documentation</a></p>
-<p align="center"><a href="https://www.mara-li.fr">Owlly Seed (My Blog ; In French)</a></p>
+## Script's Configuration
+At the first run, you will be asked to configure some key and specific path.
+1. <u>Vault</u> : Use the file dialog to choose your vault folder.
+2. <u>Publish repository folder : </u> As vault path, use the file dialog.
+3. <u>share</u> : You can change the `share` key. By default, it's `share`
+4. <u>Index key:</u> Support for citation of [[blog customization#folder-note|pagination index pages]]. By default, it uses `(i)`
+5. <u>Default blog folder:</u> By default, the notes will be in `docs/notes` but you can change that, or use `/` for root. 
 
-The plugins can be accessed with a github actions and a Obsidian's plugin or using a pip install and usage.
+## Commands
 
-# Main links
-- [Main Repo](https://github.com/Mara-Li/obsidian_mkdocs_publisher)
-- [Obsidian Plugin](https://github.com/Mara-Li/obsidian-mkdocs-publisher-plugin/)
-- [Python package](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python)
-- [Template](https://github.com/Mara-Li/obsidian-mkdocs-publisher-template)
-- [Documentation](https://mara-li.github.io/obsidian_mkdocs_publisher_docs/)
+Global options :
+- `--git` : No commit and push to git ; 
+- `--mobile` : Use mobile shortcuts instead of `--git`
+- `--meta` : Update frontmatter of source files
+- `--keep` : Don't delete files in blog folder
+- `--shell` : Remove Rich printing
 
-# Terminal
-## Prerequisites
-You need : 
-- [Git](https://git-scm.com/) and a [Github Account](https://github.com/)
-- [Python](https://www.python.org/)
-- Optional *(Windows)*: [Windows Terminal](https://docs.microsoft.com/fr-fr/windows/terminal/)
+Commands and specific options :
+- **config** : (*it will ignore `--use configuration_name`*)
+    - `--new configuration_name` : Create a specific configuration for some files
+- **all** : Share all vault
+    - `--force` : Force updating (ignore the difference between the source and blog file)
+    - `--vault` : Share all vault file, ignoring the share state.
+- **`file [file*]`** : Share only one file
 
-## TLDR
-1. Install / update with `pip install obs2mk --upgrade`
-2. Template the blog, clone it and configure the blog. 
-3. Configure the script (first run)
-4. Add `share: true` in Obsidian's note frontmatter
-5. Customize the `category` key in Obsidian's note frontmatter
-6. Run the script `obs2mk`
-
-# Github actions & Obsidian's plugin
-## TLDR
-1. Install the plugins through Obsidian Community or [BRAT](https://github.com/TfTHacker/obsidian42-brat)
-2. [Template](https://github.com/Mara-Li/mkdocs_obsidian_template) the blog and configure it 
-3. Configure the plugin's options : 
-	- Repo name
-	- Your github username
-	- The github token ([from here](https://github.com/settings/tokens/new?scopes=repo))
-	- The share key
-4. Add `share: true` in Obsidian's note frontmatter 
-5. Customize (or not) the `category` key in Obsidian's note frontmatter. 
-6. Run the commands throught the file menu or commands palette.
-
-Read more about the [Github Actions](docs/documentation/obs2mk/github actions.md) and the configuration of the [plugin](docs/documentation/Obsidian mkdocs publisher.md).
-
-# Quick blog installation tutorial
-1. Click on [use this template](https://github.com/Mara-Li/mkdocs_obsidian_template/generate)[^1]
-2. Use the name of your choice.
-3. Click on [code](https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories) → SSH ; Copy the link
-4. Run (in terminal):
 ```bash
-git clone [[PASTE THE LINK HERE]] publish_blog
-pip install obs2mk --upgrade
-```
+usage: __main__.py [-h] [--mobile | --git] [--meta] [--keep] [--use configuration_name] {config,all,file} ...
 
-[^1]: You must be connected to copy the template ! You can test locally through clone > https : `git clone https://github.com/Mara-Li/mkdocs_obsidian_template.git` or [with downloading the ZIP](https://github.com/Mara-Li/mkdocs_obsidian_template/archive/refs/heads/main.zip)
+positional arguments:
+  {config,all,file}
+    config              Configure the script : Add or edit your vault and blog absolute path, change some keys.
+    all                 Publish multiple files
+    file                Publish only one file
+
+options:
+  -h, --help            show this help message and exit
+  --mobile, --shortcuts
+                        Use mobile shortcuts, without push
+  --git, --g, --G       No commit and no push to git
+  --meta, --m, --M      Update the frontmatter of the source file, adding the note blog's link
+  --keep, --k, --K      Keep deleted file from vault and removed shared file
+  --use configuration_name, --config configuration_name
+                        Use a different config from default
+```
+The commands order is :
+`obs2mk (global_options) [all|config|file FILEPATH] (specific_options)`
+Where :
+- Global and specific options are optional
+- `all`, `config` and `file`[^1] are required
+You can use the command without argument with `obs2mk` to share every `share: true` file in your vault.
+
+## Share one file : `obs2mk file FILEPATH`
+It will :
+- Update the `share` state in original file
+- Convert one file, regardless of what is the `share` state.
+
+## Share all file : `obs2mk all` or `obs2mk`
+You can share multiple documents at once with scanning your Vault, looking for the `share: true`. It will convert automatically these files.  
+Only file with modification since the last sharing will be updated.
+
+You can :
+- Share entirely your vault (that's ignore the `share` state) with : `obs2mk all --vault`
+- Ignore the difference between the source file and the blog's file with :  `obs2mk all --force`
+Also, you can combine the two options. 
+
+## Multiple configurations
+You can use and create multiple configuration files. This allows to have multiple site based on one vault, or different vault accross one site... 
+1. To create a new configuration file : `obs2mk config --new configuration_name`
+2. To use a configuration use : `--use configuration_name` 
+    For example : `obs2mk --use configuration_name` 
+
+[^1]: For `file` you need to add the filepath of the file you want to share : `obs2mk (global_option) file "filepath" (specific_options)`
