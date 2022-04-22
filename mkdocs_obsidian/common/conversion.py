@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import (
     admonition as adm,
     file_checking as check,
     metadata as mt,
-    )
+)
 
 
 def get_image(configuration, image):
@@ -138,8 +138,8 @@ def file_write(configuration, filepath, contents, folder, preserve=0, meta_updat
     foldername = unidecode.unidecode(Path(folder).name)
     try:
         meta = frontmatter.load(filepath)
-    except UnicodeDecodeError :
-        meta = frontmatter.load(filepath, encoding = "iso-8859-1")
+    except UnicodeDecodeError:
+        meta = frontmatter.load(filepath, encoding="iso-8859-1")
     if contents == "":
         return False
     if preserve == 0 and not meta.get(SHARE):
@@ -254,7 +254,7 @@ def index_path(file_name, VAULT_FILE, category):
         try:
             metadata = frontmatter.load(file[0])
         except UnicodeDecodeError:
-            metadata = frontmatter.load(file[0], encoding = "iso-8859-1")
+            metadata = frontmatter.load(file[0], encoding="iso-8859-1")
         if metadata.get(category) and Path(metadata[category]).name == file_name:
             category = str(Path(metadata[category])).replace(
                 "\\", "/"
@@ -378,8 +378,8 @@ def file_convert(configuration, filepath, force=0):
     SHARE = configuration["share"]
     try:
         meta = frontmatter.load(filepath)
-    except UnicodeDecodeError :
-        meta = frontmatter.load(filepath, encoding = "iso-8859-1")
+    except UnicodeDecodeError:
+        meta = frontmatter.load(filepath, encoding="iso-8859-1")
     lines = meta.content.splitlines(True)
     if force != 1 and not meta.get(SHARE):
         return final
@@ -437,18 +437,57 @@ def file_convert(configuration, filepath, force=0):
                 final_text = final_text + "\n"
 
             final.append(final_text)
-    yaml_special_case = ["{", "}", "[", "]", "&", "*", "#", "?", "|", "-", "<", ">", "=", "!", "%", '@', ':', '`', ',']
-    for k, v in meta.metadata.items():
-        try:
-            if isinstance(v, str) and any(x in v for x in yaml_special_case):
-                meta.metadata[k] = '"' + v + '"'
-            if isinstance(v, list):
-                    meta.metadata[k] = "\n- " + "\n- ".join(v)
-        except TypeError:
-            meta.metadata[k] = '"' + str(v) + '"'
-
-    meta_list = [f"{k}: {v}\n" for k, v in meta.metadata.items()]
-    meta_list.insert(0, "---\n")
-    meta_list.insert(len(meta_list) + 1, "---\n")
+    meta_list = escape_metadata(meta)
     final = meta_list + final
     return final
+
+
+def escape_metadata(meta):
+    """
+    Escape special characters in metadata
+    Parameters
+    ----------
+    meta: Post
+        Metadata dictionary
+    Returns
+    -------
+        list
+    """
+    metadata = meta.metadata
+    yaml_special_case = [
+        "{",
+        "}",
+        "[",
+        "]",
+        "&",
+        "*",
+        "#",
+        "?",
+        "|",
+        "-",
+        "<",
+        ">",
+        "=",
+        "!",
+        "%",
+        "@",
+        ":",
+        "`",
+        ",",
+    ]
+    if meta.get("tag"):
+        tag = metadata.pop("tag", None)
+        metadata["tags"] = tag
+    for k, v in metadata.items():
+        try:
+            if isinstance(v, str) and any(x in v for x in yaml_special_case):
+                metadata[k] = '"' + v + '"'
+            if isinstance(v, list):
+                metadata[k] = "\n- " + "\n- ".join(v)
+        except TypeError:
+            metadata[k] = '"' + str(v) + '"'
+
+    meta_list = [f"{k}: {v}\n" for k, v in metadata.items()]
+    meta_list.insert(0, "---\n")
+    meta_list.insert(len(meta_list) + 1, "---\n")
+    return meta_list
