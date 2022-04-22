@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.4 (2022-04-22)
+### Fix
+* Help tags parsing for material mkdocs ([`1f03341`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1f0334133d53f65928285ddf9447c0e6e54f48ea))
+
 ## v3.5.3 (2022-04-13)
 ### Fix
 * List for tags ; better escaping characters ([`11ff756`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/11ff756ff0c0c5ae721fa12a2c133e10f433199b))
