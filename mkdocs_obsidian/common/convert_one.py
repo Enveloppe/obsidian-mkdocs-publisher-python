@@ -15,7 +15,7 @@ from mkdocs_obsidian.common import (
     config as setup,
     conversion as convert,
     file_checking as check,
-    )
+)
 
 
 def convert_one(ori, configuration, git, meta, obsidian=False):
@@ -49,9 +49,9 @@ def convert_one(ori, configuration, git, meta, obsidian=False):
     console = Console()
     try:
         try:
-            yaml_front = frontmatter.load(ori, encoding = "utf-8")
+            yaml_front = frontmatter.load(ori, encoding="utf-8")
         except UnicodeDecodeError:
-            yaml_front = frontmatter.load(ori, encoding = "iso-8859-1")
+            yaml_front = frontmatter.load(ori, encoding="iso-8859-1")
         priv = Path(configuration["post"])
         clipkey = configuration["default_note"]
         CATEGORY = configuration["category_key"]

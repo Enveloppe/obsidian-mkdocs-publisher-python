@@ -90,13 +90,13 @@ def delete_not_exist(configuration, actions=False):
             with open(VAULT_FILE, "r", encoding="utf-8") as file_vault:
                 vault_file = vault_file + file_vault.read()
             vault_file = (
-                    vault_file.replace("\n", " ")
-                    .replace("]", "")
-                    .replace("[", "")
-                    .replace('"', "")
-                    .replace("'", "")
-                    .split(",")
-                )
+                vault_file.replace("\n", " ")
+                .replace("]", "")
+                .replace("[", "")
+                .replace('"', "")
+                .replace("'", "")
+                .split(",")
+            )
             VAULT_FILE = vault_file
             vault_file = []
             if len(VAULT_FILE) == 0:
@@ -120,7 +120,10 @@ def delete_not_exist(configuration, actions=False):
                 if os.path.isfile(Path(file)):
                     os.remove(Path(file))
                     folder = os.path.dirname(Path(file))
-                    if len(os.listdir(folder)) == 0 and os.path.basename(folder) != 'docs':
+                    if (
+                        len(os.listdir(folder)) == 0
+                        and os.path.basename(folder) != "docs"
+                    ):
                         # Delete folder
                         os.rmdir(folder)
                     info.append(os.path.basename(file))
