@@ -110,7 +110,7 @@ def mobile_shortcuts(
 
 def keep(obsidian, console, configuration, actions=False):
     """
-    Keep deleted file and stoped published file (change/remove of the share key)
+    Delete the file moved or removed from sharing
     Parameters
     ----------
     obsidian: bool
@@ -119,7 +119,7 @@ def keep(obsidian, console, configuration, actions=False):
         Rich console
     configuration: dict
     actions: bool, default: False
-        If we want to keep the file in github actions.
+        If we want to clean using github actions.
     Returns
     -------
     int
