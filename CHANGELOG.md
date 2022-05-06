@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v3.6.0 (2022-05-06)
+### Feature
+* Delete file if category moved/changed ([`bb578e0`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/bb578e0dc41c40c3218f7f4334df50d846a738c4))
+
+### Fix
+* Adding configuration dictionnary ([`759fbc5`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/759fbc5195dca83b928021d51b69bbe1b873d07a))
+
+### Documentation
+* Adjusting docstring for keep ([`74fb160`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/74fb160880020069a828d0552f46d726ccc26829))
+
 ## v3.5.4 (2022-04-22)
 ### Fix
 * Help tags parsing for material mkdocs ([`1f03341`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1f0334133d53f65928285ddf9447c0e6e54f48ea))
