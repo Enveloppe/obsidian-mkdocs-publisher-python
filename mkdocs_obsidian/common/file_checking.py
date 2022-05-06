@@ -61,6 +61,7 @@ def exclude(filepath, key, BASEDIR):
         return any(str(Path(file)) in filepath for file in excluded_folder)
     return False
 
+
 def move_file_by_category(filepath, clipkey, configuration):
     """
 
@@ -74,42 +75,46 @@ def move_file_by_category(filepath, clipkey, configuration):
     -------
     bool
     """
-    glog_folder = Path(configuration['basedir'], 'docs', '**' )
-    blog_file = [file for file in glob.glob(str(glog_folder), recursive=True) if os.path.isfile(file)]
+    glog_folder = Path(configuration["basedir"], "docs", "**")
+    blog_file = [
+        file
+        for file in glob.glob(str(glog_folder), recursive=True)
+        if os.path.isfile(file)
+    ]
     file_name = os.path.basename(filepath)
-    if file_name == 'index.md':
-        file_name = PurePath(clipkey).name + '.md'
+    if file_name == "index.md":
+        file_name = PurePath(clipkey).name + ".md"
     old_file = [file for file in blog_file if os.path.basename(file) == file_name]
     if old_file:
-        old_file= old_file[0]
+        old_file = old_file[0]
         with open(old_file, "r", encoding="utf-8") as file:
             meta_data = frontmatter.loads(file.read())
-        category = meta_data.get(configuration['category_key'], "")
+        category = meta_data.get(configuration["category_key"], "")
         if category != clipkey:
             os.remove(Path(old_file))
             return True
     return False
 
+
 def delete_old_index(index_path, configuration):
     with open(index_path, "r", encoding="utf-8") as file:
         meta_data = frontmatter.loads(file.read())
-    old_category = meta_data.get(configuration['category_key'], "")
-    name = PurePath(old_category).name + '.md'
-    in_vault = [x for x in configuration['vault_file'] if os.path.basename(x) == name]
+    old_category = meta_data.get(configuration["category_key"], "")
+    name = PurePath(old_category).name + ".md"
+    in_vault = [x for x in configuration["vault_file"] if os.path.basename(x) == name]
     if in_vault:
         with open(in_vault[0], "r", encoding="utf-8") as file:
             meta_data = frontmatter.loads(file.read())
-        category = meta_data.get(configuration['category_key'], "")
-        if category != old_category:
+        category = meta_data.get(configuration["category_key"], "")
+        share = meta_data.get(configuration["share"], "False")
+        if category != old_category and share is True:
             try:
                 os.remove(Path(index_path))
                 folder = os.path.dirname(Path(index_path))
-                if (len(os.listdir(folder)) == 0
-                    and os.path.basename(folder) != "docs"
-                ) :
+                if len(os.listdir(folder)) == 0 and os.path.basename(folder) != "docs":
                     # Delete folder
                     os.rmdir(folder)
-                return name.replace('.md', '') + '/' + 'index.md'
+                return name.replace(".md", "") + "/" + "index.md"
             except PermissionError:
                 return ""
             except IsADirectoryError:
@@ -163,8 +168,8 @@ def delete_not_exist(configuration, actions=False):
         if exclude(note, "folder", BASEDIR):
             excluded.append(os.path.basename(note))
     for file in glob.iglob(str(docs), recursive=True):
-        if os.path.basename(file) == 'index.md':
-            index=delete_old_index(file, configuration)
+        if os.path.basename(file) == "index.md":
+            index = delete_old_index(file, configuration)
             if len(index) != 0:
                 info.append(index)
         elif (
