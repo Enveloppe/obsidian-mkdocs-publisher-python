@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import (
     admonition as adm,
     file_checking as check,
     metadata as mt,
-    )
+)
 
 
 def get_image(configuration, image):
@@ -478,6 +478,8 @@ def escape_metadata(meta):
     ]
     if meta.get("tag"):
         tag = metadata.pop("tag", None)
+        if "/" in tag:
+            tag = tag.split("/")
         metadata["tags"] = tag
     for k, v in metadata.items():
         try:
@@ -487,7 +489,8 @@ def escape_metadata(meta):
                 metadata[k] = "\n- " + "\n- ".join(v)
         except TypeError:
             metadata[k] = '"' + str(v) + '"'
-
+        if v is None:
+            metadata[k] = ""
     meta_list = [f"{k}: {v}\n" for k, v in metadata.items()]
     meta_list.insert(0, "---\n")
     meta_list.insert(len(meta_list) + 1, "---\n")
