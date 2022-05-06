@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v3.6.1 (2022-05-06)
+### Fix
+* Prevent error message with same name and deleting index ([`2c0e31d`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/2c0e31db2570d656b825a62c315d85875a0af444))
+* Tags list during conversion ([`e112400`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/e112400b7981e6f367c28923b2d667e92f88a566))
+
 ## v3.6.0 (2022-05-06)
 ### Feature
 * Delete file if category moved/changed ([`bb578e0`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/bb578e0dc41c40c3218f7f4334df50d846a738c4))
