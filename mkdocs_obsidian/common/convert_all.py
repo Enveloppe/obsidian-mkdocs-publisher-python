@@ -140,7 +140,7 @@ def search_share(
                     file_name = os.path.basename(filepath).replace(".md", "")
                     if file_name == os.path.basename(folder):
                         filepath = filepath.replace(file_name, "index")
-                    if check.delete_file(filepath, folder, meta):
+                    if check.delete_file(filepath, folder, configuration, meta):
                         msg_folder = os.path.basename(folder)
                         destination = dest(filepath, folder)
                         filespush.append(
