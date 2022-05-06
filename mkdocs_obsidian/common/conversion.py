@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import (
     admonition as adm,
     file_checking as check,
     metadata as mt,
-)
+    )
 
 
 def get_image(configuration, image):
@@ -143,10 +143,11 @@ def file_write(configuration, filepath, contents, folder, preserve=0, meta_updat
     if contents == "":
         return False
     if preserve == 0 and not meta.get(SHARE):
-        check.delete_file(filepath, folder, meta_update)
+        check.delete_file(filepath, folder, configuration, meta_update)
         return False
     if shortname == foldername:
         file_name = "index.md"
+    check.move_file_by_category(filepath, folder, configuration)
     if not os.path.isdir(Path(f"{folder}")):
         folder.mkdir(parents=True, exist_ok=True)
     with open(Path(f"{folder}/{file_name}"), "w", encoding="utf-8") as new_notes:
@@ -155,9 +156,9 @@ def file_write(configuration, filepath, contents, folder, preserve=0, meta_updat
     if meta_update == 0:
         if preserve == 1 and not meta.get(SHARE):
             meta[SHARE] = True
-            mt.update_frontmatter(filepath, 1)
+            mt.update_frontmatter(filepath, configuration, 1)
         else:
-            mt.update_frontmatter(filepath, 0)
+            mt.update_frontmatter(filepath, configuration, 0)
     return True
 
 
