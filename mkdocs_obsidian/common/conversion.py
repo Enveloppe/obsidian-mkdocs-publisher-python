@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import (
     admonition as adm,
     file_checking as check,
     metadata as mt,
-)
+    )
 
 
 def get_image(configuration, image):
@@ -355,6 +355,38 @@ def index_citation(final_text, configuration):
                 )
     return final_text
 
+def parsing_code(files_contents: list[str],  line: str) -> bool:
+    """
+    Look if a string is in a code block
+    Parameters
+    ----------
+    files_contents: list[str]
+        File contents
+    line: str
+        Line to found
+
+    Returns
+    -------
+    bool
+    """
+    # first : Parse the file to find the code block
+    code_block = False
+    code_contents = []
+    for i in range(len(files_contents)):
+        if re.search(r"^\s*```", files_contents[i]) and not code_block:
+            code_block = True
+        elif code_block:
+            if re.search(r"^\s*```", files_contents[i]):
+                code_block = False
+            else:
+                code_contents.append(files_contents[i].strip())
+    # second : Look if the line is in the code block
+    if not code_block:
+        if line.strip() in code_contents:
+            return True
+        else:
+            return False
+
 
 def file_convert(configuration, filepath, force=0):
     """
@@ -388,56 +420,61 @@ def file_convert(configuration, filepath, force=0):
     callout_state = False
     for line in lines:
         final_text = line
-        if not final_text.strip().endswith("%%") and not final_text.strip().startswith(
-            "%%"
-        ):
-            # Skip obsidian comments
-            # Check and copy image
-            copy_image(configuration, final_text)
-            if not "`" in final_text:
-                final_text = re.sub(
-                    "\%{2}(.*)\%{2}", "", final_text
-                )  # remove obsidian comments
-            if (
-                re.search(r"\\U\w+", final_text) and not "Users" in final_text
-            ):  # Fix emoji if bug because of frontmatter
-                emojiz = re.search(r"\\U\w+", final_text)
-                emojiz = emojiz.group().strip().replace('"', "")
-                convert_emojiz = (
-                    emojiz.encode("ascii")
-                    .decode("unicode-escape")
-                    .encode("utf-16", "surrogatepass")
-                    .decode("utf-16")
-                )
-                final_text = re.sub(r"\\U\w+", convert_emojiz, final_text)
-
-            if final_text.startswith("> [!") or final_text.startswith(">[!"):
-                callout_state = True
-                nb = final_text.count(">")
-                final_text = adm.parse_title(line, configuration["basedir"], nb)
-            final_text, callout_state = adm.callout_conversion(
-                final_text, callout_state
-            )
-            if re.search(
-                rf"\[\[?(.*)" + re.escape(INDEX_KEY) + r"(.*)\]\]?", final_text
-            ):
-                # fix pagination.indexes page citation, exclude image/embed file
-                final_text = index_citation(final_text, configuration)
-            if re.search("#\w+", final_text) and not re.search(
-                "(`|\[{2}|\()(.*)#(.*)(`|\]{2}|\))", final_text
-            ):  # search hashtags not in link
-                # Convert hashtags
-                final_text = convert_hashtags(configuration, final_text)
-            elif re.fullmatch(
-                "\\\\", final_text.strip()
-            ):  # New line when using "\" in obsidian filepath
-                final_text = "\n"
-
-            elif final_text == "```\n":
-                # fix code newlines for material mkdocs
-                final_text = final_text + "\n"
-
+        checking_code = parsing_code(lines, line)
+        if checking_code:
             final.append(final_text)
+        else:
+            if (not final_text.strip().endswith("%%") and not final_text.strip().startswith(
+                "%%"
+            )):
+                # Skip obsidian comments
+                # Check and copy image
+                copy_image(configuration, final_text)
+                if not "`" in final_text:
+                    final_text = re.sub(
+                        "\%{2}(.*)\%{2}", "", final_text
+                    )  # remove obsidian comments
+                if (
+                    re.search(r"\\U\w+", final_text) and not "Users" in final_text
+                ):  # Fix emoji if bug because of frontmatter
+                    emojiz = re.search(r"\\U\w+", final_text)
+                    emojiz = emojiz.group().strip().replace('"', "")
+                    convert_emojiz = (
+                        emojiz.encode("ascii")
+                        .decode("unicode-escape")
+                        .encode("utf-16", "surrogatepass")
+                        .decode("utf-16")
+                    )
+                    final_text = re.sub(r"\\U\w+", convert_emojiz, final_text)
+
+                if final_text.startswith("> [!") or final_text.startswith(">[!"):
+                    callout_state = True
+                    nb = final_text.count(">")
+                    final_text = adm.parse_title(line, configuration["basedir"], nb)
+
+                final_text, callout_state = adm.callout_conversion(
+                    final_text, callout_state
+                )
+                if re.search(
+                    rf"\[\[?(.*)" + re.escape(INDEX_KEY) + r"(.*)\]\]?", final_text
+                ):
+                    # fix pagination.indexes page citation, exclude image/embed file
+                    final_text = index_citation(final_text, configuration)
+                if re.search("#\w+", final_text) and not re.search(
+                    "(`|\[{2}|\()(.*)#(.*)(`|\]{2}|\))", final_text
+                ):  # search hashtags not in link
+                    # Convert hashtags
+                    final_text = convert_hashtags(configuration, final_text)
+                elif re.fullmatch(
+                    "\\\\", final_text.strip()
+                ):  # New line when using "\" in obsidian filepath
+                    final_text = "\n"
+
+                elif final_text == "```\n":
+                    # fix code newlines for material mkdocs
+                    final_text = final_text + "\n"
+
+                final.append(final_text)
     meta_list = escape_metadata(meta)
     final = meta_list + final
     return final
