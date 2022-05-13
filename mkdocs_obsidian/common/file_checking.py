@@ -5,6 +5,7 @@ All function intended to check the file and their path.
 import glob
 import os
 import sys
+import json
 from pathlib import Path, PurePath
 
 import frontmatter
@@ -124,7 +125,8 @@ def delete_old_index(index_path, configuration):
 
 def delete_not_exist(configuration, actions=False):
     """
-    Removes files that have been deleted from the vault unless they are in `exclude.yml[files]` and always delete if founded file is in `exclude.yml[folder]`
+    Removes files that have been deleted from the vault unless they are in `exclude.yml[files]` and always delete if
+    founded file is in `exclude.yml[folder]`
     Parameters
     ----------
     configuration: dict
@@ -144,10 +146,23 @@ def delete_not_exist(configuration, actions=False):
     important_folder = ["assets", "css", "js", "logo", "script"]
     docs = Path(f"{BASEDIR}/docs/**")
     if actions:
-        VAULT_FILE = Path(os.getcwd(), "source", "vault_published.txt")  # list
-        if os.path.exists(VAULT_FILE):
+        if os.path.isfile(Path(os.getcwd(), "source", "vault_published.json")):
+            with open(
+                Path(os.getcwd(), "source", "vault_published.json"),
+                "r",
+                encoding="utf-8",
+            ) as file:
+                VAULT_FILE = json.load(file)
+                vault_file = []
+            if len(VAULT_FILE) == 0:
+                return []
+        elif os.path.exists(Path(os.getcwd(), "source", "vault_published.txt")):
             vault_file = ""
-            with open(VAULT_FILE, "r", encoding="utf-8") as file_vault:
+            with open(
+                Path(os.getcwd(), "source", "vault_published.txt"),
+                "r",
+                encoding="utf-8",
+            ) as file_vault:
                 vault_file = vault_file + file_vault.read()
             vault_file = (
                 vault_file.replace("\n", " ")
@@ -284,7 +299,8 @@ def retro(file, opt=0):
 
 def create_folder(category, configuration, share=0):
     """
-    create a folder based on the category key as 'folder1/folder2/.../' and return the folder path. Return default path in case of error/none category
+    create a folder based on the category key as 'folder1/folder2/.../' and return the folder path. Return default
+    path in case of error/none category
     Parameters
     ----------
     configuration : dict
