@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.6.2 (2022-05-13)
+### Fix
+* **actions:** Filename with coma are deleted ([`3fbc001`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/3fbc00187f4ec0ded1dd9ab77d33e728c63a25e1))
+
 ## v3.6.1 (2022-05-06)
 ### Fix
 * Prevent error message with same name and deleting index ([`2c0e31d`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/2c0e31db2570d656b825a62c315d85875a0af444))
