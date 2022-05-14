@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.6.3 (2022-05-13)
+### Fix
+* **conversion:** In codeblocks # was converted as hashtags ([`c6aa8fb`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/c6aa8fbbb598296e9c316c28fda11c6bdd602af2))
+
 ## v3.6.2 (2022-05-13)
 ### Fix
 * **actions:** Filename with coma are deleted ([`3fbc001`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/3fbc00187f4ec0ded1dd9ab77d33e728c63a25e1))
