@@ -355,7 +355,8 @@ def index_citation(final_text, configuration):
                 )
     return final_text
 
-def parsing_code(files_contents: list[str],  line: str) -> bool:
+
+def parsing_code(files_contents: list[str], line: str) -> bool:
     """
     Look if a string is in a code block
     Parameters
@@ -424,9 +425,9 @@ def file_convert(configuration, filepath, force=0):
         if checking_code:
             final.append(final_text)
         else:
-            if (not final_text.strip().endswith("%%") and not final_text.strip().startswith(
+            if not final_text.strip().endswith(
                 "%%"
-            )):
+            ) and not final_text.strip().startswith("%%"):
                 # Skip obsidian comments
                 # Check and copy image
                 copy_image(configuration, final_text)
@@ -513,8 +514,8 @@ def escape_metadata(meta):
         "`",
         ",",
     ]
-    if meta.get("tag"):
-        tag = metadata.pop("tag", None)
+    if meta.get("tag") or meta.get("tags"):
+        tag = metadata.pop("tag", None) or metadata.pop("tags", None)
         if "/" in tag:
             tag = tag.split("/")
         metadata["tags"] = tag
