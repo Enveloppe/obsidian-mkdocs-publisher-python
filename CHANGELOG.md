@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.6.4 (2022-05-14)
+### Fix
+* **conversion:** Tags generation for metadata ([`b08d154`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/b08d154d8b583d36e8dbdd9b381c318cdc1ed41e))
+
 ## v3.6.3 (2022-05-13)
 ### Fix
 * **conversion:** In codeblocks # was converted as hashtags ([`c6aa8fb`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/c6aa8fbbb598296e9c316c28fda11c6bdd602af2))
