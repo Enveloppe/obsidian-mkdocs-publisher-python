@@ -145,7 +145,7 @@ def delete_not_exist(configuration, actions=False):
     excluded = []
     important_folder = ["assets", "css", "js", "logo", "script"]
     docs = Path(f"{BASEDIR}/docs/**")
-    if actions:
+    if actions and actions != "minimal":
         if os.path.isfile(Path(os.getcwd(), "source", "vault_published.json")):
             with open(
                 Path(os.getcwd(), "source", "vault_published.json"),

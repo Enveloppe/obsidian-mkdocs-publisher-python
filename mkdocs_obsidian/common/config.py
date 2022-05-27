@@ -448,7 +448,7 @@ def open_value(configuration_name="0", actions=False):
     configuration_name: str
         The configuration name. If "0", use the default configuration, aka : .mkdocs_obsidian ;
         Else use ".configuration_name"
-    actions: bool, default: False
+    actions: bool|str, default: False
         If run in github actions
     Returns
     -------
@@ -474,7 +474,8 @@ def open_value(configuration_name="0", actions=False):
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pass
-    if actions:
+
+    if actions == True or actions == "minimal":
         BASEDIR = Path(os.getcwd())
         VAULT = ""
         WEB = ""
@@ -485,9 +486,11 @@ def open_value(configuration_name="0", actions=False):
         configuration_name = "." + configuration_name
     if not actions:
         ENV_PATH = Path(f"{BASEDIR}/{configuration_name}")
+    elif actions == "minimal":
+        ENV_PATH = Path(f"{BASEDIR}",".obs2mk")
     else:
         ENV_PATH = Path(BASEDIR, "source", ".github-actions")
-    if not os.path.isfile(ENV_PATH):
+    if not os.path.isfile(ENV_PATH) and not actions:
         create_env()
     elif not actions:
         with open(ENV_PATH, encoding="utf-8") as f:
@@ -583,7 +586,15 @@ def open_value(configuration_name="0", actions=False):
         DEFAULT_NOTES = ""
     POST = Path(f"{BASEDIR}/docs/{DEFAULT_NOTES}")
     IMG = Path(f"{BASEDIR}/docs/assets/img/")
-    if actions:
+    if actions == "minimal":
+        VAULT_FILE = [
+            x
+            for x in glob.iglob(
+                    str(os.getcwd()) + os.sep + "docs"+os.sep+"**", recursive = True
+                    )
+            if os.path.isfile(x)
+            ]
+    elif actions == True:
         VAULT_FILE = [
             x
             for x in glob.iglob(

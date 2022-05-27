@@ -258,6 +258,7 @@ def main():
     parser.add_argument(
         "--GA", "--actions", help=argparse.SUPPRESS, action="store_true"
     )
+    parser.add_argument("--minimal", help=argparse.SUPPRESS, action="store_true")
     console = Console()
     args = parser.parse_args()
     from mkdocs_obsidian.common import config as setup
@@ -282,16 +283,21 @@ def main():
                 rmv_info="Clean all removed files",
             )
     else:
-        configuration = setup.open_value(configuration_name, args.GA)
+        if args.minimal :
+            configuration = setup.open_value(configuration_name, "minimal")
+        else:
+            configuration = setup.open_value(configuration_name, args.GA)
         meta_update = int(args.meta)
         no_git = args.git
-        if not args.keep:
+        if not args.keep and not args.minimal:
             stop_share = keep(args.obsidian, console, configuration, args.GA)
         else:
             stop_share = 0
         if cmd == "file":
             file_source = args.filepath
-            if args.obsidian:
+            if args.minimal :
+                one.overwrite_file(file_source, configuration)
+            elif args.obsidian:
                 setup.git_pull(configuration, no_git)
                 obsidian_shell(configuration, file_source, meta_update, git=no_git)
                 sys.exit()

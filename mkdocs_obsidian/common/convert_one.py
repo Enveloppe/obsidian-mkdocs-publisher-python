@@ -92,3 +92,26 @@ def convert_one(ori, configuration, git, meta, obsidian=False):
             )
         sys.exit(2)
     sys.exit()
+
+def overwrite_file(source_path:str, configuration: dict):
+    """
+    Overwrite file with conversion to mkdocs
+    Parameters
+    ----------
+    source_path: str
+    configuration: dict
+    Returns
+    -------
+
+    """
+    from unidecode import unidecode
+    filename = os.path.basename(source_path)
+    shortname = unidecode(os.path.splitext(filename)[0])
+    contents = convert.file_convert(configuration, source_path, 1, False)
+    os.remove(source_path)
+    if shortname == filename:
+        filename = "index.md"
+    with open(Path(f"{source_path}"), "w", encoding="utf-8") as new_notes:
+        for lines in contents:
+            new_notes.write(lines)
+    return True

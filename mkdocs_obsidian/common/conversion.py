@@ -389,12 +389,13 @@ def parsing_code(files_contents: list[str], line: str) -> bool:
             return False
 
 
-def file_convert(configuration, filepath, force=0):
+def file_convert(configuration, filepath, force=0, image=True):
     """
     Read the filepath and convert each line based on regex condition.
 
     Parameters
     ----------
+    image: bool
     configuration: dict
     filepath : str
         path to file
@@ -430,7 +431,8 @@ def file_convert(configuration, filepath, force=0):
             ) and not final_text.strip().startswith("%%"):
                 # Skip obsidian comments
                 # Check and copy image
-                copy_image(configuration, final_text)
+                if image :
+                    copy_image(configuration, final_text)
                 if not "`" in final_text:
                     final_text = re.sub(
                         "\%{2}(.*)\%{2}", "", final_text
@@ -479,6 +481,7 @@ def file_convert(configuration, filepath, force=0):
     meta_list = escape_metadata(meta)
     final = meta_list + final
     return final
+
 
 
 def escape_metadata(meta):
