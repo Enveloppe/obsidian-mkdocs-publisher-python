@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import (
     admonition as adm,
     file_checking as check,
     metadata as mt,
-    )
+)
 
 
 def get_image(configuration, image):
@@ -431,7 +431,7 @@ def file_convert(configuration, filepath, force=0, image=True):
             ) and not final_text.strip().startswith("%%"):
                 # Skip obsidian comments
                 # Check and copy image
-                if image :
+                if image:
                     copy_image(configuration, final_text)
                 if not "`" in final_text:
                     final_text = re.sub(
@@ -481,7 +481,6 @@ def file_convert(configuration, filepath, force=0, image=True):
     meta_list = escape_metadata(meta)
     final = meta_list + final
     return final
-
 
 
 def escape_metadata(meta):

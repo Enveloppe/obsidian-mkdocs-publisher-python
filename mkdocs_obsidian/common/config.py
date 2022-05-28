@@ -487,7 +487,7 @@ def open_value(configuration_name="0", actions=False):
     if not actions:
         ENV_PATH = Path(f"{BASEDIR}/{configuration_name}")
     elif actions == "minimal":
-        ENV_PATH = Path(f"{BASEDIR}",".obs2mk")
+        ENV_PATH = Path(f"{BASEDIR}", ".obs2mk")
     else:
         ENV_PATH = Path(BASEDIR, "source", ".github-actions")
     if not os.path.isfile(ENV_PATH) and not actions:
@@ -590,10 +590,10 @@ def open_value(configuration_name="0", actions=False):
         VAULT_FILE = [
             x
             for x in glob.iglob(
-                    str(os.getcwd()) + os.sep + "docs"+os.sep+"**", recursive = True
-                    )
+                str(os.getcwd()) + os.sep + "docs" + os.sep + "**", recursive=True
+            )
             if os.path.isfile(x)
-            ]
+        ]
     elif actions == True:
         VAULT_FILE = [
             x

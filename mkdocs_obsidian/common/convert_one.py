@@ -93,7 +93,8 @@ def convert_one(ori, configuration, git, meta, obsidian=False):
         sys.exit(2)
     sys.exit()
 
-def overwrite_file(source_path:str, configuration: dict):
+
+def overwrite_file(source_path: str, configuration: dict):
     """
     Overwrite file with conversion to mkdocs
     Parameters
@@ -105,6 +106,7 @@ def overwrite_file(source_path:str, configuration: dict):
 
     """
     from unidecode import unidecode
+
     filename = os.path.basename(source_path)
     shortname = unidecode(os.path.splitext(filename)[0])
     contents = convert.file_convert(configuration, source_path, 1, False)

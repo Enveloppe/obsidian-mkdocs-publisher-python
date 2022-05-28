@@ -283,7 +283,7 @@ def main():
                 rmv_info="Clean all removed files",
             )
     else:
-        if args.minimal :
+        if args.minimal:
             configuration = setup.open_value(configuration_name, "minimal")
         else:
             configuration = setup.open_value(configuration_name, args.GA)
@@ -295,7 +295,7 @@ def main():
             stop_share = 0
         if cmd == "file":
             file_source = args.filepath
-            if args.minimal :
+            if args.minimal:
                 one.overwrite_file(file_source, configuration)
             elif args.obsidian:
                 setup.git_pull(configuration, no_git)
