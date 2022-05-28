@@ -515,25 +515,25 @@ def open_value(configuration_name="0", actions=False):
             except KeyError:
                 SHARE = "share"
                 with open(ENV_PATH, "a", encoding="utf-8") as f:
-                    f.write("share=share")
+                    f.write("share=share\n")
         try:
             INDEX_KEY = env["index_key"]
         except KeyError:
             INDEX_KEY = "(i)"
             with open(ENV_PATH, "a", encoding="utf-8") as f:
-                f.write("index_key=(i)")
+                f.write("index_key=(i)\n")
         try:
             DEFAULT_NOTES = env["default_blog"]
         except KeyError:
             DEFAULT_NOTES = "notes"
             with open(ENV_PATH, "a", encoding="utf-8") as f:
-                f.write("default_blog=notes")
+                f.write("default_blog=notes\n")
         try:
             CATEGORY = env["category_key"]
         except KeyError:
             CATEGORY = "category"
             with open(ENV_PATH, "a", encoding="utf-8") as f:
-                f.write("category_key=category")
+                f.write("category_key=category\n")
     except KeyError:
         with open(ENV_PATH, "r", encoding="utf-8") as f:
 
@@ -549,16 +549,16 @@ def open_value(configuration_name="0", actions=False):
         with open(ENV_PATH, "a", encoding="utf-8") as f:
             if len(SHARE) == 0 and not actions:
                 SHARE = "share"
-                f.write("share=share")
+                f.write("share=share\n")
             if len(INDEX_KEY) == 0:
                 INDEX_KEY = "(i)"
-                f.write("index_key=(i)")
+                f.write("index_key=(i)\n")
             if len(DEFAULT_NOTES) == 0:
                 DEFAULT_NOTES = "notes"
-                f.write("default_blog=notes")
+                f.write("default_blog=notes\n")
             if len(CATEGORY) == 0:
                 CATEGORY = "category"
-                f.write("category_key=category")
+                f.write("category_key=category\n")
         if (
             len(vault_str) == 0
             or len(basedir_str) == 0
