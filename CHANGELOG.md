@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.7.0 (2022-05-28)
+### Feature
+* Create minimal function, to overwrite same file. ([`9cee0dc`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/9cee0dca4a78c392a0ac3b7df7b1a54c5d8adfbc))
+
 ## v3.6.4 (2022-05-14)
 ### Fix
 * **conversion:** Tags generation for metadata ([`b08d154`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/b08d154d8b583d36e8dbdd9b381c318cdc1ed41e))
