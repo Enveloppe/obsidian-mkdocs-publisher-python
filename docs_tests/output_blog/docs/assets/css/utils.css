@@ -1,0 +1,35 @@
+.not_found {
+    background-color: rgba(211, 211, 211, 0.521);
+    display: inline;
+    color: grey;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+[data-md-color-scheme="slate"] .not_found {
+    color: rgb(182, 181, 181);
+    background-color: rgba(231, 232, 243, 0.185);
+}
+
+[data-md-color-scheme="slate"] .not_found:hover {
+    color: grey;
+    background-color: lightgrey;
+	cursor: not-allowed;
+    filter: saturate(200%);
+}
+
+[data-md-color-scheme="default"] .not_found:hover {
+    color: grey;
+    background-color: lightgrey;
+	cursor: not-allowed;
+    filter: saturate(200%);
+}
+
+
+.md-footer {
+    display: none;
+}
+
+.dataview {
+    display: none !important;
+}
