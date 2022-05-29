@@ -15,36 +15,13 @@ from mkdocs_obsidian.common import (
     config as setup,
     conversion as convert,
     file_checking as check,
+    config as cfg
 )
 
 
-def convert_one(ori, configuration, git, meta, obsidian=False):
+def convert_one(ori: Path, configuration: cfg.Configuration, git: bool, meta: int, obsidian=False):
     """Function to start the conversion of *one* specified file.
-
-    Parameters
-    ----------
-    ori: str
-        path to file to convert
-    configuration: dict
-        configuration value with :
-        - basedir
-        - vault
-        - web
-        - share
-        - index_key
-        - default_note
-        - post
-        - img
-        - vault_file
-    git: bool
-        if True, push to git
-    meta: int
-        If 1 update the metadata's source file
-    obsidian: bool, default: False
-        Disable rich markup library
-
     """
-
     file_name = os.path.basename(ori).upper()
     console = Console()
     try:
@@ -52,9 +29,9 @@ def convert_one(ori, configuration, git, meta, obsidian=False):
             yaml_front = frontmatter.load(ori, encoding="utf-8")
         except UnicodeDecodeError:
             yaml_front = frontmatter.load(ori, encoding="iso-8859-1")
-        priv = Path(configuration["post"])
-        clipkey = configuration["default_note"]
-        CATEGORY = configuration["category_key"]
+        priv = configuration.post
+        clipkey = configuration.default_note
+        CATEGORY = configuration.category_key
         if CATEGORY in yaml_front.keys():
             if not yaml_front[CATEGORY]:
                 priv = check.create_folder("hidden", configuration)
@@ -67,7 +44,7 @@ def convert_one(ori, configuration, git, meta, obsidian=False):
         if checkfile and git:
             commit = f"Pushed {file_name.lower()} to blog"
             setup.git_push(commit, configuration, obsidian, "Push", file_name)
-            convert.clipboard(configuration, ori, clipkey)
+            convert.clipboard(configuration, str(ori), clipkey)
         elif checkfile and not git:
             if not obsidian:
                 console.print(
@@ -94,25 +71,21 @@ def convert_one(ori, configuration, git, meta, obsidian=False):
     sys.exit()
 
 
-def overwrite_file(source_path: str, configuration: dict):
+def overwrite_file(source_path: str, configuration: cfg.Configuration, test=False):
     """
     Overwrite file with conversion to mkdocs
-    Parameters
-    ----------
-    source_path: str
-    configuration: dict
-    Returns
-    -------
-
     """
     from unidecode import unidecode
 
     filename = os.path.basename(source_path)
     contents = convert.file_convert(configuration, source_path, 1, False)
-    os.remove(source_path)
+    if not test:
+        os.remove(source_path)
     if unidecode(filename).replace('.md', '') == unidecode(os.path.basename(Path(source_path).parent)):
         source_path=source_path.replace(filename, "index.md")
-
+        filename = 'index.md'
+    if test:
+        source_path=Path(Path(source_path).resolve().parent.parent, 'input', filename)
     with open(Path(f"{source_path}"), "w", encoding="utf-8") as new_notes:
         for lines in contents:
             new_notes.write(lines)

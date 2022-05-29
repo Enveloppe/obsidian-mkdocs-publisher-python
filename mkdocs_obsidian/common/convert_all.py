@@ -18,20 +18,9 @@ from rich.rule import Rule
 from mkdocs_obsidian.common import config, conversion as convert, file_checking as check
 
 
-def dest(filepath, folder):
+def dest(filepath: Path, folder: Path) -> str:
     """
     Returns the final destination path of the file.
-
-    Parameters
-    ----------
-    filepath : str
-        file to convert
-    folder : str | Path
-        final folder
-
-    Returns
-    -------
-    destination: str
     """
     file_name = os.path.basename(filepath)
     destination = Path(f"{folder}/{file_name}")
@@ -39,48 +28,15 @@ def dest(filepath, folder):
 
 
 def search_share(
-    configuration, preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
-):
+    configuration: config.Configuration, preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
+) -> tuple[list[str], str ] :
     """Search file to publish, convert and write them.
-
-    Parameters
-    ----------
-    configuration: dict
-        configuration value with :
-        - basedir
-        - vault
-        - web
-        - share
-        - index_key
-        - default_note
-        - post
-        - img
-        - vault_file
-    obsidian: bool, default: False
-        Use normal printing for obsidian_shell (Default value = False)
-    preserve: int, default: 1
-        if 1 force update
-    stop_share: int, default: 1
-        remove stoped shared file if 1
-    meta: int, default: 0
-        Update the metadata if 1
-    vault_share: int, default: 0
-        If all the vault need to be shared
-
-    Returns
-    -------
-    tuple:
-        filepush: list[str]
-            Founded files
-        clipkey: str, default = DEFAULT_NOTES
-            Category key
-
     """
 
-    DEFAULT_NOTES = configuration["default_note"]
-    VAULT_FILE = configuration["vault_file"]
-    SHARE = configuration["share"]
-    CATEGORY = configuration["category_key"]
+    DEFAULT_NOTES = configuration.default_note
+    VAULT_FILE = configuration.vault_file
+    SHARE = configuration.share
+    CATEGORY = configuration.category_key
     filespush = []
     check_file = False
     clipkey = DEFAULT_NOTES
@@ -91,7 +47,7 @@ def search_share(
         if (
             filepath.endswith(".md")
             and "excalidraw" not in filepath
-            and not check.exclude(filepath, "folder", configuration["basedir"])
+            and not check.exclude(filepath, "folder", configuration.basedir)
         ):
             try:
                 yaml_front = frontmatter.load(filepath)
@@ -159,34 +115,10 @@ def search_share(
 
 
 def obsidian_simple(
-    configuration, delopt=False, git=True, stop_share=0, meta=0, vault_share=0
+    configuration: config.Configuration, delopt=False, git=True, stop_share=0, meta=0, vault_share=0
 ):
     """
     Convert file without markup for obsidian shell command.
-
-    Parameters
-    ----------
-    configuration: dict
-        configuration value with :
-        - basedir
-        - vault
-        - web
-        - share
-        - index_key
-        - default_note
-        - post
-        - img
-        - vault_file
-    delopt : bool, default: False
-        Force deletion if True
-    git: bool, default: True
-        Git push if True
-    stop_share: int, default: 0
-        Delete stoped shared file if 0
-    meta: int, default: 0
-        Update frontmatter if 1
-    vault_share: int, default: 0
-        Share all file in vault if 1
     """
     if not git:
         git_info = "No push"
@@ -252,34 +184,9 @@ def obsidian_simple(
 
 
 def convert_all(
-    configuration, delopt=False, git=True, stop_share=0, meta=0, vault_share=0
+    configuration: config.Configuration, delopt: bool=False, git: bool=True, stop_share: int=0, meta:int=0, vault_share:int=0
 ):
     """Convert all shared file with relying on rich markup library.
-
-    Parameters
-    ----------
-    configuration: dict
-        configuration value with :
-        - basedir
-        - vault
-        - web
-        - share
-        - index_key
-        - default_note
-        - post
-        - img
-        - vault_file
-    delopt: bool, default: False
-        Force deletion if True
-    git: bool, default: True
-        Git push if True
-    stop_share: int, default: 0
-        Delete stoped shared file if 0
-    meta: int, default: 0
-        Update source file frontmatter if 1
-    vault_share: int, default: 0
-        Share all file in vault if 1
-
     """
     console = Console()
     if not git:
@@ -290,7 +197,7 @@ def convert_all(
     msg_info = ""
     if vault_share == 1:
         msg_info = "\n- Share entire vault [**ignore share**]"
-    if delopt:  # preservesdds
+    if delopt:
         console.print(
             Rule(
                 f"[[i not bold sky_blue2]{time_now}[/]] [deep_sky_blue3 bold]STARTING"
@@ -369,4 +276,3 @@ def convert_all(
             Markdown("*No modification 😶*"),
             end=" ",
         )
-    sys.exit()

@@ -8,6 +8,7 @@ from pathlib import Path
 from rich import print
 from rich.console import Console
 from rich.markdown import Markdown
+from mkdocs_obsidian.common.config import Configuration
 
 try:
     sys.stdin.reconfigure(encoding="utf-8")
@@ -45,21 +46,12 @@ def search_shortcuts(VAULT_FILE, file):
 
 
 def obsidian_shell(
-    configuration, file="0", meta_update=0, vault_share=0, git=True, delete_option=False
+    configuration: Configuration, file="0", meta_update=0, vault_share=0, git=True, delete_option=False
 ):
     """
     Just run the CLI without python rich, for printing in Obsidian Shell
-    Parameters
-    ----------
-    configuration: dict
-    file: str
-    meta_update: int, default: 0
-    vault_share: int, default: 0
-    git: bool, default: True
-    delete_option: bool, default: False
-
     """
-    VAULT_FILE = configuration["vault_file"]
+    VAULT_FILE = configuration.vault_file
     if file == "0":
         all.obsidian_simple(configuration, delete_option, git, 1, 0, vault_share)
     elif not os.path.exists(Path(file)):
@@ -67,33 +59,22 @@ def obsidian_shell(
         if not file:
             print("File not found.")
             sys.exit(1)
-        one.convert_one(file, configuration, git, meta_update, True)
+        one.convert_one(Path(file), configuration, git, meta_update, True)
     elif file != "0" and os.path.exists(Path(file)):
-        one.convert_one(file, configuration, git, meta_update, True)
+        one.convert_one(Path(file), configuration, git, meta_update, True)
     sys.exit()
 
 
 def mobile_shortcuts(
-    configuration, file="0", meta_update=0, vault_share=0, delete_option=False
+    configuration: Configuration, file="0", meta_update=0, vault_share=0, delete_option=False
 ):
     """
     - Never use git
     - Can search a file in vault with the filename
-    Parameters
-    ----------
-    configuration: dict
-    file: str
-    meta_update: int, default: 0
-    vault_share: int, default: 0
-    delete_option: bool, default: False
-
-    Returns
-    -------
-
     """
     from mkdocs_obsidian.common import config as setup
 
-    VAULT_FILE = configuration["vault_file"]
+    VAULT_FILE = configuration.vault_file
     if file == "0":
         all.convert_all(configuration, delete_option, False, 1, 0, vault_share)
     elif not os.path.exists(Path(file)):
@@ -101,28 +82,16 @@ def mobile_shortcuts(
         if not file:
             print("[u red]File not found.")
             sys.exit(1)
-        one.convert_one(file, configuration, False, meta_update)
+        one.convert_one(Path(file), configuration, False, meta_update)
     elif file == "--c":
         setup.create_env()
     elif file != "0" and os.path.exists(Path(file)):
-        one.convert_one(file, configuration, False, meta_update)
+        one.convert_one(Path(file), configuration, False, meta_update)
 
 
-def keep(obsidian, console, configuration, actions=False):
+def keep(obsidian:bool, console: Console, configuration: Configuration, actions=False) -> int:
     """
     Delete the file moved or removed from sharing
-    Parameters
-    ----------
-    obsidian: bool
-        If using obsidian shell or not
-    console:
-        Rich console
-    configuration: dict
-    actions: bool, default: False
-        If we want to clean using github actions.
-    Returns
-    -------
-    int
     """
     info = check.delete_not_exist(configuration, actions)
     if len(info) > 1:

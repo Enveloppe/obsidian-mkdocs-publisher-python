@@ -7,7 +7,7 @@ from itertools import zip_longest
 from pathlib import Path
 
 
-def custom_callout(BASEDIR):
+def custom_callout(BASEDIR: Path):
     custom = []
     with open(
         Path(BASEDIR, "docs", "assets", "css", "custom_attributes.css"),
@@ -52,21 +52,8 @@ def custom_callout(BASEDIR):
     return callout
 
 
-def code_blocks(start_list, end_list):
+def code_blocks(start_list: list, end_list: list) -> list:
     """Check all code blocks in the contents
-
-    Parameters
-    ----------
-    start_list : list
-        List of all started codeblocs
-    end_list : list
-        list of all ended code blocks
-
-    Returns
-    -------
-    merged: list
-        Merged list for start and end
-
     """
     start_bug = []
     end_bug = []
@@ -90,20 +77,8 @@ def code_blocks(start_list, end_list):
     return merged
 
 
-def admonition_trad(BASEDIR, file_data: list):
+def admonition_trad(BASEDIR: Path, file_data: list) -> list:
     """Change all admonition to material admonition
-
-    Parameters
-    ----------
-    BASEDIR: Path
-        Basedirectory from configuration
-    file_data : list
-        Contents of the file
-
-    Returns
-    -------
-    list:
-       All file contents with admonition converted
     """
     code_index = 0
     code_dict = {}
@@ -189,21 +164,9 @@ def admonition_trad(BASEDIR, file_data: list):
     return file_data
 
 
-def parse_title(line, basedir, nb):
+def parse_title(line: str, basedir:Path, nb: int) -> str:
     """
     Parse the type and title of an Obsidian's callout.
-    Parameters
-    ----------
-    line: str
-        Parsed line
-    basedir: Path
-    nb: int
-        Count the number of '>' in the line
-
-    Returns
-    -------
-    str:
-        The parsed title of the callout.
     """
     callout = custom_callout(basedir)
     title = re.search("^( ?>*)*\[!(.*)\]", line)
@@ -225,7 +188,7 @@ def parse_title(line, basedir, nb):
     return title + "\n"
 
 
-def callout_conversion(line, callout_state):
+def callout_conversion(line: str, callout_state: bool) -> tuple[str, bool | str] :
     final_text = line
     if callout_state:
         if line.startswith(">"):

@@ -16,24 +16,14 @@ from mkdocs_obsidian.common import (
     admonition as adm,
     file_checking as check,
     metadata as mt,
+    config as cfg
 )
 
 
-def get_image(configuration, image):
+def get_image(configuration: cfg.Configuration, image: str):
     """Check if the image exists in the VAULT
-
-    Parameters
-    ----------
-    configuration: dict
-    image : str
-
-    Returns
-    -------
-    str:
-        Path to image if True, False otherwise
-
     """
-    VAULT_FILE = configuration["vault_file"]
+    VAULT_FILE = configuration.vault_file
     shortname = unidecode.unidecode(os.path.splitext(image)[0])
     assets = [x for x in VAULT_FILE if not x.endswith(".md")]
     for filepath in assets:
@@ -43,16 +33,10 @@ def get_image(configuration, image):
     return False
 
 
-def copy_image(configuration, final_text):
+def copy_image(configuration: cfg.Configuration, final_text: str):
     """Copy the image in assets if exist
-
-    Parameters
-    ----------
-    configuration: dict
-    final_text : str
-        Line readed
     """
-    IMG = configuration["img"]
+    IMG = configuration.img
     list_text = final_text.split("!")
     if len(list_text) > 0:
         for i in list_text:
@@ -71,16 +55,8 @@ def copy_image(configuration, final_text):
                     )
 
 
-def clipboard(configuration, filepath, folder):
+def clipboard(configuration: cfg.Configuration, filepath: str, folder: str):
     """Copy file URL to clipboard
-
-    Parameters
-    ----------
-    configuration: dict
-    filepath : str
-        Path to the file
-    folder: str
-        Path to folder
     """
     filename = os.path.basename(filepath)
     filename = filename.replace(".md", "")
@@ -88,7 +64,7 @@ def clipboard(configuration, filepath, folder):
     if filename == folder:
         filename = ""
     paste = url.quote(f"{folder_key}/{filename}")
-    clip = f"{configuration['web']}{paste}"
+    clip = f"{configuration.web}{paste}"
     if platform.architecture()[1] == "":
         try:
             import pasteboard  # work with pyto
@@ -109,30 +85,10 @@ def clipboard(configuration, filepath, folder):
             )
 
 
-def file_write(configuration, filepath, contents, folder, preserve=0, meta_update=1):
+def file_write(configuration: cfg.Configuration, filepath: str|Path, contents: list, folder: str|Path, preserve=0, meta_update=1) -> bool:
     """Write the new converted file and update metadata if meta_update is 0
-
-    Parameters
-    ----------
-    configuration: dict
-    filepath : str, Path
-        file to convert
-    contents: list
-        File contents
-    folder: str, Path
-        folderpath in publish
-    preserve: int, default: 0
-        Change shared state in frontmatter if 1
-    meta_update: int, default: 1
-        Update frontmatter if meta_update = 0
-
-    Returns
-    -------
-    bool:
-        True if file is created, False otherwise
-
     """
-    SHARE = configuration["share"]
+    SHARE = configuration.share
     file_name = os.path.basename(filepath)
     shortname = unidecode.unidecode(os.path.splitext(file_name)[0])
     foldername = unidecode.unidecode(Path(folder).name)
@@ -185,21 +141,11 @@ def read_custom(BASEDIR):
     return id_css
 
 
-def convert_hashtags(configuration, final_text):
-    """Convert configured hashtags with inline attribute CSS from custom.css
-
-    Parameters
-    ----------
-    configuration: dict
-    final_text: str
-        A line of the contents to convert if contains hashtags
-    Returns
-    -------
-    final_text: str
-        converted line
-
+def convert_hashtags(configuration: cfg.Configuration, final_text: str) -> str:
     """
-    css = read_custom(configuration["basedir"])
+    Convert configured hashtags with inline attribute CSS from custom.css
+    """
+    css = read_custom(configuration.basedir)
     token = re.findall("#\w+", final_text)
     token = list(set(token))
     for i in range(0, len(token)):
@@ -233,21 +179,9 @@ def convert_hashtags(configuration, final_text):
     return final_text
 
 
-def index_path(file_name, VAULT_FILE, category):
+def index_path(file_name: str, VAULT_FILE: list[str], category: str) -> str:
     """
     Get the path of a founded index.md
-
-    Parameters
-    ----------
-    file_name: str
-        File found to be an index
-    VAULT_FILE: list[str]
-    category: str
-        Category keys from frontmatter / configuration
-    Returns
-    -------
-    index: str
-        converted url path with category/index.md
     """
     file = [x for x in VAULT_FILE if os.path.basename(x) == file_name + ".md"]
     index = "index"
@@ -264,7 +198,7 @@ def index_path(file_name, VAULT_FILE, category):
     return index
 
 
-def index_citation(final_text, configuration):
+def index_citation(final_text: str, configuration: cfg.Configuration) -> str:
     """
     Allow the citation of index.md by citation with configured INDEX_KEY.
     Invert the alias and filename, replace filename by `category/index`
@@ -273,21 +207,9 @@ def index_citation(final_text, configuration):
     --------
     - `[[filename|(i) Alias]]`  -> `[[index|Alias]]`
     - `[[filename|(i)]]`  -> `[[index|filename]]`
-
-    Parameters
-    ----------
-    configuration: dict
-    final_text : str
-        Line to check, wikilinks or MD links
-
-    Returns
-    -------
-    final_text: str
-        Return the line with alias and file name inverted
-
     """
-    INDEX_KEY = configuration["index_key"]
-    VAULT_FILE = configuration["vault_file"]
+    INDEX_KEY = configuration.index_key
+    VAULT_FILE = configuration.vault_file
     if ") [" in final_text:
         cited = (
             re.search(
@@ -332,7 +254,7 @@ def index_citation(final_text, configuration):
                         .replace("[", "")
                         .replace(INDEX_KEY, "")
                     )
-                index = index_path(file_name, VAULT_FILE, configuration["category_key"])
+                index = index_path(file_name, VAULT_FILE, configuration.category_key)
                 cite = f"[[{index}|" + file_name.strip()
                 final_text = final_text.replace(i, cite)
             elif re.search(r"(.*)" + re.escape(INDEX_KEY) + r"(.*)\]", i):
@@ -345,7 +267,7 @@ def index_citation(final_text, configuration):
                 )
                 if len(file_name) == 0:
                     file_name = re.search("\]\((.*)", i).group(1).replace(")", "")
-                index = index_path(file_name, VAULT_FILE, configuration["category_key"])
+                index = index_path(file_name, VAULT_FILE, configuration.category_key)
                 cite = "[" + file_name + f"]({index})"
                 final_text = (
                     final_text.replace(i, cite)
@@ -359,16 +281,6 @@ def index_citation(final_text, configuration):
 def parsing_code(files_contents: list[str], line: str) -> bool:
     """
     Look if a string is in a code block
-    Parameters
-    ----------
-    files_contents: list[str]
-        File contents
-    line: str
-        Line to found
-
-    Returns
-    -------
-    bool
     """
     # first : Parse the file to find the code block
     code_block = False
@@ -389,28 +301,13 @@ def parsing_code(files_contents: list[str], line: str) -> bool:
             return False
 
 
-def file_convert(configuration, filepath, force=0, image=True):
+def file_convert(configuration: cfg.Configuration, filepath: str|Path, force=0, image=True):
     """
     Read the filepath and convert each line based on regex condition.
-
-    Parameters
-    ----------
-    image: bool
-    configuration: dict
-    filepath : str
-        path to file
-    force : int, default: 0
-        deletion option
-
-    Returns
-    -------
-    final: list[str]
-        converted contents, ready for writing.
-
     """
     final = []
-    INDEX_KEY = configuration["index_key"]
-    SHARE = configuration["share"]
+    INDEX_KEY = configuration.index_key
+    SHARE = configuration.share
     try:
         meta = frontmatter.load(filepath)
     except UnicodeDecodeError:
@@ -418,7 +315,7 @@ def file_convert(configuration, filepath, force=0, image=True):
     lines = meta.content.splitlines(True)
     if force != 1 and not meta.get(SHARE):
         return final
-    lines = adm.admonition_trad(configuration["basedir"], lines)
+    lines = adm.admonition_trad(configuration.basedir, lines)
     callout_state = False
     for line in lines:
         final_text = line
@@ -435,7 +332,7 @@ def file_convert(configuration, filepath, force=0, image=True):
                     copy_image(configuration, final_text)
                 if not "`" in final_text:
                     final_text = re.sub(
-                        "\%{2}(.*)\%{2}", "", final_text
+                        "%{2}(.*)%{2}", "", final_text
                     )  # remove obsidian comments
                 if (
                     re.search(r"\\U\w+", final_text) and not "Users" in final_text
@@ -453,7 +350,7 @@ def file_convert(configuration, filepath, force=0, image=True):
                 if final_text.startswith("> [!") or final_text.startswith(">[!"):
                     callout_state = True
                     nb = final_text.count(">")
-                    final_text = adm.parse_title(line, configuration["basedir"], nb)
+                    final_text = adm.parse_title(line, configuration.basedir, nb)
 
                 final_text, callout_state = adm.callout_conversion(
                     final_text, callout_state
@@ -483,16 +380,9 @@ def file_convert(configuration, filepath, force=0, image=True):
     return final
 
 
-def escape_metadata(meta):
+def escape_metadata(meta: frontmatter.Post) -> list[str]:
     """
     Escape special characters in metadata
-    Parameters
-    ----------
-    meta: Post
-        Metadata dictionary
-    Returns
-    -------
-        list
     """
     metadata = meta.metadata
     yaml_special_case = [

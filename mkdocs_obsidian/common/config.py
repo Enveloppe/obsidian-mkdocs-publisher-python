@@ -18,23 +18,21 @@ from rich.markdown import Markdown
 
 import mkdocs_obsidian as obs
 
+class Configuration:
+    def __init__(self, basedir, vault, web, share, index_key, default_note, post, img, vault_file, category_key):
+        self.basedir = Path(basedir)
+        self.vault = Path(vault)
+        self.web = web
+        self.share = share
+        self.index_key = index_key
+        self.default_note = default_note
+        self.post = Path(post)
+        self.img = Path(img)
+        self.vault_file = vault_file
+        self.category_key = category_key
 
-def pyto_environment(console):
+def pyto_environment(console: Console) -> tuple[str, str]:
     """(IOS) Use Pyto [1]_ bookmark to get folder path
-
-    Parameters
-    ----------
-    console :
-        rich console
-
-    Returns
-    -------
-    tuple [str, str]:
-         vault:
-            vault absolute path
-         blog:
-            Blog absolute path
-
     References
     -------
     .. [1] https://pyto.readthedocs.io/en/latest/library/bookmarks.html
@@ -54,25 +52,12 @@ def pyto_environment(console):
     return vault_path, blog_path
 
 
-def legacy_environment(console):
+def legacy_environment(console: Console) -> tuple[str, str]:
     """(Other platform) Ask environment ; rely only on console.
-
-    Parameters
-    ----------
-    console :
-        rich console
-
-    Returns
-    -------
-    tuple [str, str]:
-        vault:
-            vault absolute path
-        blog:
-            Blog absolute path
     """
     vault = ""
     blog = ""
-    while vault == "" or not os.path.isdir(vault) or not right_path(vault):
+    while vault == "" or not os.path.isdir(vault) or not right_path(Path(vault)):
         vault = str(
             console.input("Please provide your [u bold]obsidian vault[/] path: ")
         )
@@ -83,27 +68,14 @@ def legacy_environment(console):
     return vault, blog
 
 
-def PC_environment(console):
+def PC_environment(console: Console) -> tuple[str, str]:
     """Create environment for computer (Windows, Linux, macOS) using filedialog (tkinter) and askdirectory.
-    Parameters
-    ----------
-    console :
-        rich console
-
-    Returns
-    -------
-    tuple [str, str]:
-        vault:
-            vault absolute path
-        blog:
-            Blog absolute path
-
     """
     import tkinter.filedialog
 
     vault = ""
     blog = ""
-    while vault == "" or not right_path(vault):
+    while vault == "" or not right_path(Path(vault)):
         console.print("Please provide your [u bold]obsidian vault[/] path")
         sleep(1)
         vault = tkinter.filedialog.askdirectory()
@@ -116,23 +88,9 @@ def PC_environment(console):
     return vault, blog
 
 
-def ashell_environment(console):
+def ashell_environment(console: Console) -> tuple[str, str]:
     """
     (IOS) Use pickFolder [1]_ in **ashell** to help to create the environment
-
-    Parameters
-    ----------
-    console:
-        rich console
-
-    Returns
-    -------
-    tuple [str, str]:
-        vault:
-            vault absolute path
-        blog:
-            Blog absolute path
-
     References
     ----------
     .. [1] https://github.com/holzschu/a-shell#sandbox-and-bookmarks
@@ -162,22 +120,12 @@ def ashell_environment(console):
     return vault, blog
 
 
-def check_url(blog_path):
+def check_url(blog_path: Path) -> str:
     """check if the url is in the config file and return it
-
-    Parameters
-    ----------
-    blog_path : str
-        Publish absolute path
-
-    Returns
-    -------
-    web: str
-        Site url founded in site_url from mkdocs.yml
     """
     web = ""
     try:
-        blog_path = Path(blog_path).expanduser()
+        blog_path = blog_path.expanduser()
     except RuntimeError:
         blog_path = Path(blog_path)
     mkdocs = Path(f"{blog_path}/mkdocs.yml")
@@ -191,18 +139,9 @@ def check_url(blog_path):
     return web
 
 
-def right_path(vault):
+def right_path(vault: Path) -> bool:
     """
     Check if .obsidian exist in provided vault path
-    Parameters
-    ----------
-    vault: str
-        Absolute path to vault
-
-    Returns
-    -------
-    bool:
-        return True .obsidian exist in vault
     """
     config_vault = os.path.join(vault, ".obsidian")
     if os.path.isdir(config_vault):
@@ -260,7 +199,7 @@ def create_env(config_name="0"):
         vault, blog = PC_environment(console)
     else:
         vault, blog = legacy_environment(console)
-    blog_link = check_url(blog).strip()
+    blog_link = check_url(Path(blog)).strip()
     if blog_link == "":
         blog_link = str(console.input("Please, provide the [u]URL[/] of your blog: "))
     share = str(
@@ -313,23 +252,16 @@ def create_env(config_name="0"):
         sys.exit(3)
 
 
-def git_pull(configuration, git=True):
+def git_pull(configuration: Configuration, git=True):
     """
     Command to pull the repository
-    if no_git or import error : pass
-    Parameters
-    ----------
-    configuration: dict
-        Dictionary containing the basedir
-    git: bool, default: true
         If true, pull the repo
     """
     console = Console()
     if git:
         try:
             import git
-
-            BASEDIR = configuration["basedir"]
+            BASEDIR = configuration.basedir
             try:
                 repo = git.Repo(Path(f"{BASEDIR}"))
                 update = repo.remotes.origin
@@ -343,8 +275,8 @@ def git_pull(configuration, git=True):
 
 
 def git_push(
-    commit,
-    configuration,
+    commit: str,
+    configuration: Configuration,
     obsidian=False,
     add_info="",
     rmv_info="",
@@ -353,27 +285,12 @@ def git_push(
 ):
     """
     git push the modified files and print a message result
-
-    Parameters
-    ----------
-    commit: str
-        Commit information
-    configuration: dict
-    obsidian : bool, default: False
-        Message without markup
-    add_info : str, default: ""
-        Adding title
-    rmv_info : str, default: ""
-        Removing title
-    remove_msg : str, default: ""
-        File removed
-    add_msg : str, default: ""
     """
     console = Console()
     try:
         import git
 
-        BASEDIR = configuration["basedir"]
+        BASEDIR = configuration.basedir
         try:
             repo = git.Repo(Path(f"{BASEDIR}/.git"))
             repo.git.add(".")
@@ -440,31 +357,9 @@ def git_push(
             )
 
 
-def open_value(configuration_name="0", actions=False):
+def open_value(configuration_name="0", actions=False, test=False) -> Configuration:
     """
     Return the configuration value
-    Parameters
-    ----------
-    configuration_name: str
-        The configuration name. If "0", use the default configuration, aka : .mkdocs_obsidian ;
-        Else use ".configuration_name"
-    actions: bool|str, default: False
-        If run in github actions
-    Returns
-    -------
-    dict [Path, Path, str, str, str, str, Path, Path, list[str]]:
-        - basedir: Path
-        - vault : Path
-        - web: str
-        - share: str
-        - index_key: str
-        - default_note: str
-        - post: Path
-            Post folder absolute path
-        - img : Path
-            Image folder absolute path
-        - vault_file: list[str]
-            List of all files in vault
     """
     BASEDIR = obs.__path__[0]
     try:
@@ -480,17 +375,22 @@ def open_value(configuration_name="0", actions=False):
         VAULT = ""
         WEB = ""
         SHARE = ""
+    if test:
+        BASEDIR = Path(Path(os.getcwd()).parent, 'docs_tests', 'output_blog')
     elif configuration_name == "0":
         configuration_name = ".mkdocs_obsidian"
     else:
         configuration_name = "." + configuration_name
-    if not actions:
+    if test:
+        ENV_PATH = Path(BASEDIR, '.mkdocs_obsidian')
+        print(os.path.isfile(ENV_PATH))
+    elif not actions :
         ENV_PATH = Path(f"{BASEDIR}/{configuration_name}")
     elif actions == "minimal":
         ENV_PATH = Path(f"{BASEDIR}", ".obs2mk")
     else:
         ENV_PATH = Path(BASEDIR, "source", ".github-actions")
-    if not os.path.isfile(ENV_PATH) and not actions:
+    if not os.path.isfile(ENV_PATH):
         create_env()
     elif not actions:
         with open(ENV_PATH, encoding="utf-8") as f:
@@ -507,8 +407,8 @@ def open_value(configuration_name="0", actions=False):
     env = dotenv_values(ENV_PATH)
     try:
         if not actions:
-            BASEDIR = Path(env["blog_path"]).expanduser()
-            VAULT = Path(env["vault"]).expanduser()
+            BASEDIR = Path(env["blog_path"]).resolve().expanduser()
+            VAULT = Path(env["vault"]).resolve().expanduser()
             WEB = env["blog"]
             try:
                 SHARE = env["share"]
@@ -534,42 +434,10 @@ def open_value(configuration_name="0", actions=False):
             CATEGORY = "category"
             with open(ENV_PATH, "a", encoding="utf-8") as f:
                 f.write("category_key=category\n")
-    except KeyError:
-        with open(ENV_PATH, "r", encoding="utf-8") as f:
-
-            if not actions:
-                vault_str = "".join(f.readlines(1)).replace("vault=", "").rstrip()
-                basedir_str = "".join(f.readlines(2)).replace("blog_path=", "").rstrip()
-                BASEDIR = Path(basedir_str)
-                WEB = "".join(f.readlines(3)).replace("blog=", "")
-                SHARE = "".join(f.readlines(4)).replace("share=", "")
-            INDEX_KEY = "".join(f.readlines(5)).replace("index_key=", "")
-            DEFAULT_NOTES = "".join(f.readlines(6)).replace("default_blog=", "")
-            CATEGORY = "".join(f.readlines(7)).replace("category_key=", "")
-        with open(ENV_PATH, "a", encoding="utf-8") as f:
-            if len(SHARE) == 0 and not actions:
-                SHARE = "share"
-                f.write("share=share\n")
-            if len(INDEX_KEY) == 0:
-                INDEX_KEY = "(i)"
-                f.write("index_key=(i)\n")
-            if len(DEFAULT_NOTES) == 0:
-                DEFAULT_NOTES = "notes"
-                f.write("default_blog=notes\n")
-            if len(CATEGORY) == 0:
-                CATEGORY = "category"
-                f.write("category_key=category\n")
-        if (
-            len(vault_str) == 0
-            or len(basedir_str) == 0
-            or len(WEB) == 0
-            and not actions
-        ):
-            sys.exit("Please provide a valid path for all config items")
     except RuntimeError:
         if not actions:
-            BASEDIR = Path(env["blog_path"])
-            VAULT = Path(env["vault"])
+            BASEDIR = Path(env["blog_path"]).resolve()
+            VAULT = Path(env["vault"]).resolve()
             WEB = env["blog"]
             SHARE = env["share"]
         INDEX_KEY = env["index_key"]
@@ -608,16 +476,5 @@ def open_value(configuration_name="0", actions=False):
             for x in glob.iglob(str(VAULT) + os.sep + "**", recursive=True)
             if os.path.isfile(x)
         ]
-    configuration = {
-        "basedir": Path(BASEDIR),
-        "vault": Path(VAULT),
-        "web": WEB,
-        "share": SHARE,
-        "index_key": INDEX_KEY,
-        "default_note": DEFAULT_NOTES,
-        "post": POST,
-        "img": IMG,
-        "vault_file": VAULT_FILE,
-        "category_key": CATEGORY,
-    }
+    configuration = Configuration(BASEDIR, VAULT, WEB, SHARE, INDEX_KEY, DEFAULT_NOTES, POST, IMG, VAULT_FILE, CATEGORY)
     return configuration
