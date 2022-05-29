@@ -9,15 +9,27 @@ share: True
 ---
 Les étoiles brillent joliment.
 Qq 
-******coucou**{: }**{: }**{: #left}  
+******************coucou**{: }**{: }**{: }**{: }**{: }**{: }**{: }**{: }**{: #left}  
 
 !!! NOTE
 	notes
 
-**tags1**{: **tags1**{: **tags1**{: #tags1 .hash}  
+**tags1**{: **tags1**{: **tags1**{: **tags1**{: **tags1**{: **tags1**{: **tags1**{: **tags1**{: **tags1**{: #tags1 .hash}  
  .hash}  
  .hash}  
- **tags2**{: **tags2**{: **tags2**{: #tags2 .hash}  
+ .hash}  
+ .hash}  
+ .hash}  
+ .hash}  
+ .hash}  
+ .hash}  
+ **tags2**{: **tags2**{: **tags2**{: **tags2**{: **tags2**{: **tags2**{: **tags2**{: **tags2**{: **tags2**{: #tags2 .hash}  
+ .hash}  
+ .hash}  
+ .hash}  
+ .hash}  
+ .hash}  
+ .hash}  
  .hash}  
  .hash}  
 

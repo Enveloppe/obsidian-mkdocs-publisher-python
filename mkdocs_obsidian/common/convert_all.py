@@ -28,10 +28,14 @@ def dest(filepath: Path, folder: Path) -> str:
 
 
 def search_share(
-    configuration: config.Configuration, preserve=0, stop_share=1, meta=0, vault_share=0, obsidian=False
-) -> tuple[list[str], str ] :
-    """Search file to publish, convert and write them.
-    """
+    configuration: config.Configuration,
+    preserve=0,
+    stop_share=1,
+    meta=0,
+    vault_share=0,
+    obsidian=False,
+) -> tuple[list[str], str]:
+    """Search file to publish, convert and write them."""
 
     DEFAULT_NOTES = configuration.default_note
     VAULT_FILE = configuration.vault_file
@@ -115,7 +119,12 @@ def search_share(
 
 
 def obsidian_simple(
-    configuration: config.Configuration, delopt=False, git=True, stop_share=0, meta=0, vault_share=0
+    configuration: config.Configuration,
+    delopt=False,
+    git=True,
+    stop_share=0,
+    meta=0,
+    vault_share=0,
 ):
     """
     Convert file without markup for obsidian shell command.
@@ -184,10 +193,14 @@ def obsidian_simple(
 
 
 def convert_all(
-    configuration: config.Configuration, delopt: bool=False, git: bool=True, stop_share: int=0, meta:int=0, vault_share:int=0
+    configuration: config.Configuration,
+    delopt: bool = False,
+    git: bool = True,
+    stop_share: int = 0,
+    meta: int = 0,
+    vault_share: int = 0,
 ):
-    """Convert all shared file with relying on rich markup library.
-    """
+    """Convert all shared file with relying on rich markup library."""
     console = Console()
     if not git:
         git_info = "No push"

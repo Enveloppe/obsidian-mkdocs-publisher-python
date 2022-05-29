@@ -46,7 +46,12 @@ def search_shortcuts(VAULT_FILE, file):
 
 
 def obsidian_shell(
-    configuration: Configuration, file="0", meta_update=0, vault_share=0, git=True, delete_option=False
+    configuration: Configuration,
+    file="0",
+    meta_update=0,
+    vault_share=0,
+    git=True,
+    delete_option=False,
 ):
     """
     Just run the CLI without python rich, for printing in Obsidian Shell
@@ -66,7 +71,11 @@ def obsidian_shell(
 
 
 def mobile_shortcuts(
-    configuration: Configuration, file="0", meta_update=0, vault_share=0, delete_option=False
+    configuration: Configuration,
+    file="0",
+    meta_update=0,
+    vault_share=0,
+    delete_option=False,
 ):
     """
     - Never use git
@@ -89,7 +98,9 @@ def mobile_shortcuts(
         one.convert_one(Path(file), configuration, False, meta_update)
 
 
-def keep(obsidian:bool, console: Console, configuration: Configuration, actions=False) -> int:
+def keep(
+    obsidian: bool, console: Console, configuration: Configuration, actions=False
+) -> int:
     """
     Delete the file moved or removed from sharing
     """

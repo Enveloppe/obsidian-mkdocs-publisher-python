@@ -11,6 +11,7 @@ import frontmatter
 
 from mkdocs_obsidian.common import config as cfg
 
+
 def update_frontmatter(filepath: Path, configuration: cfg.Configuration, link=1):
     """If link = 1, update the frontmatter with new publish URL
     Also, update the share state if convert_one.

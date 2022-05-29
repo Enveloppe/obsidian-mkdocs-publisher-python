@@ -15,13 +15,14 @@ from mkdocs_obsidian.common import (
     config as setup,
     conversion as convert,
     file_checking as check,
-    config as cfg
+    config as cfg,
 )
 
 
-def convert_one(ori: Path, configuration: cfg.Configuration, git: bool, meta: int, obsidian=False):
-    """Function to start the conversion of *one* specified file.
-    """
+def convert_one(
+    ori: Path, configuration: cfg.Configuration, git: bool, meta: int, obsidian=False
+):
+    """Function to start the conversion of *one* specified file."""
     file_name = os.path.basename(ori).upper()
     console = Console()
     try:
@@ -68,7 +69,6 @@ def convert_one(ori: Path, configuration: cfg.Configuration, git: bool, meta: in
                 " valid! Use https://jsonformatter.org/yaml-validator to correct it!"
             )
         sys.exit(2)
-    sys.exit()
 
 
 def overwrite_file(source_path: str, configuration: cfg.Configuration, test=False):
@@ -81,11 +81,13 @@ def overwrite_file(source_path: str, configuration: cfg.Configuration, test=Fals
     contents = convert.file_convert(configuration, source_path, 1, False)
     if not test:
         os.remove(source_path)
-    if unidecode(filename).replace('.md', '') == unidecode(os.path.basename(Path(source_path).parent)):
-        source_path=source_path.replace(filename, "index.md")
-        filename = 'index.md'
+    if unidecode(filename).replace(".md", "") == unidecode(
+        os.path.basename(Path(source_path).parent)
+    ):
+        source_path = source_path.replace(filename, "index.md")
+        filename = "index.md"
     if test:
-        source_path=Path(Path(source_path).resolve().parent.parent, 'input', filename)
+        source_path = Path(Path(source_path).resolve().parent.parent, "input", filename)
     with open(Path(f"{source_path}"), "w", encoding="utf-8") as new_notes:
         for lines in contents:
             new_notes.write(lines)

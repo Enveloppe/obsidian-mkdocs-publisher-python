@@ -16,13 +16,12 @@ from mkdocs_obsidian.common import (
     admonition as adm,
     file_checking as check,
     metadata as mt,
-    config as cfg
+    config as cfg,
 )
 
 
 def get_image(configuration: cfg.Configuration, image: str):
-    """Check if the image exists in the VAULT
-    """
+    """Check if the image exists in the VAULT"""
     VAULT_FILE = configuration.vault_file
     shortname = unidecode.unidecode(os.path.splitext(image)[0])
     assets = [x for x in VAULT_FILE if not x.endswith(".md")]
@@ -34,8 +33,7 @@ def get_image(configuration: cfg.Configuration, image: str):
 
 
 def copy_image(configuration: cfg.Configuration, final_text: str):
-    """Copy the image in assets if exist
-    """
+    """Copy the image in assets if exist"""
     IMG = configuration.img
     list_text = final_text.split("!")
     if len(list_text) > 0:
@@ -56,8 +54,7 @@ def copy_image(configuration: cfg.Configuration, final_text: str):
 
 
 def clipboard(configuration: cfg.Configuration, filepath: str, folder: str):
-    """Copy file URL to clipboard
-    """
+    """Copy file URL to clipboard"""
     filename = os.path.basename(filepath)
     filename = filename.replace(".md", "")
     folder_key = os.path.basename(folder)
@@ -85,9 +82,15 @@ def clipboard(configuration: cfg.Configuration, filepath: str, folder: str):
             )
 
 
-def file_write(configuration: cfg.Configuration, filepath: str|Path, contents: list, folder: str|Path, preserve=0, meta_update=1) -> bool:
-    """Write the new converted file and update metadata if meta_update is 0
-    """
+def file_write(
+    configuration: cfg.Configuration,
+    filepath: str | Path,
+    contents: list,
+    folder: str | Path,
+    preserve=0,
+    meta_update=1,
+) -> bool:
+    """Write the new converted file and update metadata if meta_update is 0"""
     SHARE = configuration.share
     file_name = os.path.basename(filepath)
     shortname = unidecode.unidecode(os.path.splitext(file_name)[0])
@@ -301,7 +304,9 @@ def parsing_code(files_contents: list[str], line: str) -> bool:
             return False
 
 
-def file_convert(configuration: cfg.Configuration, filepath: str|Path, force=0, image=True):
+def file_convert(
+    configuration: cfg.Configuration, filepath: str | Path, force=0, image=True
+):
     """
     Read the filepath and convert each line based on regex condition.
     """

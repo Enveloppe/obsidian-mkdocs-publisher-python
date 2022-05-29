@@ -25,7 +25,7 @@ def config_exclude(BASEDIR: Path) -> Path:
     return config_folder
 
 
-def exclude(filepath: str, key:str, BASEDIR: Path) -> bool:
+def exclude(filepath: str, key: str, BASEDIR: Path) -> bool:
     """
     Check if a file is in `exclude.yml`.
     """
@@ -42,7 +42,9 @@ def exclude(filepath: str, key:str, BASEDIR: Path) -> bool:
     return False
 
 
-def move_file_by_category(filepath: Path, clipkey:str, configuration: cfg.Configuration) -> bool:
+def move_file_by_category(
+    filepath: Path, clipkey: str, configuration: cfg.Configuration
+) -> bool:
     glog_folder = Path(configuration.basedir, "docs", "**")
     blog_file = [
         file
@@ -205,9 +207,8 @@ def diff_file(filepath: Path, folder: Path, contents: list[str], update=0) -> bo
     return True  # Si le fichier existe pas, il peut pas être identique
 
 
-def retro(file: Path|list, opt=0) -> list[str]:
-    """Remove metadata from note
-    """
+def retro(file: Path | list, opt=0) -> list[str]:
+    """Remove metadata from note"""
     notes = []
     if opt == 0:
         try:
@@ -243,9 +244,8 @@ def create_folder(category: str, configuration: cfg.Configuration, share=0) -> P
     return folder
 
 
-def modification_time(filepath: Path, folder:Path, update: int) -> bool:
-    """check the modification time : return true if file modified since the last push.
-    """
+def modification_time(filepath: Path, folder: Path, update: int) -> bool:
+    """check the modification time : return true if file modified since the last push."""
     if update == 0:
         return True  # Force update
     filename = os.path.basename(filepath)
@@ -256,16 +256,14 @@ def modification_time(filepath: Path, folder:Path, update: int) -> bool:
     return True  # file doesn't exist
 
 
-def skip_update(filepath: Path, folder:Path, update: int) -> bool:
-    """check if file exist + update is false
-    """
+def skip_update(filepath: Path, folder: Path, update: int) -> bool:
+    """check if file exist + update is false"""
     filepath = Path(filepath)
     return update == 1 and check_file(filepath, folder) == "EXIST"
 
 
 def check_file(filepath: Path, folder: Path) -> str:
-    """check if the requested file exist or not in publish.
-    """
+    """check if the requested file exist or not in publish."""
     file = os.path.basename(filepath)
     shortname = unidecode(os.path.splitext(file)[0])
     foldername = unidecode(Path(folder).name)
@@ -277,9 +275,10 @@ def check_file(filepath: Path, folder: Path) -> str:
     return "NE"
 
 
-def delete_file(filepath: Path, folder: Path, configuration: cfg.Configuration, meta_update=1) -> bool:
-    """Delete the requested file
-    """
+def delete_file(
+    filepath: Path, folder: Path, configuration: cfg.Configuration, meta_update=1
+) -> bool:
+    """Delete the requested file"""
     path = Path(folder)
     try:
         for file in os.listdir(path):

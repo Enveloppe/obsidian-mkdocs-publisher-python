@@ -18,8 +18,21 @@ from rich.markdown import Markdown
 
 import mkdocs_obsidian as obs
 
+
 class Configuration:
-    def __init__(self, basedir, vault, web, share, index_key, default_note, post, img, vault_file, category_key):
+    def __init__(
+        self,
+        basedir,
+        vault,
+        web,
+        share,
+        index_key,
+        default_note,
+        post,
+        img,
+        vault_file,
+        category_key,
+    ):
         self.basedir = Path(basedir)
         self.vault = Path(vault)
         self.web = web
@@ -30,6 +43,7 @@ class Configuration:
         self.img = Path(img)
         self.vault_file = vault_file
         self.category_key = category_key
+
 
 def pyto_environment(console: Console) -> tuple[str, str]:
     """(IOS) Use Pyto [1]_ bookmark to get folder path
@@ -53,8 +67,7 @@ def pyto_environment(console: Console) -> tuple[str, str]:
 
 
 def legacy_environment(console: Console) -> tuple[str, str]:
-    """(Other platform) Ask environment ; rely only on console.
-    """
+    """(Other platform) Ask environment ; rely only on console."""
     vault = ""
     blog = ""
     while vault == "" or not os.path.isdir(vault) or not right_path(Path(vault)):
@@ -69,8 +82,7 @@ def legacy_environment(console: Console) -> tuple[str, str]:
 
 
 def PC_environment(console: Console) -> tuple[str, str]:
-    """Create environment for computer (Windows, Linux, macOS) using filedialog (tkinter) and askdirectory.
-    """
+    """Create environment for computer (Windows, Linux, macOS) using filedialog (tkinter) and askdirectory."""
     import tkinter.filedialog
 
     vault = ""
@@ -121,8 +133,7 @@ def ashell_environment(console: Console) -> tuple[str, str]:
 
 
 def check_url(blog_path: Path) -> str:
-    """check if the url is in the config file and return it
-    """
+    """check if the url is in the config file and return it"""
     web = ""
     try:
         blog_path = blog_path.expanduser()
@@ -261,6 +272,7 @@ def git_pull(configuration: Configuration, git=True):
     if git:
         try:
             import git
+
             BASEDIR = configuration.basedir
             try:
                 repo = git.Repo(Path(f"{BASEDIR}"))
@@ -376,15 +388,15 @@ def open_value(configuration_name="0", actions=False, test=False) -> Configurati
         WEB = ""
         SHARE = ""
     if test:
-        BASEDIR = Path(Path(os.getcwd()).parent, 'docs_tests', 'output_blog')
+        BASEDIR = Path(Path(os.getcwd()).parent, "docs_tests", "output")
     elif configuration_name == "0":
         configuration_name = ".mkdocs_obsidian"
     else:
         configuration_name = "." + configuration_name
     if test:
-        ENV_PATH = Path(BASEDIR, '.mkdocs_obsidian')
+        ENV_PATH = Path(BASEDIR, ".mkdocs_obsidian")
         print(os.path.isfile(ENV_PATH))
-    elif not actions :
+    elif not actions:
         ENV_PATH = Path(f"{BASEDIR}/{configuration_name}")
     elif actions == "minimal":
         ENV_PATH = Path(f"{BASEDIR}", ".obs2mk")
@@ -476,5 +488,16 @@ def open_value(configuration_name="0", actions=False, test=False) -> Configurati
             for x in glob.iglob(str(VAULT) + os.sep + "**", recursive=True)
             if os.path.isfile(x)
         ]
-    configuration = Configuration(BASEDIR, VAULT, WEB, SHARE, INDEX_KEY, DEFAULT_NOTES, POST, IMG, VAULT_FILE, CATEGORY)
+    configuration = Configuration(
+        BASEDIR,
+        VAULT,
+        WEB,
+        SHARE,
+        INDEX_KEY,
+        DEFAULT_NOTES,
+        POST,
+        IMG,
+        VAULT_FILE,
+        CATEGORY,
+    )
     return configuration

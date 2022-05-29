@@ -53,8 +53,7 @@ def custom_callout(BASEDIR: Path):
 
 
 def code_blocks(start_list: list, end_list: list) -> list:
-    """Check all code blocks in the contents
-    """
+    """Check all code blocks in the contents"""
     start_bug = []
     end_bug = []
     bug = list(zip_longest(start_list, end_list, fillvalue=-1))
@@ -78,8 +77,7 @@ def code_blocks(start_list: list, end_list: list) -> list:
 
 
 def admonition_trad(BASEDIR: Path, file_data: list) -> list:
-    """Change all admonition to material admonition
-    """
+    """Change all admonition to material admonition"""
     code_index = 0
     code_dict = {}
     start_list = []
@@ -164,7 +162,7 @@ def admonition_trad(BASEDIR: Path, file_data: list) -> list:
     return file_data
 
 
-def parse_title(line: str, basedir:Path, nb: int) -> str:
+def parse_title(line: str, basedir: Path, nb: int) -> str:
     """
     Parse the type and title of an Obsidian's callout.
     """
@@ -188,7 +186,7 @@ def parse_title(line: str, basedir:Path, nb: int) -> str:
     return title + "\n"
 
 
-def callout_conversion(line: str, callout_state: bool) -> tuple[str, bool | str] :
+def callout_conversion(line: str, callout_state: bool) -> tuple[str, bool | str]:
     final_text = line
     if callout_state:
         if line.startswith(">"):
