@@ -49,7 +49,7 @@ def copy_image(configuration: cfg.Configuration, final_text: str):
                     and not image_path.endswith(".md")
                 ):
                     shutil.copyfile(
-                        image_path, Path(f"{IMG}/{os.path.basename(image_path)}")
+                        image_path, Path(IMG, os.path.basename(image_path))
                     )
 
 
@@ -94,7 +94,8 @@ def file_write(
     SHARE = configuration.share
     file_name = os.path.basename(filepath)
     shortname = unidecode.unidecode(os.path.splitext(file_name)[0])
-    foldername = unidecode.unidecode(Path(folder).name)
+    folder = Path(folder)
+    foldername = unidecode.unidecode(folder.name)
     try:
         meta = frontmatter.load(filepath)
     except UnicodeDecodeError:
@@ -107,9 +108,9 @@ def file_write(
     if shortname == foldername:
         file_name = "index.md"
     check.move_file_by_category(filepath, folder, configuration)
-    if not os.path.isdir(Path(f"{folder}")):
+    if not os.path.isdir(folder)):
         folder.mkdir(parents=True, exist_ok=True)
-    with open(Path(f"{folder}/{file_name}"), "w", encoding="utf-8") as new_notes:
+    with open(Path(folder, file_name), "w", encoding="utf-8") as new_notes:
         for line in contents:
             new_notes.write(line)
     if meta_update == 0:
@@ -121,22 +122,13 @@ def file_write(
     return True
 
 
-def read_custom(BASEDIR):
+def read_custom(BASEDIR: Path) -> list[str]:
     """
     read custom css, selection of id for custom attribute (special hashtags)
-
-    Parameters
-    ----------
-    BASEDIR: Path
-
-    Returns
-    -------
-    id_css:
-        List of the custom attribute CSS founded
     """
     id_css = []
     with open(
-        Path(f"{BASEDIR}/docs/assets/css/custom_attributes.css"), "r", encoding="utf-8"
+        Path(BASEDIR, "docs","assets", "css", "custom_attributes.css"), "r", encoding="utf-8"
     ) as css:
         for i in css.readlines():
             if i.startswith("#"):

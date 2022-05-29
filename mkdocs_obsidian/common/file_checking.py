@@ -19,9 +19,9 @@ def config_exclude(BASEDIR: Path) -> Path:
     """
     A simple script to add compatibility with older version : the renaming of .exclude_folder to .exclude
     """
-    config_folder = Path(f"{BASEDIR}/exclude_folder.yml")
+    config_folder = Path(BASEDIR,"exclude_folder.yml")
     if not os.path.exists(config_folder):
-        config_folder = Path(f"{BASEDIR}/exclude.yml")
+        config_folder = Path(BASEDIR,"exclude.yml")
     return config_folder
 
 
@@ -35,7 +35,7 @@ def exclude(filepath: str, key: str, BASEDIR: Path) -> bool:
             try:
                 folder = yaml.safe_load(file_config)
             except yaml.YAMLError as exc:
-                print(f"[red bold]Error in [u]{folder}[/] : {exc}")
+                print(f"[red bold]Error in [u]{filepath}[/] : {exc}")
                 sys.exit(2)
         excluded_folder = folder.get(key, "")
         return any(str(Path(file)) in filepath for file in excluded_folder)
@@ -79,8 +79,8 @@ def delete_old_index(index_path: Path, configuration: cfg.Configuration) -> str:
         share = meta_data.get(configuration.share, "False")
         if category != old_category and share is True:
             try:
-                os.remove(Path(index_path))
-                folder = os.path.dirname(Path(index_path))
+                os.remove(index_path)
+                folder = os.path.dirname(index_path)
                 if len(os.listdir(folder)) == 0 and os.path.basename(folder) != "docs":
                     # Delete folder
                     os.rmdir(folder)
@@ -156,15 +156,16 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
         ):
             try:
                 if os.path.isfile(Path(file)):
-                    os.remove(Path(file))
-                    folder = os.path.dirname(Path(file))
+                    file = Path(file)
+                    os.remove(file)
+                    folder = os.path.dirname(file)
                     if (
                         len(os.listdir(folder)) == 0
                         and os.path.basename(folder) != "docs"
                     ):
                         # Delete folder
                         os.rmdir(folder)
-                    info.append(os.path.basename(file))
+                    info.append(folder)
             except PermissionError:
                 pass
             except IsADirectoryError:
@@ -178,13 +179,13 @@ def diff_file(filepath: Path, folder: Path, contents: list[str], update=0) -> bo
     """
     filename = os.path.basename(filepath)
     shortname = unidecode(os.path.splitext(filename)[0])
-    foldername = unidecode(Path(folder).name)
+    foldername = unidecode(folder.name)
     if check_file(filename, folder) == "EXIST":
         if update == 1:
             return False
         if foldername == shortname:
             filename = "index.md"
-        note = Path(f"{folder}/{filename}")
+        note = Path(folder,filename)
         retro_old = retro(note)
         meta_old = frontmatter.load(note)
         meta_old = meta_old.metadata
@@ -233,7 +234,7 @@ def create_folder(category: str, configuration: cfg.Configuration, share=0) -> P
     POST = configuration.post
 
     if category != "":
-        folder = Path(f"{BASEDIR}/docs/{category}")
+        folder = Path(BASEDIR,docs,category)
         try:
             if share == 0:
                 folder.mkdir(parents=True, exist_ok=True)
@@ -249,8 +250,7 @@ def modification_time(filepath: Path, folder: Path, update: int) -> bool:
     if update == 0:
         return True  # Force update
     filename = os.path.basename(filepath)
-    filepath = Path(filepath)
-    note = Path(f"{folder}/{filename}")
+    note = Path(folder,filename)
     if os.path.isfile(note):
         return filepath.stat().st_mtime > note.stat().st_mtime
     return True  # file doesn't exist
@@ -258,7 +258,6 @@ def modification_time(filepath: Path, folder: Path, update: int) -> bool:
 
 def skip_update(filepath: Path, folder: Path, update: int) -> bool:
     """check if file exist + update is false"""
-    filepath = Path(filepath)
     return update == 1 and check_file(filepath, folder) == "EXIST"
 
 
@@ -266,10 +265,10 @@ def check_file(filepath: Path, folder: Path) -> str:
     """check if the requested file exist or not in publish."""
     file = os.path.basename(filepath)
     shortname = unidecode(os.path.splitext(file)[0])
-    foldername = unidecode(Path(folder).name)
+    foldername = unidecode(folder.name)
     if foldername == shortname:
         file = "index.md"
-    publish = Path(f"{folder}/{file}")
+    publish = Path(folder,file)
     if os.path.isfile(publish):
         return "EXIST"
     return "NE"
@@ -279,18 +278,17 @@ def delete_file(
     filepath: Path, folder: Path, configuration: cfg.Configuration, meta_update=1
 ) -> bool:
     """Delete the requested file"""
-    path = Path(folder)
     try:
-        for file in os.listdir(path):
+        for file in os.listdir(folder):
             filename = unidecode(os.path.basename(filepath))
             filecheck = unidecode(os.path.basename(str(file)))
             if filecheck == filename:
-                os.remove(Path(f"{path}/{file}"))
+                os.remove(Path(folder, file))
                 if meta_update == 0:
                     mt.update_frontmatter(filepath, configuration, 0)
                 return True
-        if len(os.listdir(path)) == 0:
-            os.rmdir(path)
+        if len(os.listdir(folder)) == 0:
+            os.rmdir(folder)
     except FileNotFoundError:
         pass
     return False

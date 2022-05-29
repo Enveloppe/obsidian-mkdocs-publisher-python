@@ -21,7 +21,8 @@ class MyTestCase(unittest.TestCase):
         source_path = Path("../docs_tests/input/source_file.md").resolve()
         one.convert_one(source_path, configuration, False, 1)
 
-    def share_multiple_notes(self):
+    
+    def multiple_share(self):
         print("testing multiple note with share state")
         configuration = cfg.open_value("0", test=True)
         all.convert_all(configuration, False, False, 0, 0, 0)

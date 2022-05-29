@@ -154,7 +154,7 @@ def right_path(vault: Path) -> bool:
     """
     Check if .obsidian exist in provided vault path
     """
-    config_vault = os.path.join(vault, ".obsidian")
+    config_vault = Path(vault, ".obsidian")
     if os.path.isdir(config_vault):
         return True
     return False
@@ -275,7 +275,7 @@ def git_pull(configuration: Configuration, git=True):
 
             BASEDIR = configuration.basedir
             try:
-                repo = git.Repo(Path(f"{BASEDIR}"))
+                repo = git.Repo(BASEDIR)
                 update = repo.remotes.origin
                 update.pull()
                 return True
@@ -304,7 +304,7 @@ def git_push(
 
         BASEDIR = configuration.basedir
         try:
-            repo = git.Repo(Path(f"{BASEDIR}/.git"))
+            repo = git.Repo(Path(BASEDIR, ".git"))
             repo.git.add(".")
             repo.git.commit("-m", f"{commit}")
             origin = repo.remote("origin")
@@ -464,13 +464,13 @@ def open_value(configuration_name="0", actions=False, test=False) -> Configurati
         sys.exit(3)
     if DEFAULT_NOTES == "/":
         DEFAULT_NOTES = ""
-    POST = Path(f"{BASEDIR}/docs/{DEFAULT_NOTES}")
-    IMG = Path(f"{BASEDIR}/docs/assets/img/")
+    POST = Path(BASEDIR, "docs", DEFAULT_NOTES)
+    IMG = Path(BASEDIR, "/docs/assets/img/")
     if actions == "minimal":
         VAULT_FILE = [
             x
             for x in glob.iglob(
-                str(os.getcwd()) + os.sep + "docs" + os.sep + "**", recursive=True
+                str(Path(os.getcwd(), "docs", "**")), recursive=True
             )
             if os.path.isfile(x)
         ]
@@ -478,14 +478,14 @@ def open_value(configuration_name="0", actions=False, test=False) -> Configurati
         VAULT_FILE = [
             x
             for x in glob.iglob(
-                str(os.getcwd()) + os.sep + "source" + os.sep + "**", recursive=True
+                str(Path(os.getcwd(), "source", "**")), recursive=True
             )
             if os.path.isfile(x)
         ]
     else:
         VAULT_FILE = [
             x
-            for x in glob.iglob(str(VAULT) + os.sep + "**", recursive=True)
+            for x in glob.iglob(str(Path(VAULT, "**")), recursive=True)
             if os.path.isfile(x)
         ]
     configuration = Configuration(

@@ -9,14 +9,11 @@ from pathlib import Path
 
 import frontmatter
 import yaml
+from mkdocs_obsidian.common import config as cfg
+from mkdocs_obsidian.common import config as setup
+from mkdocs_obsidian.common import conversion as convert
+from mkdocs_obsidian.common import file_checking as check
 from rich.console import Console
-
-from mkdocs_obsidian.common import (
-    config as setup,
-    conversion as convert,
-    file_checking as check,
-    config as cfg,
-)
 
 
 def convert_one(
@@ -78,17 +75,18 @@ def overwrite_file(source_path: str, configuration: cfg.Configuration, test=Fals
     from unidecode import unidecode
 
     filename = os.path.basename(source_path)
+    source_path = Path(source_path)
     contents = convert.file_convert(configuration, source_path, 1, False)
     if not test:
         os.remove(source_path)
     if unidecode(filename).replace(".md", "") == unidecode(
-        os.path.basename(Path(source_path).parent)
+        os.path.basename(source_path.parent)
     ):
-        source_path = source_path.replace(filename, "index.md")
+        source_path = Path(str(source_path).replace(filename, "index.md"))
         filename = "index.md"
     if test:
-        source_path = Path(Path(source_path).resolve().parent.parent, "input", filename)
-    with open(Path(f"{source_path}"), "w", encoding="utf-8") as new_notes:
+        source_path = Path(source_path.resolve().parent.parent, "input", filename)
+    with open(source_path, "w", encoding="utf-8") as new_notes:
         for lines in contents:
             new_notes.write(lines)
     return True

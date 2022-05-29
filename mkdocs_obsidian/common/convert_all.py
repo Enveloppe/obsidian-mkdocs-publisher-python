@@ -23,7 +23,7 @@ def dest(filepath: Path, folder: Path) -> str:
     Returns the final destination path of the file.
     """
     file_name = os.path.basename(filepath)
-    destination = Path(f"{folder}/{file_name}")
+    destination = Path(folder, file_name)
     return str(destination)
 
 
