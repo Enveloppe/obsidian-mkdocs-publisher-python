@@ -469,17 +469,13 @@ def open_value(configuration_name="0", actions=False, test=False) -> Configurati
     if actions == "minimal":
         VAULT_FILE = [
             x
-            for x in glob.iglob(
-                str(Path(os.getcwd(), "docs", "**")), recursive=True
-            )
+            for x in glob.iglob(str(Path(os.getcwd(), "docs", "**")), recursive=True)
             if os.path.isfile(x)
         ]
     elif actions == True:
         VAULT_FILE = [
             x
-            for x in glob.iglob(
-                str(Path(os.getcwd(), "source", "**")), recursive=True
-            )
+            for x in glob.iglob(str(Path(os.getcwd(), "source", "**")), recursive=True)
             if os.path.isfile(x)
         ]
     else:

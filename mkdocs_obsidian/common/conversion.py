@@ -48,9 +48,7 @@ def copy_image(configuration: cfg.Configuration, final_text: str):
                     and os.path.isfile(image_path)
                     and not image_path.endswith(".md")
                 ):
-                    shutil.copyfile(
-                        image_path, Path(IMG, os.path.basename(image_path))
-                    )
+                    shutil.copyfile(image_path, Path(IMG, os.path.basename(image_path)))
 
 
 def clipboard(configuration: cfg.Configuration, filepath: str, folder: str):
@@ -108,7 +106,7 @@ def file_write(
     if shortname == foldername:
         file_name = "index.md"
     check.move_file_by_category(filepath, folder, configuration)
-    if not os.path.isdir(folder)):
+    if not os.path.isdir(folder):
         folder.mkdir(parents=True, exist_ok=True)
     with open(Path(folder, file_name), "w", encoding="utf-8") as new_notes:
         for line in contents:
@@ -128,7 +126,9 @@ def read_custom(BASEDIR: Path) -> list[str]:
     """
     id_css = []
     with open(
-        Path(BASEDIR, "docs","assets", "css", "custom_attributes.css"), "r", encoding="utf-8"
+        Path(BASEDIR, "docs", "assets", "css", "custom_attributes.css"),
+        "r",
+        encoding="utf-8",
     ) as css:
         for i in css.readlines():
             if i.startswith("#"):

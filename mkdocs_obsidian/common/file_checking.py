@@ -19,9 +19,9 @@ def config_exclude(BASEDIR: Path) -> Path:
     """
     A simple script to add compatibility with older version : the renaming of .exclude_folder to .exclude
     """
-    config_folder = Path(BASEDIR,"exclude_folder.yml")
+    config_folder = Path(BASEDIR, "exclude_folder.yml")
     if not os.path.exists(config_folder):
-        config_folder = Path(BASEDIR,"exclude.yml")
+        config_folder = Path(BASEDIR, "exclude.yml")
     return config_folder
 
 
@@ -185,7 +185,7 @@ def diff_file(filepath: Path, folder: Path, contents: list[str], update=0) -> bo
             return False
         if foldername == shortname:
             filename = "index.md"
-        note = Path(folder,filename)
+        note = Path(folder, filename)
         retro_old = retro(note)
         meta_old = frontmatter.load(note)
         meta_old = meta_old.metadata
@@ -234,7 +234,7 @@ def create_folder(category: str, configuration: cfg.Configuration, share=0) -> P
     POST = configuration.post
 
     if category != "":
-        folder = Path(BASEDIR,docs,category)
+        folder = Path(BASEDIR, docs, category)
         try:
             if share == 0:
                 folder.mkdir(parents=True, exist_ok=True)
@@ -250,7 +250,7 @@ def modification_time(filepath: Path, folder: Path, update: int) -> bool:
     if update == 0:
         return True  # Force update
     filename = os.path.basename(filepath)
-    note = Path(folder,filename)
+    note = Path(folder, filename)
     if os.path.isfile(note):
         return filepath.stat().st_mtime > note.stat().st_mtime
     return True  # file doesn't exist
@@ -268,7 +268,7 @@ def check_file(filepath: Path, folder: Path) -> str:
     foldername = unidecode(folder.name)
     if foldername == shortname:
         file = "index.md"
-    publish = Path(folder,file)
+    publish = Path(folder, file)
     if os.path.isfile(publish):
         return "EXIST"
     return "NE"
