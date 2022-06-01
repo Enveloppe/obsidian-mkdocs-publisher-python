@@ -354,8 +354,8 @@ def open_value(configuration_name="default", actions=False) -> Configuration:
     if not config.get(configuration_name):
         create_env(BASEDIR, configuration_name)
     config = config[configuration_name]
-    BASEDIR = config['configuration']['output'] if config['configuration'].get('output') else BASEDIR
-    VAULT = config['configuration']['input']
+    BASEDIR = Path(config['configuration']['output']).resolve().expanduser() if config['configuration'].get('output') else BASEDIR
+    VAULT = Path(config['configuration']['input']).resolve().expanduser() if config['configuration'].get('input') else ""
     WEB = config['weblink']
     SHARE= config['frontmatter']['share']
     INDEX_KEY = config['frontmatter']['index']
