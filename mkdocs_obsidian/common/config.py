@@ -295,7 +295,7 @@ def adding_configuration(configuration_name: str, basedir: Path, new_configurati
 def checking_old_config(configuration_name: str, ENV_PATH: Path, basedir: Path):
     env = dotenv_values(ENV_PATH)
     try:
-        BASEDIR = Path(env.get("blog_path", basedir)).resolve().expanduser()
+        BASEDIR = Path(env["blog_path"]).resolve().expanduser() if env.get("blog_path") else ""
         VAULT = Path(env["vault"]).resolve().expanduser() if env.get('vault') else ""
     except RuntimeError:
         print('[red blog] Please provide a valid path for all config items')
@@ -322,7 +322,7 @@ def get_Obs2mk_dir(configuration_name="default", actions=False) -> Path:
     if actions or configuration_name == "minimal" or 'test' in configuration_name:
         BASEDIR = Path(os.getcwd())
         if 'test' in configuration_name:
-            BASEDIR = Path(Path(os.getcwd()), "docs_tests", "output")
+            BASEDIR = Path(BASEDIR, "docs_tests", "output")
     return BASEDIR
 
 def open_value(configuration_name="default", actions=False) -> Configuration:
@@ -354,17 +354,15 @@ def open_value(configuration_name="default", actions=False) -> Configuration:
     if not config.get(configuration_name):
         create_env(BASEDIR, configuration_name)
     config = config[configuration_name]
-    BASEDIR = config['configuration']['output']
+    BASEDIR = config['configuration']['output'] if config['configuration'].get('output') else BASEDIR
     VAULT = config['configuration']['input']
     WEB = config['weblink']
     SHARE= config['frontmatter']['share']
     INDEX_KEY = config['frontmatter']['index']
     CATEGORY = config['frontmatter']['category']['key']
     DEFAULT_NOTES = config['frontmatter']['category']['default value']
-
     if DEFAULT_NOTES == "/":
         DEFAULT_NOTES = ""
-
     POST = Path(BASEDIR, "docs", DEFAULT_NOTES)
     IMG = Path(BASEDIR, "/docs/assets/img/")
     if actions == "minimal":
