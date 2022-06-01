@@ -77,7 +77,9 @@ You can use and create multiple configuration files. This allows to have multipl
 1. To create a new configuration file : `obs2mk config --new configuration_name`
 2. To use a configuration use : `--use configuration_name` 
     For example : `obs2mk --use configuration_name` 
- 
+
+See [[configuration template]] for more information about the configuration file.
+
 ----
 
 - [Main Repo](https://github.com/Mara-Li/obsidian_mkdocs_publisher)
