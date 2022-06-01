@@ -1,6 +1,6 @@
 default:
   configuration:
-    input: /docs_tests/input
+    input: ./docs_tests/input
     output: ./docs_tests/output
   frontmatter:
     category:
