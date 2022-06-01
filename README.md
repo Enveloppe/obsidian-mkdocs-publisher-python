@@ -29,7 +29,7 @@ Commands and specific options :
 - **all** : Share all vault
     - `--force` : Force updating (ignore the difference between the source and blog file)
     - `--vault` : Share all vault file, ignoring the share state.
-- **`file [file*]`** : Share only one file
+- **`file [file]`** : Share only one file
 
 ```bash
 usage: __main__.py [-h] [--mobile | --git] [--meta] [--keep] [--use configuration_name] {config,all,file} ...
@@ -53,6 +53,7 @@ options:
 
 The commands order is :
 `obs2mk (global_options) [all|config|file FILEPATH] (specific_options)`
+
 Where :
 - Global and specific options are optional
 - `all`, `config` and `file`[^1] are required

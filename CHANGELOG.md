@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.0 (2022-06-01)
+### Breaking
+* All configuration file will be converted + deleted by a specific function  ([`3856ed5`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/3856ed577c7603feae960c45554d708b622d356a))
+
 ## v3.7.1 (2022-05-28)
 ### Fix
 * Configuration bug ([`027f4b0`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/027f4b0ef5cc415697ff464fa0bfe37338c529e6))
