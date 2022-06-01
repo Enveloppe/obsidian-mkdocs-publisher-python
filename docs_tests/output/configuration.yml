@@ -1,0 +1,44 @@
+default:
+  configuration:
+    input: D:/Users/Lili/Documents/GitHub/mkdocs obsidian publish/mkdocs_obsidian_publish/docs_tests/input
+    output: D:/Users/Lili/Documents/GitHub/mkdocs obsidian publish/mkdocs_obsidian_publish/docs_tests/output
+  frontmatter:
+    category:
+      default value: notes
+      key: category
+    index: (i)
+    share: share
+  weblink: cc
+minimal:
+  configuration:
+    input: null
+    output: D:\Users\Lili\Documents\GitHub\mkdocs obsidian publish\mkdocs_obsidian_publish\docs_tests\output
+  frontmatter:
+    category:
+      default value: notes
+      key: category
+    index: (i)
+    share: share
+  weblink: null
+test_config:
+  configuration:
+    input: D:\Users\Lili\Documents\GitHub\mkdocs obsidian publish\mkdocs_obsidian_publish\docs_tests\output\input
+    output: D:\Users\Lili\Documents\GitHub\mkdocs obsidian publish\mkdocs_obsidian_publish\docs_tests\output\output
+  frontmatter:
+    category:
+      default value: notes
+      key: category
+    index: (i)
+    share: share
+  weblink: https://www.mara-li.fr/
+test_mini_config:
+  configuration:
+    input: null
+    output: D:\Users\Lili\Documents\GitHub\mkdocs obsidian publish\mkdocs_obsidian_publish\docs_tests\output
+  frontmatter:
+    category:
+      default value: notes
+      key: category
+    index: (i)
+    share: share
+  weblink: null
