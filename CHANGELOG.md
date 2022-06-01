@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.1 (2022-06-01)
+### Fix
+* Configuration using resolving & relative path ([`8ac1510`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/8ac1510dad5ca9a994c7d152c9bdeb45cbc7d8c7))
+* Basedir creator ([`0504a38`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/0504a3876fc6b4f1fe9502d30386c15ef0e66da7))
+
 ## v4.0.0 (2022-06-01)
 ### Breaking
 * All configuration file will be converted + deleted by a specific function  ([`3856ed5`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/3856ed577c7603feae960c45554d708b622d356a))
