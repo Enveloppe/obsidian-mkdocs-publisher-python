@@ -7,14 +7,13 @@ import os.path
 import platform
 import subprocess
 import sys
-from datetime import datetime
 from pathlib import Path
 from time import sleep
 
+import yaml
 from dotenv import dotenv_values
 from rich import print
 from rich.console import Console
-from rich.markdown import Markdown
 
 import mkdocs_obsidian as obs
 
@@ -22,23 +21,23 @@ import mkdocs_obsidian as obs
 class Configuration:
     def __init__(
         self,
-        basedir,
-        vault,
-        web,
-        share,
-        index_key,
-        default_note,
-        post,
-        img,
-        vault_file,
-        category_key,
+        output: str|Path,
+        input: str|Path,
+        weblink: str,
+        share_key: str,
+        index_key:str,
+        default_folder: str,
+        post: Path|str,
+        img: Path|str,
+        vault_file: list[str],
+        category_key: str,
     ):
-        self.basedir = Path(basedir)
-        self.vault = Path(vault)
-        self.web = web
-        self.share = share
+        self.output = Path(output)
+        self.input = Path(input) if input else ''
+        self.weblink = weblink
+        self.share_key = share_key
         self.index_key = index_key
-        self.default_note = default_note
+        self.default_folder = default_folder
         self.post = Path(post)
         self.img = Path(img)
         self.vault_file = vault_file
@@ -160,7 +159,7 @@ def right_path(vault: Path) -> bool:
     return False
 
 
-def create_env(config_name="0"):
+def create_env( BASEDIR: Path, config_name="0"):
     """
     Main function to create environment ; Check if run on pyto (IOS), a-shell (ios) or computer (MacOS, linux, Windows)
 
@@ -170,18 +169,11 @@ def create_env(config_name="0"):
         - default_blog : Default folder for notes
 
     Write the variable in `.env` file.
-    Parameters
-    ----------
-    config_name: str, default: "0"
-        Create a new configuration environment using the provided name
     """
-    BASEDIR = obs.__path__[0]
     try:
         import pyto
 
         pyto_check = True
-        BASEDIR = Path(BASEDIR)
-        BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pyto_check = False
     try:
@@ -197,11 +189,9 @@ def create_env(config_name="0"):
         computer = True
     console = Console()
     if config_name == "0":
-        config_name = ".mkdocs_obsidian"
-    else:
-        config_name = "." + config_name
-    env_path = Path(f"{BASEDIR}/{config_name}")
-    print(f"[bold]Creating environnement in [u]{env_path}[/][/]\n")
+        config_name = "default"
+    env_path = Path(f"{BASEDIR}/configuration.yml")
+    print(f"[bold]Creating environnement in [u]{env_path}[/][/] for [u]{config_name}[/]\n")
     if pyto_check:
         vault, blog = pyto_environment(console)
     elif ashell:
@@ -239,16 +229,25 @@ def create_env(config_name="0"):
         category_key = "category"
     if index_key == "":
         index_key = "(i)"
-    with open(env_path, "w", encoding="utf-8") as env:
-        env.write(f"vault={vault}\n")
-        env.write(f"blog_path={blog}\n")
-        env.write(f"blog={blog_link}\n")
-        env.write(f"share={share}\n")
-        env.write(f"index_key={index_key}\n")
-        env.write(f"default_blog={default_blog}\n")
-        env.write(f"category_key={category_key}\n")
+    new_configuration = {
+        'weblink' : blog_link,
+        'configuration':{
+            'input' : vault,
+            'output': blog,
+            },
+        'frontmatter':
+             {
+                 'share' : share,
+                 'index' : index_key,
+                 'category' : {
+                     'key' : category_key,
+                     'default value': default_blog
+                     }
+             }
+        }
     if default_blog == "/":
         default_blog = ""
+    adding_configuration(config_name, BASEDIR, new_configuration)
     post = Path(f"{blog}/docs/{default_blog}")
     img = Path(f"{blog}/docs/assets/img/")
     try:
@@ -257,122 +256,61 @@ def create_env(config_name="0"):
         )  # Assets must exist, raise a file not found error if not.
         post.mkdir(exist_ok=True, parents=True)
         print("[green] Environment created ![/]")
-        sys.exit()
     except FileNotFoundError:
         print("[red bold] Error in configuration, please, retry with the correct path.")
         sys.exit(3)
+    return
 
 
-def git_pull(configuration: Configuration, git=True):
-    """
-    Command to pull the repository
-        If true, pull the repo
-    """
-    console = Console()
-    if git:
-        try:
-            import git
+def convert_to_YAML(BASEDIR: Path, ENV_PATH: Path, configuration: Configuration, type="default"):
+    template = f'''
+    weblink: {configuration.weblink}
+    configuration:
+        input: {configuration.input}
+        output : {configuration.output}
+    frontmatter:
+        share: {configuration.share_key}
+        index: {configuration.index_key}
+        category:
+            key: {configuration.category_key}
+            default value: {configuration.default_folder}
+    '''
+    new_configuration = yaml.safe_load(template)
+    adding_configuration(configuration_name=type, basedir=BASEDIR, new_configuration=new_configuration)
+    os.remove(ENV_PATH)
 
-            BASEDIR = configuration.basedir
-            try:
-                repo = git.Repo(BASEDIR)
-                update = repo.remotes.origin
-                update.pull()
-                return True
-            except git.GitCommandError as exc:
-                console.print(f"Unexpected error : {exc}", style="bold white on red")
-                return False
-        except ImportError:
-            return False
+def adding_configuration(configuration_name: str, basedir: Path, new_configuration: dict):
+    env_file = Path(basedir, 'configuration.yml')
+    if os.path.isfile(env_file):
+        with open(env_file, 'r', encoding='utf-8') as f:
+            configuration_contents = yaml.safe_load(f)
+        configuration_contents[configuration_name] = new_configuration
+    else:
+        configuration_contents = {configuration_name: new_configuration}
+    configuration_contents = yaml.dump(configuration_contents)
+    with open(env_file, 'w', encoding='utf-8') as f:
+        f.write(configuration_contents)
 
 
-def git_push(
-    commit: str,
-    configuration: Configuration,
-    obsidian=False,
-    add_info="",
-    rmv_info="",
-    add_msg="",
-    remove_msg="",
-):
-    """
-    git push the modified files and print a message result
-    """
-    console = Console()
+def checking_old_config(configuration_name: str, ENV_PATH: Path, basedir: Path):
+    env = dotenv_values(ENV_PATH)
     try:
-        import git
+        BASEDIR = Path(env.get("blog_path", basedir)).resolve().expanduser()
+        VAULT = Path(env["vault"]).resolve().expanduser() if env.get('vault') else ""
+    except RuntimeError:
+        print('[red blog] Please provide a valid path for all config items')
+        sys.exit(3)
+    WEB = env.get("blog", "")
+    SHARE = env.get('share', 'share')
+    INDEX_KEY = env.get('index_key', '(i)')
+    DEFAULT_NOTES = env.get('default_blog', 'notes')
+    CATEGORY_KEY = env.get('category_key', 'category')
+    if DEFAULT_NOTES == "/":
+        DEFAULT_NOTES = ""
+    new_config = Configuration(BASEDIR, VAULT, WEB, SHARE, INDEX_KEY, DEFAULT_NOTES, "", "", [], CATEGORY_KEY)
+    convert_to_YAML(basedir, ENV_PATH, new_config, configuration_name)
 
-        BASEDIR = configuration.basedir
-        try:
-            repo = git.Repo(Path(BASEDIR, ".git"))
-            repo.git.add(".")
-            repo.git.commit("-m", f"{commit}")
-            origin = repo.remote("origin")
-            origin.push()
-            if not obsidian:
-                console.print(
-                    f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/]"
-                    f" {add_info}",
-                    Markdown(add_msg),
-                    rmv_info,
-                    Markdown(remove_msg),
-                    Markdown("---"),
-                    "🎉 Successful 🎉",
-                    end=" ",
-                )
-            else:
-                if add_msg != "":
-                    add_msg = ": " + add_msg
-                if remove_msg != "":
-                    remove_msg = ": " + remove_msg
-                print(
-                    f"🎉 Successful 🎉",
-                    f"[{datetime.now().strftime('%H:%M:%S')}]\n",
-                    f"{add_info}{add_msg}",
-                    f"{rmv_info}{remove_msg}",
-                )
-        except git.GitCommandError:
-            if not obsidian:
-                console.print(
-                    f"❌ Nothing to Push ❌",
-                    "[[i not bold"
-                    f" sky_blue2]{datetime.now().strftime('%H:%M:%S')}][/]\n",
-                    "💡 Converted 💡",
-                    f" {add_info}",
-                    Markdown(add_msg),
-                    rmv_info,
-                    Markdown(remove_msg),
-                    end=" ",
-                )
-            else:
-                if remove_msg != "":
-                    remove_msg = ": " + remove_msg
-                print(
-                    f"❌ Nothing to Push ❌\n",
-                    f"[{datetime.now().strftime('%H:%M:%S')}]",
-                    "💡 Converted 💡\n",
-                    f"{add_msg}",
-                    f"{rmv_info}{remove_msg}",
-                )
-    except ImportError:
-        if not obsidian:
-            console.print(
-                f"[{datetime.now().strftime('%H:%M:%S')}]",
-                Markdown(commit),
-                "changed\nPlease, use another way to push your change 😶",
-                end=" ",
-            )
-        else:
-            print(
-                f"[{datetime.now().strftime('%H:%M:%S')}] {commit} changed\n Please use"
-                " another way to push your change 😶"
-            )
-
-
-def open_value(configuration_name="0", actions=False, test=False) -> Configuration:
-    """
-    Return the configuration value
-    """
+def get_Obs2mk_dir(configuration_name="default", actions=False) -> Path:
     BASEDIR = obs.__path__[0]
     try:
         import pyto
@@ -381,89 +319,52 @@ def open_value(configuration_name="0", actions=False, test=False) -> Configurati
         BASEDIR = BASEDIR.parent.absolute()
     except ModuleNotFoundError:
         pass
-
-    if actions == True or actions == "minimal":
+    if actions or configuration_name == "minimal" or 'test' in configuration_name:
         BASEDIR = Path(os.getcwd())
-        VAULT = ""
-        WEB = ""
-        SHARE = ""
-    if test:
-        BASEDIR = Path(Path(os.getcwd()).parent, "docs_tests", "output")
-    elif configuration_name == "0":
-        configuration_name = ".mkdocs_obsidian"
-    else:
-        configuration_name = "." + configuration_name
-    if test:
-        ENV_PATH = Path(BASEDIR, ".mkdocs_obsidian")
-        print(os.path.isfile(ENV_PATH))
-    elif not actions:
-        ENV_PATH = Path(f"{BASEDIR}/{configuration_name}")
-    elif actions == "minimal":
-        ENV_PATH = Path(f"{BASEDIR}", ".obs2mk")
-    else:
-        ENV_PATH = Path(BASEDIR, "source", ".github-actions")
-    if not os.path.isfile(ENV_PATH):
-        create_env()
-    elif not actions:
-        with open(ENV_PATH, encoding="utf-8") as f:
-            components = f.read().splitlines()
-            if len(components) == 0:
-                create_env()
-            else:
-                for data in components:
-                    VAULT = data.split("=")
-                    if len(data) == 0 or len(VAULT[1]) == 0:
-                        create_env()
+        if 'test' in configuration_name:
+            BASEDIR = Path(Path(os.getcwd()), "docs_tests", "output")
+    return BASEDIR
 
-    # In case of error
-    env = dotenv_values(ENV_PATH)
-    try:
-        if not actions:
-            BASEDIR = Path(env["blog_path"]).resolve().expanduser()
-            VAULT = Path(env["vault"]).resolve().expanduser()
-            WEB = env["blog"]
-            try:
-                SHARE = env["share"]
-            except KeyError:
-                SHARE = "share"
-                with open(ENV_PATH, "a", encoding="utf-8") as f:
-                    f.write("share=share\n")
-        try:
-            INDEX_KEY = env["index_key"]
-        except KeyError:
-            INDEX_KEY = "(i)"
-            with open(ENV_PATH, "a", encoding="utf-8") as f:
-                f.write("index_key=(i)\n")
-        try:
-            DEFAULT_NOTES = env["default_blog"]
-        except KeyError:
-            DEFAULT_NOTES = "notes"
-            with open(ENV_PATH, "a", encoding="utf-8") as f:
-                f.write("default_blog=notes\n")
-        try:
-            CATEGORY = env["category_key"]
-        except KeyError:
-            CATEGORY = "category"
-            with open(ENV_PATH, "a", encoding="utf-8") as f:
-                f.write("category_key=category\n")
-    except RuntimeError:
-        if not actions:
-            BASEDIR = Path(env["blog_path"]).resolve()
-            VAULT = Path(env["vault"]).resolve()
-            WEB = env["blog"]
-            SHARE = env["share"]
-        INDEX_KEY = env["index_key"]
-        DEFAULT_NOTES = env["default_blog"]
-        CATEGORY = env["category_key"]
-    try:
-        if not actions:
-            VAULT = VAULT.expanduser()
-            BASEDIR = BASEDIR.expanduser()
-    except RuntimeError:
-        print("[red bold] Please provide a valid path for all config items")
-        sys.exit(3)
+def open_value(configuration_name="default", actions=False) -> Configuration:
+    """
+    Return the configuration value
+    """
+    BASEDIR=get_Obs2mk_dir(configuration_name, actions)
+    if 'test' in configuration_name:
+        if 'minimal' in configuration_name:
+            configuration_name = "minimal"
+        else:
+            configuration_name = "default"
+        ENV_PATH = Path(BASEDIR, '.obs2mk')
+    elif actions:
+        ENV_PATH = Path(BASEDIR, "source", ".github-actions")
+    else:
+        if configuration_name == "default":
+            ENV_PATH = Path(f"{BASEDIR}/.mkdocs_obsidian")
+        else:
+            ENV_PATH = Path(f"{BASEDIR}/.{configuration_name}")
+
+    if os.path.isfile(ENV_PATH):
+        checking_old_config(configuration_name, ENV_PATH, BASEDIR)
+    ENV_PATH = Path(BASEDIR, 'configuration.yml')
+    if not os.path.isfile(ENV_PATH):
+        create_env(BASEDIR, configuration_name)
+    with open (ENV_PATH, 'r', encoding='utf-8') as f:
+        config = yaml.safe_load(f)
+    if not config.get(configuration_name):
+        create_env(BASEDIR, configuration_name)
+    config = config[configuration_name]
+    BASEDIR = config['configuration']['output']
+    VAULT = config['configuration']['input']
+    WEB = config['weblink']
+    SHARE= config['frontmatter']['share']
+    INDEX_KEY = config['frontmatter']['index']
+    CATEGORY = config['frontmatter']['category']['key']
+    DEFAULT_NOTES = config['frontmatter']['category']['default value']
+
     if DEFAULT_NOTES == "/":
         DEFAULT_NOTES = ""
+
     POST = Path(BASEDIR, "docs", DEFAULT_NOTES)
     IMG = Path(BASEDIR, "/docs/assets/img/")
     if actions == "minimal":
@@ -472,7 +373,7 @@ def open_value(configuration_name="0", actions=False, test=False) -> Configurati
             for x in glob.iglob(str(Path(os.getcwd(), "docs", "**")), recursive=True)
             if os.path.isfile(x)
         ]
-    elif actions == True:
+    elif actions:
         VAULT_FILE = [
             x
             for x in glob.iglob(str(Path(os.getcwd(), "source", "**")), recursive=True)

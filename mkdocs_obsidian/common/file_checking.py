@@ -3,9 +3,9 @@ All function intended to check the file and their path.
 """
 
 import glob
+import json
 import os
 import sys
-import json
 from pathlib import Path, PurePath
 
 import frontmatter
@@ -45,7 +45,7 @@ def exclude(filepath: str, key: str, BASEDIR: Path) -> bool:
 def move_file_by_category(
     filepath: Path, clipkey: str, configuration: cfg.Configuration
 ) -> bool:
-    glog_folder = Path(configuration.basedir, "docs", "**")
+    glog_folder = Path(configuration.output, "docs", "**")
     blog_file = [
         file
         for file in glob.glob(str(glog_folder), recursive=True)
@@ -76,7 +76,7 @@ def delete_old_index(index_path: Path, configuration: cfg.Configuration) -> str:
         with open(in_vault[0], "r", encoding="utf-8") as file:
             meta_data = frontmatter.loads(file.read())
         category = meta_data.get(configuration.category_key, "")
-        share = meta_data.get(configuration.share, "False")
+        share = meta_data.get(configuration.share_key, "False")
         if category != old_category and share is True:
             try:
                 os.remove(index_path)
@@ -97,7 +97,7 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
     Removes files that have been deleted from the vault unless they are in `exclude.yml[files]` and always delete if
     founded file is in `exclude.yml[folder]`
     """
-    BASEDIR = configuration.basedir
+    BASEDIR = configuration.output
     VAULT_FILE = configuration.vault_file
     vault_file = []
     info = []
@@ -230,11 +230,11 @@ def create_folder(category: str, configuration: cfg.Configuration, share=0) -> P
     create a folder based on the category key as 'folder1/folder2/.../' and return the folder path. Return default
     path in case of error/none category
     """
-    BASEDIR = configuration.basedir
+    BASEDIR = configuration.output
     POST = configuration.post
 
     if category != "":
-        folder = Path(BASEDIR, docs, category)
+        folder = Path(BASEDIR, 'docs', category)
         try:
             if share == 0:
                 folder.mkdir(parents=True, exist_ok=True)
@@ -279,7 +279,7 @@ def delete_file(
 ) -> bool:
     """Delete the requested file"""
     try:
-        for file in os.listdir(folder):
+        for file in os.listdir(str(folder)): #prevent bytes error
             filename = unidecode(os.path.basename(filepath))
             filecheck = unidecode(os.path.basename(str(file)))
             if filecheck == filename:

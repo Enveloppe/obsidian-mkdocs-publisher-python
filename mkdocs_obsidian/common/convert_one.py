@@ -9,11 +9,12 @@ from pathlib import Path
 
 import frontmatter
 import yaml
+from rich.console import Console
+
 from mkdocs_obsidian.common import config as cfg
-from mkdocs_obsidian.common import config as setup
 from mkdocs_obsidian.common import conversion as convert
 from mkdocs_obsidian.common import file_checking as check
-from rich.console import Console
+from mkdocs_obsidian.common import github_push as gitt
 
 
 def convert_one(
@@ -28,7 +29,7 @@ def convert_one(
         except UnicodeDecodeError:
             yaml_front = frontmatter.load(ori, encoding="iso-8859-1")
         priv = configuration.post
-        clipkey = configuration.default_note
+        clipkey = configuration.default_folder
         CATEGORY = configuration.category_key
         if CATEGORY in yaml_front.keys():
             if not yaml_front[CATEGORY]:
@@ -41,7 +42,7 @@ def convert_one(
         checkfile = convert.file_write(configuration, ori, contents, priv, 1, meta)
         if checkfile and git:
             commit = f"Pushed {file_name.lower()} to blog"
-            setup.git_push(commit, configuration, obsidian, "Push", file_name)
+            gitt.git_push(commit, configuration, obsidian, "Push", file_name)
             convert.clipboard(configuration, str(ori), clipkey)
         elif checkfile and not git:
             if not obsidian:
@@ -85,7 +86,7 @@ def overwrite_file(source_path: str, configuration: cfg.Configuration, test=Fals
         source_path = Path(str(source_path).replace(filename, "index.md"))
         filename = "index.md"
     if test:
-        source_path = Path(source_path.resolve().parent.parent, "input", filename)
+        source_path = Path(source_path.resolve().parent.parent, "output", "docs", "notes", filename)
     with open(source_path, "w", encoding="utf-8") as new_notes:
         for lines in contents:
             new_notes.write(lines)

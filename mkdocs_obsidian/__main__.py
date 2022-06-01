@@ -8,6 +8,7 @@ from pathlib import Path
 from rich import print
 from rich.console import Console
 from rich.markdown import Markdown
+
 from mkdocs_obsidian.common.config import Configuration
 
 try:
@@ -23,20 +24,7 @@ from mkdocs_obsidian.common import (
 )
 
 
-def search_shortcuts(VAULT_FILE, file):
-    """
-
-    Parameters
-    ----------
-    VAULT_FILE: list[str]
-        All file in vault
-    file: str
-        filepath or filename
-    Returns
-    -------
-    str|bool:
-        False if file not found ; filepath otherwise
-    """
+def search_shortcuts(VAULT_FILE: list[str], file:str)  -> str|bool:
     if not file.endswith(".md"):
         file = file + ".md"
     for md in VAULT_FILE:
@@ -93,7 +81,8 @@ def mobile_shortcuts(
             sys.exit(1)
         one.convert_one(Path(file), configuration, False, meta_update)
     elif file == "--c":
-        setup.create_env()
+        BASEDIR = setup.get_Obs2mk_dir()
+        setup.create_env(BASEDIR)
     elif file != "0" and os.path.exists(Path(file)):
         one.convert_one(Path(file), configuration, False, meta_update)
 
@@ -242,21 +231,23 @@ def main():
     console = Console()
     args = parser.parse_args()
     from mkdocs_obsidian.common import config as setup
+    from mkdocs_obsidian.common import github_push as gitt
 
     cmd = args.cmd
 
     configuration_name = args.use or "0"
     if cmd == "config":
         configuration_name = args.new or "0"
-        setup.create_env(configuration_name)
+        basedir = setup.get_Obs2mk_dir(configuration_name, False)
+        setup.create_env(basedir, configuration_name)
         sys.exit()
     elif cmd == "clean":
         configuration = setup.open_value(configuration_name, args.GA)
         if not args.git and not args.GA:
-            setup.git_pull(configuration, args.git)
+            gitt.git_pull(configuration, args.git)
         keep(args.obsidian, console, configuration, args.GA)
         if not args.git and not args.GA:
-            setup.git_push(
+            gitt.git_push(
                 "clean all removed files",
                 configuration,
                 args.obsidian,
@@ -264,7 +255,7 @@ def main():
             )
     else:
         if args.minimal:
-            configuration = setup.open_value(configuration_name, "minimal")
+            configuration = setup.open_value("minimal", False)
         else:
             configuration = setup.open_value(configuration_name, args.GA)
         meta_update = int(args.meta)
@@ -278,14 +269,14 @@ def main():
             if args.minimal:
                 one.overwrite_file(file_source, configuration)
             elif args.obsidian:
-                setup.git_pull(configuration, no_git)
+                gitt.git_pull(configuration, no_git)
                 obsidian_shell(configuration, file_source, meta_update, git=no_git)
                 sys.exit()
             elif args.mobile or args.GA:
                 mobile_shortcuts(configuration, file_source, meta_update)
                 sys.exit()
             elif os.path.exists(Path(file_source)):
-                setup.git_pull(configuration, no_git)
+                gitt.git_pull(configuration, no_git)
                 one.convert_one(file_source, configuration, no_git, meta_update)
             else:
                 console.print(
@@ -301,12 +292,12 @@ def main():
                     configuration, "0", meta_update, vault_share, delete_option
                 )
             elif args.obsidian:
-                setup.git_pull(configuration, no_git)
+                gitt.git_pull(configuration, no_git)
                 obsidian_shell(
                     configuration, "0", meta_update, vault_share, no_git, delete_option
                 )
             else:
-                setup.git_pull(configuration, no_git)
+                gitt.git_pull(configuration, no_git)
                 all.convert_all(
                     configuration,
                     delete_option,
@@ -316,7 +307,7 @@ def main():
                     vault_share,
                 )
         else:
-            setup.git_pull(configuration, no_git)
+            gitt.git_pull(configuration, no_git)
             all.convert_all(configuration, False, no_git, stop_share, meta_update, 0)
 
 

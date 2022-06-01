@@ -15,7 +15,7 @@ from rich.markdown import Markdown
 from rich.progress import track
 from rich.rule import Rule
 
-from mkdocs_obsidian.common import config, conversion as convert, file_checking as check
+from mkdocs_obsidian.common import config, conversion as convert, file_checking as check, github_push as gitt
 
 
 def dest(filepath: Path, folder: Path) -> str:
@@ -37,9 +37,9 @@ def search_share(
 ) -> tuple[list[str], str]:
     """Search file to publish, convert and write them."""
 
-    DEFAULT_NOTES = configuration.default_note
+    DEFAULT_NOTES = configuration.default_folder
     VAULT_FILE = configuration.vault_file
-    SHARE = configuration.share
+    SHARE = configuration.share_key
     CATEGORY = configuration.category_key
     filespush = []
     check_file = False
@@ -51,7 +51,7 @@ def search_share(
         if (
             filepath.endswith(".md")
             and "excalidraw" not in filepath
-            and not check.exclude(filepath, "folder", configuration.basedir)
+            and not check.exclude(filepath, "folder", configuration.output)
         ):
             try:
                 yaml_front = frontmatter.load(filepath)
@@ -67,14 +67,14 @@ def search_share(
                             update = 0
 
                         if check.skip_update(
-                            filepath, folder, update
-                        ) or not check.modification_time(filepath, folder, update):
+                            Path(filepath), folder, update
+                        ) or not check.modification_time(Path(filepath), folder, update):
                             check_file = False
                         else:
                             contents = convert.file_convert(
                                 configuration, filepath, vault_share
                             )
-                            if check.diff_file(filepath, folder, contents, update):
+                            if check.diff_file(Path(filepath), folder, contents, update):
                                 check_file = convert.file_write(
                                     configuration, filepath, contents, folder, meta
                                 )
@@ -88,7 +88,7 @@ def search_share(
                             configuration, filepath, contents, folder, meta
                         )
                     msg_folder = os.path.basename(folder)
-                    destination = dest(filepath, folder)
+                    destination = dest(Path(filepath), folder)
                     if check_file:
                         filespush.append(
                             "Added :"
@@ -100,9 +100,9 @@ def search_share(
                     file_name = os.path.basename(filepath).replace(".md", "")
                     if file_name == os.path.basename(folder):
                         filepath = filepath.replace(file_name, "index")
-                    if check.delete_file(filepath, folder, configuration, meta):
+                    if check.delete_file(Path(filepath), folder, configuration, meta):
                         msg_folder = os.path.basename(folder)
-                        destination = dest(filepath, folder)
+                        destination = dest(Path(filepath), folder)
                         filespush.append(
                             "Removed :"
                             f" {os.path.basename(destination).replace('.md', '')} from"
@@ -173,7 +173,7 @@ def obsidian_simple(
                 markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
                 convert.clipboard(configuration, markdown_msg, clipkey)
             commit = f"Updated :\n\n {commit}\n"
-            config.git_push(
+            gitt.git_push(
                 commit,
                 configuration,
                 True,
@@ -266,7 +266,7 @@ def convert_all(
                 markdown_msg = commit[commit.find(":") + 2 : commit.rfind("in") - 1]
                 convert.clipboard(configuration, markdown_msg, clipkey)
             commit = f"**Updated** : \n {commit}\n"
-            config.git_push(
+            gitt.git_push(
                 commit,
                 configuration,
                 add_info=add_info,

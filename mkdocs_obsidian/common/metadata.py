@@ -16,7 +16,7 @@ def update_frontmatter(filepath: Path, configuration: cfg.Configuration, link=1)
     """If link = 1, update the frontmatter with new publish URL
     Also, update the share state if convert_one.
     """
-    SHARE = configuration.share
+    SHARE = configuration.share_key
     CATEGORY = configuration.category_key
     with open(filepath, "r", encoding="utf8") as metadata:
         meta = frontmatter.load(metadata)
@@ -26,7 +26,7 @@ def update_frontmatter(filepath: Path, configuration: cfg.Configuration, link=1)
         tag = meta.metadata.pop("tags", None)
     else:
         tag = ""
-    folder = meta.metadata.get(CATEGORY, configuration.default_note)
+    folder = meta.metadata.get(CATEGORY, configuration.default_folder)
 
     with open(filepath, "w", encoding="utf-8") as f:
         filename = os.path.basename(filepath)
@@ -34,7 +34,7 @@ def update_frontmatter(filepath: Path, configuration: cfg.Configuration, link=1)
         if filename == os.path.basename(folder):
             filename = ""
         path_url = url.quote(f"{folder}/{filename}")
-        clip = f"{configuration.web}{path_url}"
+        clip = f"{configuration.weblink}{path_url}"
         meta["link"] = clip
         update = frontmatter.dumps(meta, sort_keys=False)
         meta = frontmatter.loads(update)

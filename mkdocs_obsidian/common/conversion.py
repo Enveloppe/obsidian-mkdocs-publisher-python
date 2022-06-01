@@ -17,7 +17,7 @@ from mkdocs_obsidian.common import (
     file_checking as check,
     metadata as mt,
     config as cfg,
-)
+    )
 
 
 def get_image(configuration: cfg.Configuration, image: str):
@@ -59,7 +59,7 @@ def clipboard(configuration: cfg.Configuration, filepath: str, folder: str):
     if filename == folder:
         filename = ""
     paste = url.quote(f"{folder_key}/{filename}")
-    clip = f"{configuration.web}{paste}"
+    clip = f"{configuration.weblink}{paste}"
     if platform.architecture()[1] == "":
         try:
             import pasteboard  # work with pyto
@@ -89,7 +89,7 @@ def file_write(
     meta_update=1,
 ) -> bool:
     """Write the new converted file and update metadata if meta_update is 0"""
-    SHARE = configuration.share
+    SHARE = configuration.share_key
     file_name = os.path.basename(filepath)
     shortname = unidecode.unidecode(os.path.splitext(file_name)[0])
     folder = Path(folder)
@@ -105,7 +105,7 @@ def file_write(
         return False
     if shortname == foldername:
         file_name = "index.md"
-    check.move_file_by_category(filepath, folder, configuration)
+    check.move_file_by_category(filepath, str(folder), configuration)
     if not os.path.isdir(folder):
         folder.mkdir(parents=True, exist_ok=True)
     with open(Path(folder, file_name), "w", encoding="utf-8") as new_notes:
@@ -140,7 +140,7 @@ def convert_hashtags(configuration: cfg.Configuration, final_text: str) -> str:
     """
     Convert configured hashtags with inline attribute CSS from custom.css
     """
-    css = read_custom(configuration.basedir)
+    css = read_custom(configuration.output)
     token = re.findall("#\w+", final_text)
     token = list(set(token))
     for i in range(0, len(token)):
@@ -304,7 +304,7 @@ def file_convert(
     """
     final = []
     INDEX_KEY = configuration.index_key
-    SHARE = configuration.share
+    SHARE = configuration.share_key
     try:
         meta = frontmatter.load(filepath)
     except UnicodeDecodeError:
@@ -312,7 +312,7 @@ def file_convert(
     lines = meta.content.splitlines(True)
     if force != 1 and not meta.get(SHARE):
         return final
-    lines = adm.admonition_trad(configuration.basedir, lines)
+    lines = adm.admonition_trad(configuration.output, lines)
     callout_state = False
     for line in lines:
         final_text = line
@@ -347,7 +347,7 @@ def file_convert(
                 if final_text.startswith("> [!") or final_text.startswith(">[!"):
                     callout_state = True
                     nb = final_text.count(">")
-                    final_text = adm.parse_title(line, configuration.basedir, nb)
+                    final_text = adm.parse_title(line, configuration.output, nb)
 
                 final_text, callout_state = adm.callout_conversion(
                     final_text, callout_state
