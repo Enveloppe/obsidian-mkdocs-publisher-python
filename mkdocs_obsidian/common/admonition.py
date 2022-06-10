@@ -1,6 +1,5 @@
-"""
-A terrifing code to convert admonition code blocks to material code blocks.
-"""
+"""A terrifing code to convert admonition code blocks to material code
+blocks."""
 
 import re
 from itertools import zip_longest
@@ -10,50 +9,50 @@ from pathlib import Path
 def custom_callout(BASEDIR: Path):
     custom = []
     with open(
-        Path(BASEDIR, "docs", "assets", "css", "custom_attributes.css"),
-        "r",
-        encoding="utf-8",
+        Path(BASEDIR, 'docs', 'assets', 'css', 'custom_attributes.css'),
+        'r',
+        encoding='utf-8',
     ) as s:
         for i in s.readlines():
-            if i.strip().startswith("--md-admonition-icon"):
-                css = i.replace("--md-admonition-icon--", "")
-                custom.append((re.sub(":.*", "", css)).strip())
+            if i.strip().startswith('--md-admonition-icon'):
+                css = i.replace('--md-admonition-icon--', '')
+                custom.append((re.sub(':.*', '', css)).strip())
     callout_list = [
-        "note",
-        "abstract",
-        "summary",
-        "tldr",
-        "info",
-        "todo",
-        "tip",
-        "hint",
-        "important",
-        "success",
-        "check",
-        "done",
-        "question",
-        "help",
-        "faq",
-        "warning",
-        "caution",
-        "attention",
-        "failure",
-        "fail",
-        "missing",
-        "danger",
-        "error",
-        "bug",
-        "example",
-        "exemple",
-        "quote",
-        "cite",
+        'note',
+        'abstract',
+        'summary',
+        'tldr',
+        'info',
+        'todo',
+        'tip',
+        'hint',
+        'important',
+        'success',
+        'check',
+        'done',
+        'question',
+        'help',
+        'faq',
+        'warning',
+        'caution',
+        'attention',
+        'failure',
+        'fail',
+        'missing',
+        'danger',
+        'error',
+        'bug',
+        'example',
+        'exemple',
+        'quote',
+        'cite',
     ]
     callout = callout_list + custom
     return callout
 
 
 def code_blocks(start_list: list, end_list: list) -> list:
-    """Check all code blocks in the contents"""
+    """Check all code blocks in the contents."""
     start_bug = []
     end_bug = []
     bug = list(zip_longest(start_list, end_list, fillvalue=-1))
@@ -77,17 +76,17 @@ def code_blocks(start_list: list, end_list: list) -> list:
 
 
 def admonition_trad(BASEDIR: Path, file_data: list) -> list:
-    """Change all admonition to material admonition"""
+    """Change all admonition to material admonition."""
     code_index = 0
     code_dict = {}
     start_list = []
     end_list = []
     adm_list = custom_callout(BASEDIR)
     for i in range(0, len(file_data)):
-        if re.search("[`?!]{3}( ?)\w+(.*)", file_data[i]):
+        if re.search('[`?!]{3}( ?)\w+(.*)', file_data[i]):
             start = i
             start_list.append(start)
-        if re.match("^```$", file_data[i]) or re.match("--- admonition", file_data[i]):
+        if re.match('^```$', file_data[i]) or re.match('--- admonition', file_data[i]):
             end = i
             end_list.append(end)
     merged = code_blocks(start_list, end_list)
@@ -98,64 +97,69 @@ def admonition_trad(BASEDIR: Path, file_data: list) -> list:
     for ln in code_dict.values():
         ad_start = ln[0]
         ad_end = ln[1]
-        ad_type = re.search("[`!?]{3}\+?( ?)ad-\w+", file_data[ad_start])
+        ad_type = re.search('[`!?]{3}\+?( ?)ad-\w+', file_data[ad_start])
         if ad_type:
-            ad_type = re.sub("[`!?]{3}\+?( ?)ad-", "", ad_type.group())
-            adm = "b"
-            if re.search("[!?]{3} ad-(\w+) (.*)", file_data[ad_start]):
-                title = re.search("[!?]{3}\+? ad-(\w+) (.*)", file_data[ad_start])
-                adm = "MT"
+            ad_type = re.sub('[`!?]{3}\+?( ?)ad-', '', ad_type.group())
+            adm = 'b'
+            if re.search('[!?]{3} ad-(\w+) (.*)', file_data[ad_start]):
+                title = re.search(
+                    '[!?]{3}\+? ad-(\w+) (.*)', file_data[ad_start])
+                adm = 'MT'
                 title = title.group(2)
-            first_block = re.search("ad-(\w+)", file_data[ad_start])
+            first_block = re.search('ad-(\w+)', file_data[ad_start])
             if first_block:
-                file_data[ad_end] = "\n"
-            adm_ad_type_code = first_block.group().replace("ad-", "")
+                file_data[ad_end] = '\n'
+            adm_ad_type_code = first_block.group().replace('ad-', '')
             if adm_ad_type_code not in adm_list:
-                first_block = "note"
+                first_block = 'note'
             else:
                 first_block = first_block.group()
-            if adm == "b":
+            if adm == 'b':
                 first_block = (
-                    "\n!!! " + first_block.replace("ad-", "") + " place_title_here"
+                    '\n!!! ' +
+                    first_block.replace('ad-', '') + ' place_title_here'
                 )
             else:
                 first_block = re.search(
-                    "[!?]{3}\+? ad-(\w+) (.*)", file_data[ad_start]
+                    '[!?]{3}\+? ad-(\w+) (.*)', file_data[ad_start]
                 ).group()
-                first_block = first_block.replace("ad-", "")
+                first_block = first_block.replace('ad-', '')
                 title_block = '"' + title + '"'
                 first_block = first_block.replace(title, title_block)
 
             file_data[ad_start] = re.sub(
-                "[`!?]{3}( ?)ad-(.*)", first_block, file_data[ad_start]
+                '[`!?]{3}( ?)ad-(.*)', first_block, file_data[ad_start]
             )
             for i in range(ad_start, ad_end):
-                if adm == "b" and file_data[i] == "collapse: open":
-                    file_data[ad_start] = file_data[ad_start].replace("!!!", "???")
-                    file_data[i] = ""
-                elif adm == "b" and "collapse:" in file_data[i]:
-                    file_data[ad_start] = file_data[ad_start].replace("!!!", "???+")
-                    file_data[i] = ""
-                elif adm == "b" and "title:" in file_data[i]:
-                    title = '"' + file_data[i].replace("title:", "").strip() + '"'
-                    if title == "":
+                if adm == 'b' and file_data[i] == 'collapse: open':
+                    file_data[ad_start] = file_data[ad_start].replace(
+                        '!!!', '???')
+                    file_data[i] = ''
+                elif adm == 'b' and 'collapse:' in file_data[i]:
+                    file_data[ad_start] = file_data[ad_start].replace(
+                        '!!!', '???+')
+                    file_data[i] = ''
+                elif adm == 'b' and 'title:' in file_data[i]:
+                    title = '"' + \
+                        file_data[i].replace('title:', '').strip() + '"'
+                    if title == '':
                         title = '""'
                     file_data[ad_start] = file_data[ad_start].replace(
-                        "place_title_here", title
+                        'place_title_here', title
                     )
-                    file_data[i] = ""
+                    file_data[i] = ''
 
-                elif "icon:" in file_data[i]:
-                    file_data[i] = ""
-                elif "color:" in file_data[i]:
-                    file_data[i] = ""
-                elif len(file_data[i]) == 1 and adm == "b":  # change this
-                    file_data[i] = "\t  \n"
+                elif 'icon:' in file_data[i]:
+                    file_data[i] = ''
+                elif 'color:' in file_data[i]:
+                    file_data[i] = ''
+                elif len(file_data[i]) == 1 and adm == 'b':  # change this
+                    file_data[i] = '\t  \n'
                 else:
-                    file_data[i] = "\t" + file_data[i]
-            if "place_title_here" in file_data[ad_start]:
+                    file_data[i] = '\t' + file_data[i]
+            if 'place_title_here' in file_data[ad_start]:
                 file_data[ad_start] = file_data[ad_start].replace(
-                    "place_title_here", ""
+                    'place_title_here', ''
                 )
             file_data[ad_start] = file_data[ad_start].lstrip()
             file_data[ad_end] = file_data[ad_end].lstrip()
@@ -163,37 +167,35 @@ def admonition_trad(BASEDIR: Path, file_data: list) -> list:
 
 
 def parse_title(line: str, basedir: Path, nb: int) -> str:
-    """
-    Parse the type and title of an Obsidian's callout.
-    """
+    """Parse the type and title of an Obsidian's callout."""
     callout = custom_callout(basedir)
-    title = re.search("^( ?>*)*\[!(.*)\]", line)
-    rest_line = re.sub("^( ?>*)*\[!(.*)\][\+\-]?", "", line)
+    title = re.search('^( ?>*)*\[!(.*)\]', line)
+    rest_line = re.sub('^( ?>*)*\[!(.*)\][\+\-]?', '', line)
     if title.group(2).lower() not in callout:
-        title = "NOTE"
+        title = 'NOTE'
     else:
         title = title.group(2)
-    if "]-" in line:
-        title = "??? " + title
-    elif "]+" in line:
-        title = "???+ " + title
+    if ']-' in line:
+        title = '??? ' + title
+    elif ']+' in line:
+        title = '???+ ' + title
     else:
-        title = "!!! " + title
+        title = '!!! ' + title
     if len(rest_line) > 1:
         title = title + ' "' + rest_line.strip() + '"'
     if nb > 1:
-        title = "\t" * nb + title
-    return title + "\n"
+        title = '\t' * nb + title
+    return title + '\n'
 
 
 def callout_conversion(line: str, callout_state: bool) -> tuple[str, bool | str]:
     final_text = line
     if callout_state:
-        if line.startswith(">"):
-            nb = line.count(">")
-            final_text = re.sub("> ?", "\t", line)
+        if line.startswith('>'):
+            nb = line.count('>')
+            final_text = re.sub('> ?', '\t', line)
             if nb > 1:
-                final_text = "\t" + final_text
+                final_text = '\t' + final_text
         else:
             callout_state = final_text
     return final_text, callout_state

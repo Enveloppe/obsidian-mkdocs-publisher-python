@@ -1,6 +1,4 @@
-"""
-All function intended to check the file and their path.
-"""
+"""All function intended to check the file and their path."""
 
 import glob
 import json
@@ -19,25 +17,23 @@ def config_exclude(BASEDIR: Path) -> Path:
     """
     A simple script to add compatibility with older version : the renaming of .exclude_folder to .exclude
     """
-    config_folder = Path(BASEDIR, "exclude_folder.yml")
+    config_folder = Path(BASEDIR, 'exclude_folder.yml')
     if not os.path.exists(config_folder):
-        config_folder = Path(BASEDIR, "exclude.yml")
+        config_folder = Path(BASEDIR, 'exclude.yml')
     return config_folder
 
 
 def exclude(filepath: str, key: str, BASEDIR: Path) -> bool:
-    """
-    Check if a file is in `exclude.yml`.
-    """
+    """Check if a file is in `exclude.yml`."""
     config_folder = config_exclude(BASEDIR)
     if os.path.exists(config_folder):
-        with open(config_folder, "r", encoding="utf-8") as file_config:
+        with open(config_folder, 'r', encoding='utf-8') as file_config:
             try:
                 folder = yaml.safe_load(file_config)
             except yaml.YAMLError as exc:
-                print(f"[red bold]Error in [u]{filepath}[/] : {exc}")
+                print(f'[red bold]Error in [u]{filepath}[/] : {exc}')
                 sys.exit(2)
-        excluded_folder = folder.get(key, "")
+        excluded_folder = folder.get(key, '')
         return any(str(Path(file)) in filepath for file in excluded_folder)
     return False
 
@@ -45,21 +41,22 @@ def exclude(filepath: str, key: str, BASEDIR: Path) -> bool:
 def move_file_by_category(
     filepath: Path, clipkey: str, configuration: cfg.Configuration
 ) -> bool:
-    glog_folder = Path(configuration.output, "docs", "**")
+    glog_folder = Path(configuration.output, 'docs', '**')
     blog_file = [
         file
         for file in glob.glob(str(glog_folder), recursive=True)
         if os.path.isfile(file)
     ]
     file_name = os.path.basename(filepath)
-    if file_name == "index.md":
-        file_name = PurePath(clipkey).name + ".md"
-    old_file = [file for file in blog_file if os.path.basename(file) == file_name]
+    if file_name == 'index.md':
+        file_name = PurePath(clipkey).name + '.md'
+    old_file = [file for file in blog_file if os.path.basename(
+        file) == file_name]
     if old_file:
         old_file = old_file[0]
-        with open(old_file, "r", encoding="utf-8") as file:
+        with open(old_file, 'r', encoding='utf-8') as file:
             meta_data = frontmatter.loads(file.read())
-        category = meta_data.get(configuration.category_key, "")
+        category = meta_data.get(configuration.category_key, '')
         if category != clipkey:
             os.remove(Path(old_file))
             return True
@@ -67,69 +64,69 @@ def move_file_by_category(
 
 
 def delete_old_index(index_path: Path, configuration: cfg.Configuration) -> str:
-    with open(index_path, "r", encoding="utf-8") as file:
+    with open(index_path, 'r', encoding='utf-8') as file:
         meta_data = frontmatter.loads(file.read())
-    old_category = meta_data.get(configuration.category_key, "")
-    name = PurePath(old_category).name + ".md"
-    in_vault = [x for x in configuration.vault_file if os.path.basename(x) == name]
+    old_category = meta_data.get(configuration.category_key, '')
+    name = PurePath(old_category).name + '.md'
+    in_vault = [
+        x for x in configuration.vault_file if os.path.basename(x) == name]
     if in_vault:
-        with open(in_vault[0], "r", encoding="utf-8") as file:
+        with open(in_vault[0], 'r', encoding='utf-8') as file:
             meta_data = frontmatter.loads(file.read())
-        category = meta_data.get(configuration.category_key, "")
-        share = meta_data.get(configuration.share_key, "False")
+        category = meta_data.get(configuration.category_key, '')
+        share = meta_data.get(configuration.share_key, 'False')
         if category != old_category and share is True:
             try:
                 os.remove(index_path)
                 folder = os.path.dirname(index_path)
-                if len(os.listdir(folder)) == 0 and os.path.basename(folder) != "docs":
+                if len(os.listdir(folder)) == 0 and os.path.basename(folder) != 'docs':
                     # Delete folder
                     os.rmdir(folder)
-                return name.replace(".md", "") + "/" + "index.md"
+                return name.replace('.md', '') + '/' + 'index.md'
             except PermissionError:
-                return ""
+                return ''
             except IsADirectoryError:
-                return ""
-    return ""
+                return ''
+    return ''
 
 
 def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[str]:
-    """
-    Removes files that have been deleted from the vault unless they are in `exclude.yml[files]` and always delete if
-    founded file is in `exclude.yml[folder]`
-    """
+    """Removes files that have been deleted from the vault unless they are in
+    `exclude.yml[files]` and always delete if founded file is in
+    `exclude.yml[folder]`"""
     BASEDIR = configuration.output
     VAULT_FILE = configuration.vault_file
     vault_file = []
     info = []
     excluded = []
-    important_folder = ["assets", "css", "js", "logo", "script"]
-    docs = Path(f"{BASEDIR}/docs/**")
-    if actions and actions != "minimal":
-        if os.path.isfile(Path(os.getcwd(), "source", "vault_published.json")):
+    important_folder = ['assets', 'css', 'js', 'logo', 'script']
+    docs = Path(f'{BASEDIR}/docs/**')
+    if actions and actions != 'minimal':
+        if os.path.isfile(Path(os.getcwd(), 'source', 'vault_published.json')):
             with open(
-                Path(os.getcwd(), "source", "vault_published.json"),
-                "r",
-                encoding="utf-8",
+                Path(os.getcwd(), 'source', 'vault_published.json'),
+                'r',
+                encoding='utf-8',
             ) as file:
                 VAULT_FILE = json.load(file)
                 vault_file = []
             if len(VAULT_FILE) == 0:
                 return []
-        elif os.path.exists(Path(os.getcwd(), "source", "vault_published.txt")):
-            vault_file = ""
+        elif os.path.exists(Path(os.getcwd(), 'source', 'vault_published.txt')):
+            vault_file = ''
             with open(
-                Path(os.getcwd(), "source", "vault_published.txt"),
-                "r",
-                encoding="utf-8",
+                Path(os.getcwd(), 'source', 'vault_published.txt'),
+                'r',
+                encoding='utf-8',
             ) as file_vault:
                 vault_file = vault_file + file_vault.read()
             vault_file = (
-                vault_file.replace("\n", " ")
-                .replace("]", "")
-                .replace("[", "")
-                .replace('"', "")
-                .replace("'", "")
-                .split(",")
+                vault_file.replace('\n', ' ')
+                .replace(']', '')
+                .replace('[', '')
+                .replace('"', '')
+                .replace("'", '')
+                .split(',')
             )
             VAULT_FILE = vault_file
             vault_file = []
@@ -139,16 +136,16 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
             return []
     for note in VAULT_FILE:
         vault_file.append(os.path.basename(note))
-        if exclude(note, "folder", BASEDIR):
+        if exclude(note, 'folder', BASEDIR):
             excluded.append(os.path.basename(note))
     for file in glob.iglob(str(docs), recursive=True):
-        if os.path.basename(file) == "index.md":
+        if os.path.basename(file) == 'index.md':
             index = delete_old_index(Path(file), configuration)
             if len(index) != 0:
                 info.append(index)
         elif (
             not any(i in file for i in important_folder)
-            and not exclude(file, "files", BASEDIR)
+            and not exclude(file, 'files', BASEDIR)
             and (
                 os.path.basename(file) not in vault_file
                 or os.path.basename(file) in excluded
@@ -161,7 +158,7 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
                     folder = os.path.dirname(file)
                     if (
                         len(os.listdir(folder)) == 0
-                        and os.path.basename(folder) != "docs"
+                        and os.path.basename(folder) != 'docs'
                     ):
                         # Delete folder
                         os.rmdir(folder)
@@ -175,29 +172,30 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
 
 def diff_file(filepath: Path, folder: Path, contents: list[str], update=0) -> bool:
     """Check the difference between file in vault and file in publish.
+
     Check if the new converted file = the file on publish.
     """
     filename = os.path.basename(filepath)
     shortname = unidecode(os.path.splitext(filename)[0])
     foldername = unidecode(folder.name)
-    if check_file(filename, folder) == "EXIST":
+    if check_file(filename, folder) == 'EXIST':
         if update == 1:
             return False
         if foldername == shortname:
-            filename = "index.md"
+            filename = 'index.md'
         note = Path(folder, filename)
         retro_old = retro(note)
         meta_old = frontmatter.load(note)
         meta_old = meta_old.metadata
-        meta_old.pop("link", None)
+        meta_old.pop('link', None)
         try:
-            front_temp = frontmatter.loads("".join(contents))
+            front_temp = frontmatter.loads(''.join(contents))
         except yaml.YAMLError:
-            print(f"Skip {filepath} : YAML Error")
+            print(f'Skip {filepath} : YAML Error')
             return False  # skip
         new_version = retro(contents, 1)
         meta_new = front_temp.metadata
-        meta_new.pop("link", None)
+        meta_new.pop('link', None)
         if (
             new_version == retro_old
             and sorted(meta_old.keys()) == sorted(meta_new.keys())
@@ -209,7 +207,7 @@ def diff_file(filepath: Path, folder: Path, contents: list[str], update=0) -> bo
 
 
 def retro(file: Path | list, opt=0) -> list[str]:
-    """Remove metadata from note"""
+    """Remove metadata from note."""
     notes = []
     if opt == 0:
         try:
@@ -218,22 +216,23 @@ def retro(file: Path | list, opt=0) -> list[str]:
             os.remove(file)
             return notes
     else:
-        metadata = frontmatter.loads("".join(file))
-    file = metadata.content.split("\n")
+        metadata = frontmatter.loads(''.join(file))
+    file = metadata.content.split('\n')
     for line in file:
         notes.append(line)
     return notes
 
 
 def create_folder(category: str, configuration: cfg.Configuration, share=0) -> Path:
-    """
-    create a folder based on the category key as 'folder1/folder2/.../' and return the folder path. Return default
-    path in case of error/none category
+    """create a folder based on the category key as 'folder1/folder2/.../' and
+    return the folder path.
+
+    Return default path in case of error/none category
     """
     BASEDIR = configuration.output
     POST = configuration.post
 
-    if category != "":
+    if category != '':
         folder = Path(BASEDIR, 'docs', category)
         try:
             if share == 0:
@@ -257,8 +256,8 @@ def modification_time(filepath: Path, folder: Path, update: int) -> bool:
 
 
 def skip_update(filepath: Path, folder: Path, update: int) -> bool:
-    """check if file exist + update is false"""
-    return update == 1 and check_file(filepath, folder) == "EXIST"
+    """check if file exist + update is false."""
+    return update == 1 and check_file(filepath, folder) == 'EXIST'
 
 
 def check_file(filepath: Path, folder: Path) -> str:
@@ -267,19 +266,19 @@ def check_file(filepath: Path, folder: Path) -> str:
     shortname = unidecode(os.path.splitext(file)[0])
     foldername = unidecode(folder.name)
     if foldername == shortname:
-        file = "index.md"
+        file = 'index.md'
     publish = Path(folder, file)
     if os.path.isfile(publish):
-        return "EXIST"
-    return "NE"
+        return 'EXIST'
+    return 'NE'
 
 
 def delete_file(
     filepath: Path, folder: Path, configuration: cfg.Configuration, meta_update=1
 ) -> bool:
-    """Delete the requested file"""
+    """Delete the requested file."""
     try:
-        for file in os.listdir(str(folder)): #prevent bytes error
+        for file in os.listdir(str(folder)):  # prevent bytes error
             filename = unidecode(os.path.basename(filepath))
             filecheck = unidecode(os.path.basename(str(file)))
             if filecheck == filename:
