@@ -1,0 +1,31 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.3.0
+  hooks:
+    - id: check-yaml
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+- repo: https://github.com/pre-commit/mirrors-autopep8
+  rev: v1.6.0
+  hooks:
+    - id: autopep8
+      entry: autopep8 -i
+      types : [ "python" ]
+- repo: https://github.com/PyCQA/autoflake
+  rev: v1.4
+  hooks:
+    - id: autoflake
+      entry: autoflake -i
+      types: ["python"]
+- repo: https://github.com/PyCQA/docformatter
+  rev: v1.4
+  hooks :
+    - id: docformatter
+      entry: docformatter -i
+      types : ["python"]
+- repo: https://github.com/myint/unify
+  rev: v0.5
+  hooks :
+    - id: unify
+      entry: unify -i
+      types: ["python"]
