@@ -8,32 +8,33 @@ from mkdocs_obsidian.common import convert_one as one, convert_all as all, confi
 
 class MyTestCase(unittest.TestCase):
     def test_minimal(self):
-        print("Testing Minimal configuration")
-        source_path = Path("./docs_tests/input/source_file.md").resolve()
-        configuration = cfg.open_value(actions=True, configuration_name='minimal_test')
+        print('Testing Minimal configuration')
+        source_path = Path('./docs_tests/input/source_file.md').resolve()
+        configuration = cfg.open_value(
+            actions=True, configuration_name='minimal_test')
         one.overwrite_file(str(source_path), configuration, True)
 
     def test_multiple_notes(self):
-        print("testing multiple note without share state")
-        configuration = cfg.open_value("test")
+        print('testing multiple note without share state')
+        configuration = cfg.open_value('test')
         all.convert_all(configuration, False, False, 0, 0, 1)
 
     def test_one_file(self):
-        print("Testing one file with all configuration")
-        configuration = cfg.open_value("test")
-        source_path = Path("./docs_tests/input/source_file.md").resolve()
+        print('Testing one file with all configuration')
+        configuration = cfg.open_value('test')
+        source_path = Path('./docs_tests/input/source_file.md').resolve()
         one.convert_one(source_path, configuration, False, 1)
 
     def test_multiple_share(self):
-        print("testing multiple note with share state")
-        configuration = cfg.open_value("test")
+        print('testing multiple note with share state')
+        configuration = cfg.open_value('test')
         all.convert_all(configuration, False, False, 0, 0, 0)
 
     def test_convert_big_config(self):
         print('convert an old configuration')
         basedir = cfg.get_Obs2mk_dir('test_config', False)
-        config_test = Path(basedir, ".test_config")
-        with open(config_test, 'w', encoding="utf-8") as f:
+        config_test = Path(basedir, '.test_config')
+        with open(config_test, 'w', encoding='utf-8') as f:
             f.write(f'''
                 vault={Path(basedir, 'input')}
                 blog_path={Path(basedir, 'output')}
@@ -65,13 +66,15 @@ class MyTestCase(unittest.TestCase):
     def test_convert_mini_config(self):
         print('convert an old configuration')
         basedir = cfg.get_Obs2mk_dir('test_mini_config', False)
-        config_test = Path(basedir, ".test_mini_config")
-        with open(config_test, 'w', encoding="utf-8") as f:
+        config_test = Path(basedir, '.test_mini_config')
+        with open(config_test, 'w', encoding='utf-8') as f:
             f.write(f'''
             index_key=(i)
             default_blog=notes
             category_key=category
             ''')
         cfg.checking_old_config('test_mini_config', config_test, basedir)
-if __name__ == "__main__":
+
+
+if __name__ == '__main__':
     unittest.main()

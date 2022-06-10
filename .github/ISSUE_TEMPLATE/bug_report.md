@@ -17,7 +17,7 @@ assignees: ''
 3. Scroll down to '....'
 4. See error -->
 
-**Log** 
+**Log**
 <!-- If possible, provide the log of the script. -->
 
 **Screenshots**

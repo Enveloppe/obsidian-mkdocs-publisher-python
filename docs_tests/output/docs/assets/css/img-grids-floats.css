@@ -45,11 +45,11 @@ img[alt*="+rside"]
     margin-left: var(--coremarg);
 }
 
-.image-embed[alt*="+"], 
+.image-embed[alt*="+"],
 .image-embed[alt*="-"]
 {
     contain: revert !important;
-    
+
 }
 
 

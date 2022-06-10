@@ -9,8 +9,8 @@ assignees: ''
 
 **Main question**
 
-**If the question is related to a bug** 
+**If the question is related to a bug**
 <!-- Please provide the log here -->
 
-**Additional context** 
+**Additional context**
 <!-- Provide file, screenshot, related to your problem -->
