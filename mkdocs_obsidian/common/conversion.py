@@ -15,7 +15,7 @@ from mkdocs_obsidian.common import (
     file_checking as check,
     metadata as mt,
     config as cfg,
-)
+    )
 
 
 def get_image(configuration: cfg.Configuration, image: str):
@@ -46,7 +46,7 @@ def copy_image(configuration: cfg.Configuration, final_text: str):
                         image_path
                         and os.path.isfile(image_path)
                         and not image_path.endswith('.md')
-                ):
+                        ):
                     shutil.copyfile(image_path, Path(
                         IMG, os.path.basename(image_path)))
 
@@ -77,7 +77,7 @@ def clipboard(configuration: cfg.Configuration, filepath: str, folder: str):
             print(
                 'Please, report issue with your OS and configuration to check if it'
                 ' possible to use another clipboard manager'
-            )
+                )
 
 
 def file_write(
@@ -87,7 +87,7 @@ def file_write(
         folder: str | Path,
         preserve=0,
         meta_update=1,
-) -> bool:
+        ) -> bool:
     """Write the new converted file and update metadata if meta_update is 0."""
     SHARE = configuration.share_key
     file_name = os.path.basename(filepath)
@@ -128,7 +128,7 @@ def read_custom(BASEDIR: Path) -> list[str]:
             Path(BASEDIR, 'docs', 'assets', 'css', 'custom_attributes.css'),
             'r',
             encoding='utf-8',
-    ) as css:
+            ) as css:
         for i in css.readlines():
             if i.startswith('#'):
                 id_css.append(i.replace('{\n', '').strip())
@@ -154,7 +154,7 @@ def convert_hashtags(configuration: cfg.Configuration, final_text: str) -> str:
                     + '**{: '
                     + token[i]
                     + '}\n'
-                )
+                    )
             else:
                 ial = '**' + final_text.strip() + '**{: ' + token[i] + '}  \n'
             final_text = final_text.replace(final_text, ial)
@@ -165,7 +165,7 @@ def convert_hashtags(configuration: cfg.Configuration, final_text: str) -> str:
                 + '**{: '
                 + token[i].strip()
                 + ' .hash}  \n'
-            )
+                )
 
             final_text = final_text.replace(token[i], ial, 1)
 
@@ -184,7 +184,7 @@ def index_path(file_name: str, VAULT_FILE: list[str], category: str) -> str:
         if metadata.get(category) and Path(metadata[category]).name == file_name:
             category = str(Path(metadata[category])).replace(
                 '\\', '/'
-            )  # Normalize path on Windows
+                )  # Normalize path on Windows
             index = '/' + category + '/index.md'
     return index
 
@@ -209,10 +209,10 @@ def index_citation(final_text: str, configuration: cfg.Configuration) -> str:
                 + re.escape(INDEX_KEY)
                 + r'.*]\(.*\))',
                 final_text,
-            )
+                )
             .group()
             .split(') [')
-        )
+            )
     else:
         cited = (
             re.search(
@@ -222,10 +222,10 @@ def index_citation(final_text: str, configuration: cfg.Configuration) -> str:
                 + re.escape(INDEX_KEY)
                 + r'.*]\(.*\))',
                 final_text,
-            )
+                )
             .group()
             .split(']]')
-        )
+            )
     for i in cited:
         if i != '' and not 'www' in i:
             if re.search(rf"\|.*" + re.escape(INDEX_KEY) + rf".*", i):
@@ -235,7 +235,7 @@ def index_citation(final_text: str, configuration: cfg.Configuration) -> str:
                     .replace(INDEX_KEY, '')
                     .replace('|', '')
                     .strip()
-                )
+                    )
                 if len(file_name) == 0:
                     file_name = (
                         re.search('(.*)\|', i)
@@ -243,7 +243,7 @@ def index_citation(final_text: str, configuration: cfg.Configuration) -> str:
                         .replace('|', '')
                         .replace('[', '')
                         .replace(INDEX_KEY, '')
-                    )
+                        )
                 index = index_path(file_name, VAULT_FILE,
                                    configuration.category_key)
                 cite = f'[[{index}|' + file_name.strip()
@@ -256,7 +256,7 @@ def index_citation(final_text: str, configuration: cfg.Configuration) -> str:
                     .replace(INDEX_KEY, '')
                     .replace('[', '')
                     .replace(']', '')
-                )
+                    )
                 if len(file_name) == 0:
                     file_name = re.search(
                         '\]\((.*)', i).group(1).replace(')', '')
@@ -268,7 +268,7 @@ def index_citation(final_text: str, configuration: cfg.Configuration) -> str:
                     .replace('))', ')')
                     .replace('[[', '[')
                     .replace(']]', ']')
-                )
+                    )
     return final_text
 
 
@@ -295,7 +295,7 @@ def parsing_code(files_contents: list[str], line: str) -> bool:
 
 def file_convert(
         configuration: cfg.Configuration, filepath: str | Path, force=0, image=True
-):
+        ):
     """Read the filepath and convert each line based on regex condition."""
     final = []
     INDEX_KEY = configuration.index_key
@@ -317,7 +317,7 @@ def file_convert(
         else:
             if not final_text.strip().endswith(
                     '%%'
-            ) and not final_text.strip().startswith('%%'):
+                    ) and not final_text.strip().startswith('%%'):
                 # Skip obsidian comments
                 # Check and copy image
                 if image:
@@ -325,11 +325,11 @@ def file_convert(
                 if not '`' in final_text:
                     final_text = re.sub(
                         '%{2}(.*)%{2}', '', final_text
-                    )  # remove obsidian comments
+                        )  # remove obsidian comments
                 if (
                         re.search(
                             r'\\U\w+', final_text) and not 'Users' in final_text
-                ):  # Fix emoji if bug because of frontmatter
+                        ):  # Fix emoji if bug because of frontmatter
                     emojiz = re.search(r'\\U\w+', final_text)
                     emojiz = emojiz.group().strip().replace('"', '')
                     convert_emojiz = (
@@ -337,7 +337,7 @@ def file_convert(
                         .decode('unicode-escape')
                         .encode('utf-16', 'surrogatepass')
                         .decode('utf-16')
-                    )
+                        )
                     final_text = re.sub(r'\\U\w+', convert_emojiz, final_text)
 
                 if final_text.startswith('> [!') or final_text.startswith('>[!'):
@@ -348,21 +348,21 @@ def file_convert(
 
                 final_text, callout_state = adm.callout_conversion(
                     final_text, callout_state
-                )
+                    )
                 if re.search(
                         rf"\[\[?(.*)" + re.escape(INDEX_KEY) +
                         r'(.*)\]\]?', final_text
-                ):
+                        ):
                     # fix pagination.indexes page citation, exclude image/embed file
                     final_text = index_citation(final_text, configuration)
                 if re.search('#\w+', final_text) and not re.search(
                         '(`|\[{2}|\()(.*)#(.*)(`|\]{2}|\))', final_text
-                ):  # search hashtags not in link
+                        ):  # search hashtags not in link
                     # Convert hashtags
                     final_text = convert_hashtags(configuration, final_text)
                 elif re.fullmatch(
                         '\\\\', final_text.strip()
-                ):  # New line when using "\" in obsidian filepath
+                        ):  # New line when using "\" in obsidian filepath
                     final_text = '\n'
 
                 elif final_text == '```\n':
@@ -398,7 +398,7 @@ def escape_metadata(meta: frontmatter.Post) -> list[str]:
         ':',
         '`',
         ',',
-    ]
+        ]
     if meta.get('tag') or meta.get('tags'):
         tag = metadata.pop('tag', None) or metadata.pop('tags', None)
         if '/' in tag:

@@ -12,7 +12,7 @@ def custom_callout(BASEDIR: Path):
             Path(BASEDIR, 'docs', 'assets', 'css', 'custom_attributes.css'),
             'r',
             encoding='utf-8',
-    ) as s:
+            ) as s:
         for i in s.readlines():
             if i.strip().startswith('--md-admonition-icon'):
                 css = i.replace('--md-admonition-icon--', '')
@@ -46,7 +46,7 @@ def custom_callout(BASEDIR: Path):
         'exemple',
         'quote',
         'cite',
-    ]
+        ]
     callout = callout_list + custom
     return callout
 
@@ -70,7 +70,7 @@ def code_blocks(start_list: list, end_list: list) -> list:
         (x, y)
         for x, y in zip_longest(start_list, end_list, fillvalue=-1)
         if x != -1 and x < y
-    ]
+        ]
     merged = no_bug + merged
     return merged
 
@@ -118,18 +118,18 @@ def admonition_trad(BASEDIR: Path, file_data: list) -> list:
                 first_block = (
                     '\n!!! ' +
                     first_block.replace('ad-', '') + ' place_title_here'
-                )
+                    )
             else:
                 first_block = re.search(
                     '[!?]{3}\+? ad-(\w+) (.*)', file_data[ad_start]
-                ).group()
+                    ).group()
                 first_block = first_block.replace('ad-', '')
                 title_block = '"' + title + '"'
                 first_block = first_block.replace(title, title_block)
 
             file_data[ad_start] = re.sub(
                 '[`!?]{3}( ?)ad-(.*)', first_block, file_data[ad_start]
-            )
+                )
             for i in range(ad_start, ad_end):
                 if adm == 'b' and file_data[i] == 'collapse: open':
                     file_data[ad_start] = file_data[ad_start].replace(
@@ -146,7 +146,7 @@ def admonition_trad(BASEDIR: Path, file_data: list) -> list:
                         title = '""'
                     file_data[ad_start] = file_data[ad_start].replace(
                         'place_title_here', title
-                    )
+                        )
                     file_data[i] = ''
 
                 elif 'icon:' in file_data[i]:
@@ -160,7 +160,7 @@ def admonition_trad(BASEDIR: Path, file_data: list) -> list:
             if 'place_title_here' in file_data[ad_start]:
                 file_data[ad_start] = file_data[ad_start].replace(
                     'place_title_here', ''
-                )
+                    )
             file_data[ad_start] = file_data[ad_start].lstrip()
             file_data[ad_end] = file_data[ad_end].lstrip()
     return file_data

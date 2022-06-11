@@ -29,7 +29,7 @@ class Configuration:
             img: Path | str,
             vault_file: list[str],
             category_key: str,
-    ):
+            ):
         self.output = Path(output)
         self.input = Path(input) if input else ''
         self.weblink = weblink
@@ -71,12 +71,12 @@ def legacy_environment(console: Console) -> tuple[str, str]:
         vault = str(
             console.input(
                 'Please provide your [u bold]obsidian vault[/] path: ')
-        )
+            )
     while blog == '' or not os.path.isdir(blog):
         blog = str(
             console.input(
                 'Please provide the [u bold]blog[/] repository path: ')
-        )
+            )
     return vault, blog
 
 
@@ -208,10 +208,10 @@ def create_env(BASEDIR: Path, config_name='0'):
     share = str(
         console.input(
             'Choose your share key name [i](default: [bold]share[/])[/]: ')
-    )
+        )
     default_blog = console.input(
         'Choose your default folder note [i](default: [bold]notes[/])[/]: '
-    )
+        )
     if default_blog == '':
         default_blog = 'notes'
     if share == '':
@@ -220,14 +220,14 @@ def create_env(BASEDIR: Path, config_name='0'):
         console.input(
             'If you want to use [u]folder note[/], please choose the key for citation'
             ' [i](default: [bold](i)[/])[/]: '
+            )
         )
-    )
     category_key = str(
         console.input(
             'Please, choose the key for the category [i](default:'
             ' [bold]category[/])[/]: '
+            )
         )
-    )
     if category_key == '':
         category_key = 'category'
     if index_key == '':
@@ -237,7 +237,7 @@ def create_env(BASEDIR: Path, config_name='0'):
         'configuration': {
             'input': vault,
             'output': blog,
-        },
+            },
         'frontmatter':
         {
             'share': share,
@@ -245,9 +245,9 @@ def create_env(BASEDIR: Path, config_name='0'):
             'category': {
                 'key': category_key,
                 'default value': default_blog
+                }
             }
         }
-    }
     if default_blog == '/':
         default_blog = ''
     adding_configuration(config_name, BASEDIR, new_configuration)
@@ -256,7 +256,7 @@ def create_env(BASEDIR: Path, config_name='0'):
     try:
         img.mkdir(
             exist_ok=True
-        )  # Assets must exist, raise a file not found error if not.
+            )  # Assets must exist, raise a file not found error if not.
         post.mkdir(exist_ok=True, parents=True)
         print('[green] Environment created ![/]')
     except FileNotFoundError:
@@ -301,9 +301,9 @@ def checking_old_config(configuration_name: str, env_path: Path, basedir: Path):
     env = dotenv_values(env_path)
     try:
         BASEDIR = Path(env['blog_path']).resolve(
-        ).expanduser() if env.get('blog_path') else ''
+            ).expanduser() if env.get('blog_path') else ''
         VAULT = Path(env['vault']).resolve(
-        ).expanduser() if env.get('vault') else ''
+            ).expanduser() if env.get('vault') else ''
     except RuntimeError:
         print('[red blog] Please provide a valid path for all config items')
         sys.exit(3)
@@ -363,9 +363,9 @@ def open_value(configuration_name='default', actions=False) -> Configuration:
         create_env(BASEDIR, configuration_name)
     config = config[configuration_name]
     BASEDIR = Path(config['configuration']['output']).resolve(
-    ).expanduser() if config['configuration'].get('output') else BASEDIR
+        ).expanduser() if config['configuration'].get('output') else BASEDIR
     VAULT = Path(config['configuration']['input']).resolve(
-    ).expanduser() if config['configuration'].get('input') else ''
+        ).expanduser() if config['configuration'].get('input') else ''
     WEB = config['weblink']
     SHARE = config['frontmatter']['share']
     INDEX_KEY = config['frontmatter']['index']
@@ -380,19 +380,19 @@ def open_value(configuration_name='default', actions=False) -> Configuration:
             x
             for x in glob.iglob(str(Path(os.getcwd(), 'docs', '**')), recursive=True)
             if os.path.isfile(x)
-        ]
+            ]
     elif actions:
         VAULT_FILE = [
             x
             for x in glob.iglob(str(Path(os.getcwd(), 'source', '**')), recursive=True)
             if os.path.isfile(x)
-        ]
+            ]
     else:
         VAULT_FILE = [
             x
             for x in glob.iglob(str(Path(VAULT, '**')), recursive=True)
             if os.path.isfile(x)
-        ]
+            ]
     configuration = Configuration(
         BASEDIR,
         VAULT,
@@ -404,5 +404,5 @@ def open_value(configuration_name='default', actions=False) -> Configuration:
         IMG,
         VAULT_FILE,
         CATEGORY,
-    )
+        )
     return configuration

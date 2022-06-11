@@ -9,13 +9,13 @@ repos:
   rev: v1.6.0
   hooks:
     - id: autopep8
-      entry: autopep8 -i
+      entry: autopep8 -i --hang-closing
       types : [ "python" ]
 - repo: https://github.com/PyCQA/autoflake
   rev: v1.4
   hooks:
     - id: autoflake
-      entry: autoflake -i --hang-closing
+      entry: autoflake -i
       types: ["python"]
 - repo: https://github.com/PyCQA/docformatter
   rev: v1.4
