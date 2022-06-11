@@ -15,7 +15,7 @@ repos:
   rev: v1.4
   hooks:
     - id: autoflake
-      entry: autoflake -i
+      entry: autoflake -i --hang-closing
       types: ["python"]
 - repo: https://github.com/PyCQA/docformatter
   rev: v1.4
