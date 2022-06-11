@@ -24,12 +24,12 @@ def dest(filepath: Path, folder: Path) -> str:
 
 
 def search_share(
-    configuration: config.Configuration,
-    preserve=0,
-    stop_share=1,
-    meta=0,
-    vault_share=0,
-    obsidian=False,
+        configuration: config.Configuration,
+        preserve=0,
+        stop_share=1,
+        meta=0,
+        vault_share=0,
+        obsidian=False,
 ) -> tuple[list[str], str]:
     """Search file to publish, convert and write them."""
 
@@ -42,12 +42,12 @@ def search_share(
     clipkey = DEFAULT_NOTES
     description = '[cyan u]Scanning\n'
     for filepath in track(
-        VAULT_FILE, description=description, total=len(VAULT_FILE), disable=obsidian
+            VAULT_FILE, description=description, total=len(VAULT_FILE), disable=obsidian
     ):
         if (
-            filepath.endswith('.md')
-            and 'excalidraw' not in filepath
-            and not check.exclude(filepath, 'folder', configuration.output)
+                filepath.endswith('.md')
+                and 'excalidraw' not in filepath
+                and not check.exclude(filepath, 'folder', configuration.output)
         ):
             try:
                 yaml_front = frontmatter.load(filepath)
@@ -63,7 +63,7 @@ def search_share(
                             update = 0
 
                         if check.skip_update(
-                            Path(filepath), folder, update
+                                Path(filepath), folder, update
                         ) or not check.modification_time(Path(filepath), folder, update):
                             check_file = False
                         else:
@@ -116,12 +116,12 @@ def search_share(
 
 
 def obsidian_simple(
-    configuration: config.Configuration,
-    delopt=False,
-    git=True,
-    stop_share=0,
-    meta=0,
-    vault_share=0,
+        configuration: config.Configuration,
+        delopt=False,
+        git=True,
+        stop_share=0,
+        meta=0,
+        vault_share=0,
 ):
     """Convert file without markup for obsidian shell command."""
     if not git:
@@ -191,12 +191,12 @@ def obsidian_simple(
 
 
 def convert_all(
-    configuration: config.Configuration,
-    delopt: bool = False,
-    git: bool = True,
-    stop_share: int = 0,
-    meta: int = 0,
-    vault_share: int = 0,
+        configuration: config.Configuration,
+        delopt: bool = False,
+        git: bool = True,
+        stop_share: int = 0,
+        meta: int = 0,
+        vault_share: int = 0,
 ):
     """Convert all shared file with relying on rich markup library."""
     console = Console()

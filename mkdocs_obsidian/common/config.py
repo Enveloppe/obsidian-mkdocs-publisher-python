@@ -18,17 +18,17 @@ import mkdocs_obsidian as obs
 
 class Configuration:
     def __init__(
-        self,
-        output: str | Path,
-        input: str | Path,
-        weblink: str,
-        share_key: str,
-        index_key: str,
-        default_folder: str,
-        post: Path | str,
-        img: Path | str,
-        vault_file: list[str],
-        category_key: str,
+            self,
+            output: str | Path,
+            input: str | Path,
+            weblink: str,
+            share_key: str,
+            index_key: str,
+            default_folder: str,
+            post: Path | str,
+            img: Path | str,
+            vault_file: list[str],
+            category_key: str,
     ):
         self.output = Path(output)
         self.input = Path(input) if input else ''
@@ -297,8 +297,8 @@ def adding_configuration(configuration_name: str, basedir: Path, new_configurati
         f.write(configuration_contents)
 
 
-def checking_old_config(configuration_name: str, ENV_PATH: Path, basedir: Path):
-    env = dotenv_values(ENV_PATH)
+def checking_old_config(configuration_name: str, env_path: Path, basedir: Path):
+    env = dotenv_values(env_path)
     try:
         BASEDIR = Path(env['blog_path']).resolve(
         ).expanduser() if env.get('blog_path') else ''
@@ -316,10 +316,10 @@ def checking_old_config(configuration_name: str, ENV_PATH: Path, basedir: Path):
         DEFAULT_NOTES = ''
     new_config = Configuration(
         BASEDIR, VAULT, WEB, SHARE, INDEX_KEY, DEFAULT_NOTES, '', '', [], CATEGORY_KEY)
-    convert_to_YAML(basedir, ENV_PATH, new_config, configuration_name)
+    convert_to_YAML(basedir, env_path, new_config, configuration_name)
 
 
-def get_Obs2mk_dir(configuration_name='default', actions=False) -> Path:
+def get_obs2mk_dir(configuration_name='default', actions=False) -> Path:
     BASEDIR = obs.__path__[0]
     try:
         import pyto
@@ -337,7 +337,7 @@ def get_Obs2mk_dir(configuration_name='default', actions=False) -> Path:
 
 def open_value(configuration_name='default', actions=False) -> Configuration:
     """Return the configuration value."""
-    BASEDIR = get_Obs2mk_dir(configuration_name, actions)
+    BASEDIR = get_obs2mk_dir(configuration_name, actions)
     if 'test' in configuration_name:
         if 'minimal' in configuration_name:
             configuration_name = 'minimal'

@@ -39,7 +39,7 @@ def exclude(filepath: str, key: str, BASEDIR: Path) -> bool:
 
 
 def move_file_by_category(
-    filepath: Path, clipkey: str, configuration: cfg.Configuration
+        filepath: Path, clipkey: str, configuration: cfg.Configuration
 ) -> bool:
     glog_folder = Path(configuration.output, 'docs', '**')
     blog_file = [
@@ -104,9 +104,9 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
     if actions and actions != 'minimal':
         if os.path.isfile(Path(os.getcwd(), 'source', 'vault_published.json')):
             with open(
-                Path(os.getcwd(), 'source', 'vault_published.json'),
-                'r',
-                encoding='utf-8',
+                    Path(os.getcwd(), 'source', 'vault_published.json'),
+                    'r',
+                    encoding='utf-8',
             ) as file:
                 VAULT_FILE = json.load(file)
                 vault_file = []
@@ -115,9 +115,9 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
         elif os.path.exists(Path(os.getcwd(), 'source', 'vault_published.txt')):
             vault_file = ''
             with open(
-                Path(os.getcwd(), 'source', 'vault_published.txt'),
-                'r',
-                encoding='utf-8',
+                    Path(os.getcwd(), 'source', 'vault_published.txt'),
+                    'r',
+                    encoding='utf-8',
             ) as file_vault:
                 vault_file = vault_file + file_vault.read()
             vault_file = (
@@ -144,12 +144,12 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
             if len(index) != 0:
                 info.append(index)
         elif (
-            not any(i in file for i in important_folder)
-            and not exclude(file, 'files', BASEDIR)
-            and (
-                os.path.basename(file) not in vault_file
-                or os.path.basename(file) in excluded
-            )
+                not any(i in file for i in important_folder)
+                and not exclude(file, 'files', BASEDIR)
+                and (
+                    os.path.basename(file) not in vault_file
+                    or os.path.basename(file) in excluded
+                )
         ):
             try:
                 if os.path.isfile(Path(file)):
@@ -157,8 +157,8 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
                     os.remove(file)
                     folder = os.path.dirname(file)
                     if (
-                        len(os.listdir(folder)) == 0
-                        and os.path.basename(folder) != 'docs'
+                            len(os.listdir(folder)) == 0
+                            and os.path.basename(folder) != 'docs'
                     ):
                         # Delete folder
                         os.rmdir(folder)
@@ -197,9 +197,9 @@ def diff_file(filepath: Path, folder: Path, contents: list[str], update=0) -> bo
         meta_new = front_temp.metadata
         meta_new.pop('link', None)
         if (
-            new_version == retro_old
-            and sorted(meta_old.keys()) == sorted(meta_new.keys())
-            and sorted(str(meta_old.values())) == sorted(str(meta_new.values()))
+                new_version == retro_old
+                and sorted(meta_old.keys()) == sorted(meta_new.keys())
+                and sorted(str(meta_old.values())) == sorted(str(meta_new.values()))
         ):
             return False
         return True
@@ -274,7 +274,7 @@ def check_file(filepath: Path, folder: Path) -> str:
 
 
 def delete_file(
-    filepath: Path, folder: Path, configuration: cfg.Configuration, meta_update=1
+        filepath: Path, folder: Path, configuration: cfg.Configuration, meta_update=1
 ) -> bool:
     """Delete the requested file."""
     try:

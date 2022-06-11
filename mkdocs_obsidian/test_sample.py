@@ -3,7 +3,7 @@ from pathlib import Path
 
 import yaml
 
-from mkdocs_obsidian.common import convert_one as one, convert_all as all, config as cfg
+from mkdocs_obsidian.common import config as cfg, convert_all as all, convert_one as one
 
 
 class MyTestCase(unittest.TestCase):
@@ -32,7 +32,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_convert_big_config(self):
         print('convert an old configuration')
-        basedir = cfg.get_Obs2mk_dir('test_config', False)
+        basedir = cfg.get_obs2mk_dir('test_config', False)
         config_test = Path(basedir, '.test_config')
         with open(config_test, 'w', encoding='utf-8') as f:
             f.write(f'''
@@ -65,7 +65,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_convert_mini_config(self):
         print('convert an old configuration')
-        basedir = cfg.get_Obs2mk_dir('test_mini_config', False)
+        basedir = cfg.get_obs2mk_dir('test_mini_config', False)
         config_test = Path(basedir, '.test_mini_config')
         with open(config_test, 'w', encoding='utf-8') as f:
             f.write(f'''
