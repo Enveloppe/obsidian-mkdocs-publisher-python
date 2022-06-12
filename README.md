@@ -1,5 +1,5 @@
 The script can be use :
-- Directly in Obsidian, using [Obsidian Shell Commands](https://github.com/Taitava/obsidian-shellcommands) (see [Obsidian shell configuration](https://mara-li.github.io/obsidian_mkdocs_publisher_docs/documentation/obs2mk/obsidian%20shell/) )
+- Directly in Obsidian, using [Obsidian Shell Commands](https://github.com/Taitava/obsidian-shellcommands) (see [Obsidian shell configuration](https://obsidianmkdocs.github.io/obsidian_mkdocs_publisher_docs/documentation/obs2mk/obsidian%20shell/) )
 - In a [terminal](#commands).
 
 The supported system are :
@@ -82,12 +82,11 @@ You can use and create multiple configuration files. This allows to have multipl
 See [[configuration template]] for more information about the configuration file.
 
 ----
+# Navigation
 
-- [Main Repo](https://github.com/Mara-Li/obsidian_mkdocs_publisher)
-- [Obsidian Plugin](https://github.com/Mara-Li/obsidian-mkdocs-publisher-plugin/)
-- [Python package](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python)
-- [Template](https://github.com/Mara-Li/obsidian-mkdocs-publisher-template)
-- [Documentation](https://mara-li.github.io/obsidian_mkdocs_publisher_docs/)
+- [Obsidian Plugin](https://github.com/obsidianMkdocs/obsidian-github-publisher)
+- [Python package](https://github.com/obsidianMkdocs/obsidian-mkdocs-publisher-python)
+- [Template](https://github.com/obsidianMkdocs/obsidian-mkdocs-publisher-template)
  
  
 [^1]: For `file` you need to add the filepath of the file you want to share : `obs2mk (global_option) file "filepath" (specific_options)`
