@@ -18,17 +18,17 @@ import mkdocs_obsidian as obs
 
 class Configuration:
     def __init__(
-            self,
-            output: str | Path,
-            input: str | Path,
-            weblink: str,
-            share_key: str,
-            index_key: str,
-            default_folder: str,
-            post: Path | str,
-            img: Path | str,
-            vault_file: list[str],
-            category_key: str,
+        self,
+        output: str | Path,
+        input: str | Path,
+        weblink: str,
+        share_key: str,
+        index_key: str,
+        default_folder: str,
+        post: Path | str,
+        img: Path | str,
+        vault_file: list[str],
+        category_key: str,
             ):
         self.output = Path(output)
         self.input = Path(input) if input else ''

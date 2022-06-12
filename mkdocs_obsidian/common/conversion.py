@@ -43,9 +43,9 @@ def copy_image(configuration: cfg.Configuration, final_text: str):
                 final_text = os.path.basename(final_text.split('|')[0])
                 image_path = get_image(configuration, final_text)
                 if (
-                        image_path
-                        and os.path.isfile(image_path)
-                        and not image_path.endswith('.md')
+                    image_path
+                    and os.path.isfile(image_path)
+                    and not image_path.endswith('.md')
                         ):
                     shutil.copyfile(image_path, Path(
                         IMG, os.path.basename(image_path)))
@@ -81,12 +81,12 @@ def clipboard(configuration: cfg.Configuration, filepath: str, folder: str):
 
 
 def file_write(
-        configuration: cfg.Configuration,
-        filepath: str | Path,
-        contents: list,
-        folder: str | Path,
-        preserve=0,
-        meta_update=1,
+    configuration: cfg.Configuration,
+    filepath: str | Path,
+    contents: list,
+    folder: str | Path,
+    preserve=0,
+    meta_update=1,
         ) -> bool:
     """Write the new converted file and update metadata if meta_update is 0."""
     SHARE = configuration.share_key
@@ -125,9 +125,9 @@ def read_custom(BASEDIR: Path) -> list[str]:
     hashtags)"""
     id_css = []
     with open(
-            Path(BASEDIR, 'docs', 'assets', 'css', 'custom_attributes.css'),
-            'r',
-            encoding='utf-8',
+        Path(BASEDIR, 'docs', 'assets', 'css', 'custom_attributes.css'),
+        'r',
+        encoding='utf-8',
             ) as css:
         for i in css.readlines():
             if i.startswith('#'):
@@ -294,7 +294,7 @@ def parsing_code(files_contents: list[str], line: str) -> bool:
 
 
 def file_convert(
-        configuration: cfg.Configuration, filepath: str | Path, force=0, image=True
+    configuration: cfg.Configuration, filepath: str | Path, force=0, image=True
         ):
     """Read the filepath and convert each line based on regex condition."""
     final = []
@@ -316,7 +316,7 @@ def file_convert(
             final.append(final_text)
         else:
             if not final_text.strip().endswith(
-                    '%%'
+                '%%'
                     ) and not final_text.strip().startswith('%%'):
                 # Skip obsidian comments
                 # Check and copy image
@@ -327,8 +327,8 @@ def file_convert(
                         '%{2}(.*)%{2}', '', final_text
                         )  # remove obsidian comments
                 if (
-                        re.search(
-                            r'\\U\w+', final_text) and not 'Users' in final_text
+                    re.search(
+                        r'\\U\w+', final_text) and not 'Users' in final_text
                         ):  # Fix emoji if bug because of frontmatter
                     emojiz = re.search(r'\\U\w+', final_text)
                     emojiz = emojiz.group().strip().replace('"', '')
@@ -350,18 +350,18 @@ def file_convert(
                     final_text, callout_state
                     )
                 if re.search(
-                        rf"\[\[?(.*)" + re.escape(INDEX_KEY) +
-                        r'(.*)\]\]?', final_text
+                    rf"\[\[?(.*)" + re.escape(INDEX_KEY) +
+                    r'(.*)\]\]?', final_text
                         ):
                     # fix pagination.indexes page citation, exclude image/embed file
                     final_text = index_citation(final_text, configuration)
                 if re.search('#\w+', final_text) and not re.search(
-                        '(`|\[{2}|\()(.*)#(.*)(`|\]{2}|\))', final_text
+                    '(`|\[{2}|\()(.*)#(.*)(`|\]{2}|\))', final_text
                         ):  # search hashtags not in link
                     # Convert hashtags
                     final_text = convert_hashtags(configuration, final_text)
                 elif re.fullmatch(
-                        '\\\\', final_text.strip()
+                    '\\\\', final_text.strip()
                         ):  # New line when using "\" in obsidian filepath
                     final_text = '\n'
 

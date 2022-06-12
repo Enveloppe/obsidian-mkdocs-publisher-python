@@ -34,12 +34,12 @@ def search_shortcuts(VAULT_FILE: list[str], file: str) -> str | bool:
 
 
 def obsidian_shell(
-        configuration: Configuration,
-        file='0',
-        meta_update=0,
-        vault_share=0,
-        git=True,
-        delete_option=False,
+    configuration: Configuration,
+    file='0',
+    meta_update=0,
+    vault_share=0,
+    git=True,
+    delete_option=False,
         ):
     """Just run the CLI without python rich, for printing in Obsidian Shell."""
     VAULT_FILE = configuration.vault_file
@@ -58,11 +58,11 @@ def obsidian_shell(
 
 
 def mobile_shortcuts(
-        configuration: Configuration,
-        file='0',
-        meta_update=0,
-        vault_share=0,
-        delete_option=False,
+    configuration: Configuration,
+    file='0',
+    meta_update=0,
+    vault_share=0,
+    delete_option=False,
         ):
     """
     - Never use git
@@ -87,7 +87,7 @@ def mobile_shortcuts(
 
 
 def keep(
-        obsidian: bool, console: Console, configuration: Configuration, actions=False
+    obsidian: bool, console: Console, configuration: Configuration, actions=False
         ) -> int:
     """Delete the file moved or removed from sharing."""
     info = check.delete_not_exist(configuration, actions)

@@ -53,7 +53,7 @@ def update_frontmatter(filepath: Path, configuration: cfg.Configuration, link=1)
                     .decode('unicode_escape')
                     .encode('utf-16', 'surrogatepass')
                     .decode('utf-16')
-                )
+                    )
                 update = re.sub(r'"\\U\w+"', convert_emojiz, update)
             except UnicodeEncodeError:
                 pass

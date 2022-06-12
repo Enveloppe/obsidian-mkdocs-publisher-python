@@ -9,9 +9,9 @@ from pathlib import Path
 def custom_callout(BASEDIR: Path):
     custom = []
     with open(
-            Path(BASEDIR, 'docs', 'assets', 'css', 'custom_attributes.css'),
-            'r',
-            encoding='utf-8',
+        Path(BASEDIR, 'docs', 'assets', 'css', 'custom_attributes.css'),
+        'r',
+        encoding='utf-8',
             ) as s:
         for i in s.readlines():
             if i.strip().startswith('--md-admonition-icon'):

@@ -16,7 +16,7 @@ from mkdocs_obsidian.common import github_push as gitt
 
 
 def convert_one(
-        ori: Path, configuration: cfg.Configuration, git: bool, meta: int, obsidian=False
+    ori: Path, configuration: cfg.Configuration, git: bool, meta: int, obsidian=False
         ):
     """Function to start the conversion of *one* specified file."""
     file_name = os.path.basename(ori).upper()
@@ -78,7 +78,7 @@ def overwrite_file(source_path: str, configuration: cfg.Configuration, test=Fals
     if not test:
         os.remove(source_path)
     if unidecode(filename).replace('.md', '') == unidecode(
-            os.path.basename(source_path.parent)
+        os.path.basename(source_path.parent)
             ):
         source_path = Path(str(source_path).replace(filename, 'index.md'))
         filename = 'index.md'

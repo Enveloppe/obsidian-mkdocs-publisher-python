@@ -29,13 +29,13 @@ def git_pull(configuration: Configuration, git=True):
 
 
 def git_push(
-        commit: str,
-        configuration: Configuration,
-        obsidian=False,
-        add_info='',
-        rmv_info='',
-        add_msg='',
-        remove_msg='',
+    commit: str,
+    configuration: Configuration,
+    obsidian=False,
+    add_info='',
+    rmv_info='',
+    add_msg='',
+    remove_msg='',
         ):
     """git push the modified files and print a message result."""
     console = Console()
