@@ -75,13 +75,13 @@ def code_blocks(start_list: list, end_list: list) -> list:
     return merged
 
 
-def admonition_trad(BASEDIR: Path, file_data: list) -> list:
+def admonition_trad(basedir: Path, file_data: list) -> list:
     """Change all admonition to material admonition."""
     code_index = 0
     code_dict = {}
     start_list = []
     end_list = []
-    adm_list = custom_callout(BASEDIR)
+    adm_list = custom_callout(basedir)
     for i in range(0, len(file_data)):
         if re.search('[`?!]{3}( ?)\w+(.*)', file_data[i]):
             start = i
