@@ -407,23 +407,21 @@ def open_minimal(basedir: Path) -> Configuration:
 def open_value(configuration_name='default', actions=False, env_path: tuple[Path, Path] = None) -> Configuration:
     """Return the configuration value."""
     basedir = env_path[0] if env_path else get_obs2mk_dir(actions=actions)
+    if configuration_name == 'minimal':
+        return open_minimal(basedir)
     env_path = env_path[1] if env_path else None
     if actions:
         env_path = Path(basedir, 'source', '.github-actions')
         configuration_name = 'actions'
-    elif not env_path:
+    elif not env_path and configuration_name != "minimal":
         if configuration_name == 'default':
             env_path = Path(f'{basedir}/.mkdocs_obsidian')
         else:
             env_path = Path(f'{basedir}/.{configuration_name}')
 
-    if configuration_name != 'minimal' or actions:
-        configuration = open_value_default(
-            configuration_name, basedir, env_path)
-    else:
-        configuration = open_minimal(basedir)
+    configuration = open_value_default(configuration_name, basedir, env_path)
 
-    if actions is True and configuration_name != 'minimal':
+    if actions is True:
         vault_file = [
             x
             for x in glob.iglob(str(Path(os.getcwd(), 'source', '**')), recursive=True)

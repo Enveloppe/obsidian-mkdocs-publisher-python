@@ -233,6 +233,8 @@ def main():
     cmd = args.cmd
 
     configuration_name = args.use or '0'
+    if args.minimal:
+        configuration_name = 'minimal'
     if cmd == 'config':
         configuration_name = args.new or '0'
         basedir = setup.get_obs2mk_dir(configuration_name, False)
