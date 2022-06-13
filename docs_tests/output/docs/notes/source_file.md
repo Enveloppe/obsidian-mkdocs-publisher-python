@@ -11,7 +11,7 @@ This is a sandbox vault in which you can test various functionality of Obsidian.
 
 !!! Note "Beta vault - contributions are welcome!"
 	This sandbox vault is in beta!
-
+	
 	If you spot a typo or a mistake, feel free to submit a pull request [here](https://github.com/obsidianmd/obsidian-docs/tree/master/Sandbox).
 
 
@@ -21,7 +21,7 @@ In Obsidian, a vault is a plain folder on your computer. By plain, I mean it's j
 
 !!! SUMMARY "The Point™"
 	The point is that you own this folder just like the other folder of camping photos that you created yourself.
-
+	
 	It’s supposed to be a good thing because you get both **data ownership and privacy** this way. Just keep in mind [[#^0f681f|with great power comes great responsibility]].
 
 No need to worry about loading your content from our servers. You know, servers can get hacked or be offline or be slow when you need it most.
@@ -39,7 +39,7 @@ If you’re convinced Obsidian is worth a try for you, it’s time to get starte
 
 # Other test
 
-- **tags**{: #tags .hash}
+- **tags**{: #tags .hash}  
 
 
 ```md
