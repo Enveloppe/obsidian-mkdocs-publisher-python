@@ -349,11 +349,10 @@ def file_convert(
                 final_text, callout_state = adm.callout_conversion(
                     final_text, callout_state
                 )
-                if re.search(
+                if index != '' and re.search(
                         rf"\[\[?(.*)" + re.escape(index) +
                         r'(.*)\]\]?', final_text
                 ):
-                    # fix pagination.indexes page citation, exclude image/embed file
                     final_text = index_citation(final_text, configuration)
                 if re.search('#\w+', final_text) and not re.search(
                         '(`|\[{2}|\()(.*)#(.*)(`|\]{2}|\))', final_text
