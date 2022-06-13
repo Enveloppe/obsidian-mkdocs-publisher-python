@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.3 (2022-06-13)
+### Fix
+* **minimal:** Index citation broke link ([`df74787`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/df74787046477c7198fcd76451e3b3307a7433e4))
+* **minimal:** Configuration not exists using github_actions in repository ([`b795d68`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/b795d682130663d8e1618f4b54966fc8e7865efd))
+
 ## v4.0.2 (2022-06-13)
 ### Feature
 * Remove configuration for minimal settings ([`c8bc2e2`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c8bc2e2d1ddda1d9b62096666615cf9f1c63e106))
