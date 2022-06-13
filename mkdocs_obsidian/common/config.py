@@ -355,7 +355,7 @@ def open_value_default(configuration_name: str, basedir: Path, env_path: Path) -
         config = yaml.safe_load(f)
 
     if not config.get(configuration_name):
-        create_env(basedir, configuration_name)
+        create_env(basedir, 'configuration_name')
     config = config[configuration_name]
     default_note = config['frontmatter']['category']['default value']
     if default_note == '/':
@@ -406,7 +406,7 @@ def open_minimal(basedir: Path) -> Configuration:
 
 def open_value(configuration_name='default', actions=False, env_path: tuple[Path, Path] = None) -> Configuration:
     """Return the configuration value."""
-    basedir = env_path[0] if env_path else get_obs2mk_dir(actions=actions)
+    basedir = env_path[0] if env_path else get_obs2mk_dir(configuration_name=configuration_name, actions=actions)
     if configuration_name == 'minimal':
         return open_minimal(basedir)
     env_path = env_path[1] if env_path else None
