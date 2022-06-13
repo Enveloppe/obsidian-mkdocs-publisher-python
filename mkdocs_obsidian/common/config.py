@@ -18,18 +18,18 @@ import mkdocs_obsidian as obs
 
 class Configuration:
     def __init__(
-        self,
-        output: str | Path,
-        input: str | Path,
-        weblink: str,
-        share_key: str,
-        index_key: str,
-        default_folder: str,
-        post: Path | str,
-        img: Path | str,
-        vault_file: list[str],
-        category_key: str,
-            ):
+            self,
+            output: str | Path,
+            input: str | Path,
+            weblink: str,
+            share_key: str,
+            index_key: str,
+            default_folder: str,
+            post: Path | str,
+            img: Path | str,
+            vault_file: list[str],
+            category_key: str,
+    ):
         self.output = Path(output)
         self.input = Path(input) if input else ''
         self.weblink = weblink
@@ -70,13 +70,15 @@ def legacy_environment(console: Console) -> tuple[str, str]:
     while vault == '' or not os.path.isdir(vault) or not right_path(Path(vault)):
         vault = str(
             console.input(
-                'Please provide your [u bold]obsidian vault[/] path: ')
+                'Please provide your [u bold]obsidian vault[/] path: '
             )
+        )
     while blog == '' or not os.path.isdir(blog):
         blog = str(
             console.input(
-                'Please provide the [u bold]blog[/] repository path: ')
+                'Please provide the [u bold]blog[/] repository path: '
             )
+        )
     return vault, blog
 
 
@@ -179,7 +181,8 @@ def create_env(basedir: Path, config_name='0'):
         import subprocess
 
         process = subprocess.Popen(
-            'echo $TERM_PROGRAM', stdout=subprocess.PIPE)
+            'echo $TERM_PROGRAM', stdout=subprocess.PIPE
+        )
         output, error = process.communicate()
         ashell = output.decode('utf-8').strip() == 'a-Shell'
     except (RuntimeError, FileNotFoundError):
@@ -192,7 +195,8 @@ def create_env(basedir: Path, config_name='0'):
         config_name = 'default'
     env_path = Path(f'{basedir}/configuration.yml')
     print(
-        f'[bold]Creating environnement in [u]{env_path}[/][/] for [u]{config_name}[/]\n')
+        f'[bold]Creating environnement in [u]{env_path}[/][/] for [u]{config_name}[/]\n'
+    )
     if pyto_check:
         vault, blog = pyto_environment(console)
     elif ashell:
@@ -203,15 +207,19 @@ def create_env(basedir: Path, config_name='0'):
         vault, blog = legacy_environment(console)
     blog_link = check_url(Path(blog)).strip()
     if blog_link == '':
-        blog_link = str(console.input(
-            'Please, provide the [u]URL[/] of your blog: '))
+        blog_link = str(
+            console.input(
+                'Please, provide the [u]URL[/] of your blog: '
+            )
+        )
     share = str(
         console.input(
-            'Choose your share key name [i](default: [bold]share[/])[/]: ')
+            'Choose your share key name [i](default: [bold]share[/])[/]: '
         )
+    )
     default_blog = console.input(
         'Choose your default folder note [i](default: [bold]notes[/])[/]: '
-        )
+    )
     if default_blog == '':
         default_blog = 'notes'
     if share == '':
@@ -220,14 +228,14 @@ def create_env(basedir: Path, config_name='0'):
         console.input(
             'If you want to use [u]folder note[/], please choose the key for citation'
             ' [i](default: [bold](i)[/])[/]: '
-            )
         )
+    )
     category_key = str(
         console.input(
             'Please, choose the key for the category [i](default:'
             ' [bold]category[/])[/]: '
-            )
         )
+    )
     if category_key == '':
         category_key = 'category'
     if index_key == '':
@@ -237,17 +245,17 @@ def create_env(basedir: Path, config_name='0'):
         'configuration': {
             'input': vault,
             'output': blog,
-            },
+        },
         'frontmatter':
-        {
-            'share': share,
-            'index': index_key,
-            'category': {
-                'key': category_key,
-                'default value': default_blog
+            {
+                'share': share,
+                'index': index_key,
+                'category': {
+                    'key': category_key,
+                    'default value': default_blog
                 }
             }
-        }
+    }
     if default_blog == '/':
         default_blog = ''
     adding_configuration(config_name, basedir, new_configuration)
@@ -256,7 +264,7 @@ def create_env(basedir: Path, config_name='0'):
     try:
         img.mkdir(
             exist_ok=True
-            )  # Assets must exist, raise a file not found error if not.
+        )  # Assets must exist, raise a file not found error if not.
         post.mkdir(exist_ok=True, parents=True)
         print('[green] Environment created ![/]')
     except FileNotFoundError:
@@ -345,6 +353,7 @@ def open_value_default(configuration_name: str, basedir: Path, env_path: Path) -
 
     with open(env_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
+
     if not config.get(configuration_name):
         create_env(basedir, configuration_name)
     config = config[configuration_name]
