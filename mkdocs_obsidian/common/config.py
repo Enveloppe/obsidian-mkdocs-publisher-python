@@ -336,74 +336,89 @@ def get_obs2mk_dir(configuration_name='default', actions=False) -> Path:
     return basedir
 
 
-def open_value(configuration_name='default', actions=False) -> Configuration:
-    """Return the configuration value."""
-    BASEDIR = get_obs2mk_dir(configuration_name, actions)
-    if 'test' in configuration_name:
-        if 'minimal' in configuration_name:
-            configuration_name = 'minimal'
-        else:
-            configuration_name = 'default'
-        ENV_PATH = Path(BASEDIR, '.obs2mk')
-    elif actions:
-        ENV_PATH = Path(BASEDIR, 'source', '.github-actions')
-    else:
-        if configuration_name == 'default':
-            ENV_PATH = Path(f'{BASEDIR}/.mkdocs_obsidian')
-        else:
-            ENV_PATH = Path(f'{BASEDIR}/.{configuration_name}')
+def open_value_default(configuration_name: str, basedir: Path, env_path: Path) -> Configuration:
+    if os.path.isfile(env_path):
+        checking_old_config(configuration_name, env_path, basedir)
+    env_path = Path(basedir, 'configuration.yml')
+    if not os.path.isfile(env_path):
+        create_env(basedir, configuration_name)
 
-    if os.path.isfile(ENV_PATH):
-        checking_old_config(configuration_name, ENV_PATH, BASEDIR)
-    ENV_PATH = Path(BASEDIR, 'configuration.yml')
-    if not os.path.isfile(ENV_PATH):
-        create_env(BASEDIR, configuration_name)
-    with open(ENV_PATH, 'r', encoding='utf-8') as f:
+    with open(env_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
     if not config.get(configuration_name):
-        create_env(BASEDIR, configuration_name)
+        create_env(basedir, configuration_name)
     config = config[configuration_name]
-    BASEDIR = Path(config['configuration']['output']).resolve(
-        ).expanduser() if config['configuration'].get('output') else BASEDIR
-    VAULT = Path(config['configuration']['input']).resolve(
-        ).expanduser() if config['configuration'].get('input') else ''
-    WEB = config['weblink']
-    SHARE = config['frontmatter']['share']
-    INDEX_KEY = config['frontmatter']['index']
-    CATEGORY = config['frontmatter']['category']['key']
-    DEFAULT_NOTES = config['frontmatter']['category']['default value']
-    if DEFAULT_NOTES == '/':
-        DEFAULT_NOTES = ''
-    POST = Path(BASEDIR, 'docs', DEFAULT_NOTES)
-    IMG = Path(BASEDIR, '/docs/assets/img/')
-    if actions == 'minimal':
-        VAULT_FILE = [
-            x
-            for x in glob.iglob(str(Path(os.getcwd(), 'docs', '**')), recursive=True)
-            if os.path.isfile(x)
-            ]
-    elif actions:
-        VAULT_FILE = [
+    default_note = config['frontmatter']['category']['default value']
+    if default_note == '/':
+        default_note = ''
+
+    vault = Path(config['configuration']['input']).resolve(
+    ).expanduser() if config['configuration'].get('input') else ''
+
+    configuration = Configuration(
+        Path(config['configuration']['output']).resolve(
+        ).expanduser() if config['configuration'].get('output') else basedir,
+        vault,
+        config['weblink'],
+        config['frontmatter']['share'],
+        config['frontmatter']['index'],
+        default_note,
+        Path(basedir, 'docs', default_note),
+        Path(basedir, '/docs/assets/img/'),
+        [x
+         for x in glob.iglob(str(Path(vault, '**')), recursive=True)
+         if os.path.isfile(x)
+         ],
+        config['frontmatter']['category']['key'],
+    )
+    return configuration
+
+
+def open_minimal(basedir: Path) -> Configuration:
+    vault_files = [
+        x
+        for x in glob.iglob(str(Path(os.getcwd(), 'docs', '**')), recursive=True)
+        if os.path.isfile(x)
+    ]
+    configuration = Configuration(
+        basedir,
+        '',
+        '',
+        '',
+        '',
+        '',
+        Path(basedir, 'docs'),
+        Path(basedir, '/docs/assets/img/'),
+        vault_files,
+        '',
+    )
+    return configuration
+
+
+def open_value(configuration_name='default', actions=False, env_path: tuple[Path, Path] = None) -> Configuration:
+    """Return the configuration value."""
+    basedir = env_path[0] if env_path else get_obs2mk_dir(actions=actions)
+    env_path = env_path[1] if env_path else None
+    if actions:
+        env_path = Path(basedir, 'source', '.github-actions')
+        configuration_name = 'actions'
+    elif not env_path:
+        if configuration_name == 'default':
+            env_path = Path(f'{basedir}/.mkdocs_obsidian')
+        else:
+            env_path = Path(f'{basedir}/.{configuration_name}')
+
+    if configuration_name != 'minimal' or actions:
+        configuration = open_value_default(configuration_name, basedir, env_path)
+    else:
+        configuration = open_minimal(basedir)
+
+    if actions is True and configuration_name != 'minimal':
+        vault_file = [
             x
             for x in glob.iglob(str(Path(os.getcwd(), 'source', '**')), recursive=True)
             if os.path.isfile(x)
-            ]
-    else:
-        VAULT_FILE = [
-            x
-            for x in glob.iglob(str(Path(VAULT, '**')), recursive=True)
-            if os.path.isfile(x)
-            ]
-    configuration = Configuration(
-        BASEDIR,
-        VAULT,
-        WEB,
-        SHARE,
-        INDEX_KEY,
-        DEFAULT_NOTES,
-        POST,
-        IMG,
-        VAULT_FILE,
-        CATEGORY,
-        )
+        ]
+        configuration.vault_file = vault_file
+
     return configuration
