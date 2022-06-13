@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.2 (2022-06-13)
+### Feature
+* Remove configuration for minimal settings ([`c8bc2e2`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/c8bc2e2d1ddda1d9b62096666615cf9f1c63e106))
+
+### Fix
+* **precommit:** Crash when using with semantic release ([`ebb4d39`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/ebb4d391bd3a76d8bd3e9ad1a460281315031c94))
+
 ## v4.0.1 (2022-06-01)
 ### Fix
 * Configuration using resolving & relative path ([`8ac1510`](https://github.com/Mara-Li/obsidian-mkdocs-publisher-python/commit/8ac1510dad5ca9a994c7d152c9bdeb45cbc7d8c7))
