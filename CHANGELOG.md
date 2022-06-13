@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.4 (2022-06-13)
+### Fix
+* **minimal:** File or directory not found ([`220c663`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/220c6636344ac00ca2b494ffea598d9da20568ac))
+
 ## v4.0.3 (2022-06-13)
 ### Fix
 * **minimal:** Index citation broke link ([`df74787`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/df74787046477c7198fcd76451e3b3307a7433e4))
