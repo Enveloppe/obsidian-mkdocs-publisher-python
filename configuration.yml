@@ -1,0 +1,11 @@
+test_mini_config:
+  configuration:
+    input: null
+    output: .
+  frontmatter:
+    category:
+      default value: notes
+      key: category
+    index: (i)
+    share: share
+  weblink: null
