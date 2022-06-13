@@ -254,7 +254,7 @@ def create_env(basedir: Path, config_name='0'):
                     'key': category_key,
                     'default value': default_blog
                 }
-            }
+        }
     }
     if default_blog == '/':
         default_blog = ''
@@ -418,7 +418,8 @@ def open_value(configuration_name='default', actions=False, env_path: tuple[Path
             env_path = Path(f'{basedir}/.{configuration_name}')
 
     if configuration_name != 'minimal' or actions:
-        configuration = open_value_default(configuration_name, basedir, env_path)
+        configuration = open_value_default(
+            configuration_name, basedir, env_path)
     else:
         configuration = open_minimal(basedir)
 

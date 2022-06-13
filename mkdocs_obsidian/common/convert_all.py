@@ -30,31 +30,31 @@ def search_share(
     meta=0,
     vault_share=0,
     obsidian=False,
-        ) -> tuple[list[str], str]:
+) -> tuple[list[str], str]:
     """Search file to publish, convert and write them."""
 
-    DEFAULT_NOTES = configuration.default_folder
-    VAULT_FILE = configuration.vault_file
-    SHARE = configuration.share_key
-    CATEGORY = configuration.category_key
+    default_notes = configuration.default_folder
+    vault_file = configuration.vault_file
+    share = configuration.share_key
+    category = configuration.category_key
     filespush = []
     check_file = False
-    clipkey = DEFAULT_NOTES
+    clipkey = default_notes
     description = '[cyan u]Scanning\n'
     for filepath in track(
-        VAULT_FILE, description=description, total=len(VAULT_FILE), disable=obsidian
-            ):
+        vault_file, description=description, total=len(vault_file), disable=obsidian
+    ):
         if (
             filepath.endswith('.md')
             and 'excalidraw' not in filepath
             and not check.exclude(filepath, 'folder', configuration.output)
-                ):
+        ):
             try:
                 yaml_front = frontmatter.load(filepath)
-                clipkey = yaml_front.get(CATEGORY, DEFAULT_NOTES)
+                clipkey = yaml_front.get(category, default_notes)
                 if not clipkey:
                     clipkey = 'hidden'
-                if yaml_front.get(SHARE) or vault_share == 1:
+                if yaml_front.get(share) or vault_share == 1:
                     folder = check.create_folder(clipkey, configuration, 0)
                     if preserve == 0:  # preserve
                         if yaml_front.get('update') is False:
@@ -64,25 +64,25 @@ def search_share(
 
                         if check.skip_update(
                             Path(filepath), folder, update
-                                ) or not check.modification_time(Path(filepath), folder, update):
+                        ) or not check.modification_time(Path(filepath), folder, update):
                             check_file = False
                         else:
                             contents = convert.file_convert(
                                 configuration, filepath, vault_share
-                                )
+                            )
                             if check.diff_file(Path(filepath), folder, contents, update):
                                 check_file = convert.file_write(
-                                    configuration, filepath, contents, folder, meta
-                                    )
+                                    configuration, filepath, contents, folder, 0, meta
+                                )
                             else:
                                 check_file = False
                     elif preserve == 1:  # force deletions
                         contents = convert.file_convert(
                             configuration, filepath, vault_share
-                            )
+                        )
                         check_file = convert.file_write(
-                            configuration, filepath, contents, folder, meta
-                            )
+                            configuration, filepath, contents, folder, 1, meta
+                        )
                     msg_folder = os.path.basename(folder)
                     destination = dest(Path(filepath), folder)
                     if check_file:
@@ -90,7 +90,7 @@ def search_share(
                             'Added :'
                             f" {os.path.basename(destination).replace('.md', '')} in"
                             f' [{msg_folder}]'
-                            )
+                        )
                 elif stop_share == 1:
                     folder = check.create_folder(clipkey, configuration, 1)
                     file_name = os.path.basename(filepath).replace('.md', '')
@@ -103,7 +103,7 @@ def search_share(
                             'Removed :'
                             f" {os.path.basename(destination).replace('.md', '')} from"
                             f' [{msg_folder}]'
-                            )
+                        )
             except yaml.YAMLError:
                 print(
                     f'Skip [u bold red]{filepath}[/] because of YAML error.\n')
@@ -111,7 +111,7 @@ def search_share(
                 print(
                     f'Skip [u bold red]{filepath}[/] because of an unexpected error :'
                     f' {e}\n'
-                    )
+                )
     return filespush, clipkey
 
 
@@ -122,7 +122,7 @@ def obsidian_simple(
     stop_share=0,
     meta=0,
     vault_share=0,
-        ):
+):
     """Convert file without markup for obsidian shell command."""
     if not git:
         git_info = 'No push'
@@ -136,15 +136,15 @@ def obsidian_simple(
         print(
             f'[{time_now}] STARTING CONVERT ALL\n\n- {git_info}\n- Force'
             f' deletion{msg_info}'
-            )
+        )
         new_files, clipkey = search_share(
             configuration, 1, stop_share, meta, vault_share, obsidian=True
-            )
+        )
     else:
         print(f'[{time_now}] STARTING CONVERT ALL\n- {git_info}\n{msg_info}')
         new_files, clipkey = search_share(
             configuration, 0, stop_share, meta, vault_share, obsidian=True
-            )
+        )
     if len(new_files) > 0:
         add_msg = ''
         remove_msg = ''
@@ -153,7 +153,7 @@ def obsidian_simple(
                 remove_msg = (
                     remove_msg + '\n- ' +
                     markdown_msg.replace('Removed : ', '')
-                    )
+                )
             elif 'added' in markdown_msg.lower():
                 add_msg = add_msg + '\n- ' + \
                     markdown_msg.replace('Added : ', '')
@@ -179,12 +179,12 @@ def obsidian_simple(
                 rmv_info=remove_info,
                 add_msg=add_msg,
                 remove_msg=remove_msg,
-                )
+            )
         else:
             print(
                 f"[{datetime.now().strftime('%H:%M:%S')}]"
                 f'{add_info}: {add_msg}\n{remove_info}: {remove_msg}'
-                )
+            )
     else:
         print(f"[{datetime.now().strftime('%H:%M:%S')}] No modification 😶")
     sys.exit()
@@ -197,7 +197,7 @@ def convert_all(
     stop_share: int = 0,
     meta: int = 0,
     vault_share: int = 0,
-        ):
+):
     """Convert all shared file with relying on rich markup library."""
     console = Console()
     if not git:
@@ -216,16 +216,16 @@ def convert_all(
                 align='center',
                 end='',
                 style='deep_sky_blue3',
-                ),
+            ),
             Markdown(f'- {git_info}\n- Force deletion{msg_info}',
                      justify='full'),
             end=' ',
             new_line_start=True,
             justify='full',
-            )
+        )
         new_files, clipkey = search_share(
             configuration, 1, stop_share, meta, vault_share
-            )
+        )
     else:
         console.print(
             Rule(
@@ -234,14 +234,14 @@ def convert_all(
                 align='center',
                 end='',
                 style='deep_sky_blue3',
-                ),
+            ),
             Markdown(f'- {git_info}\n{msg_info}'),
             ' ',
             new_line_start=True,
-            )
+        )
         new_files, clipkey = search_share(
             configuration, 0, stop_share, meta, vault_share
-            )
+        )
     if len(new_files) > 0:
         add_msg = ''
         remove_msg = ''
@@ -250,7 +250,7 @@ def convert_all(
                 remove_msg = (
                     remove_msg + '\n- ' +
                     markdown_msg.replace('Removed : ', '')
-                    )
+                )
             elif 'added' in markdown_msg.lower():
                 add_msg = add_msg + '\n- ' + \
                     markdown_msg.replace('Added : ', '')
@@ -275,7 +275,7 @@ def convert_all(
                 rmv_info=remove_info,
                 add_msg=add_msg,
                 remove_msg=remove_msg,
-                )
+            )
         else:
             console.print(
                 f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]"
@@ -284,10 +284,10 @@ def convert_all(
                 remove_info,
                 Markdown(remove_msg),
                 end=' ',
-                )
+            )
     else:
         console.print(
             f"[[i not bold sky_blue2]{datetime.now().strftime('%H:%M:%S')}[/]]",
             Markdown('*No modification 😶*'),
             end=' ',
-            )
+        )

@@ -40,13 +40,13 @@ def exclude(filepath: str, key: str, BASEDIR: Path) -> bool:
 
 def move_file_by_category(
     filepath: Path, clipkey: str, configuration: cfg.Configuration
-        ) -> bool:
+) -> bool:
     glog_folder = Path(configuration.output, 'docs', '**')
     blog_file = [
         file
         for file in glob.glob(str(glog_folder), recursive=True)
         if os.path.isfile(file)
-        ]
+    ]
     file_name = os.path.basename(filepath)
     if file_name == 'index.md':
         file_name = PurePath(clipkey).name + '.md'
@@ -107,7 +107,7 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
                 Path(os.getcwd(), 'source', 'vault_published.json'),
                 'r',
                 encoding='utf-8',
-                    ) as file:
+            ) as file:
                 VAULT_FILE = json.load(file)
                 vault_file = []
             if len(VAULT_FILE) == 0:
@@ -118,7 +118,7 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
                 Path(os.getcwd(), 'source', 'vault_published.txt'),
                 'r',
                 encoding='utf-8',
-                    ) as file_vault:
+            ) as file_vault:
                 vault_file = vault_file + file_vault.read()
             vault_file = (
                 vault_file.replace('\n', ' ')
@@ -127,7 +127,7 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
                 .replace('"', '')
                 .replace("'", '')
                 .split(',')
-                )
+            )
             VAULT_FILE = vault_file
             vault_file = []
             if len(VAULT_FILE) == 0:
@@ -149,8 +149,8 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
             and (
                 os.path.basename(file) not in vault_file
                 or os.path.basename(file) in excluded
-                )
-                ):
+            )
+        ):
             try:
                 if os.path.isfile(Path(file)):
                     file = Path(file)
@@ -159,7 +159,7 @@ def delete_not_exist(configuration: cfg.Configuration, actions=False) -> list[st
                     if (
                         len(os.listdir(folder)) == 0
                         and os.path.basename(folder) != 'docs'
-                            ):
+                    ):
                         # Delete folder
                         os.rmdir(folder)
                     info.append(folder)
@@ -200,7 +200,7 @@ def diff_file(filepath: Path, folder: Path, contents: list[str], update=0) -> bo
             new_version == retro_old
             and sorted(meta_old.keys()) == sorted(meta_new.keys())
             and sorted(str(meta_old.values())) == sorted(str(meta_new.values()))
-                ):
+        ):
             return False
         return True
     return True  # Si le fichier existe pas, il peut pas être identique
@@ -275,7 +275,7 @@ def check_file(filepath: Path, folder: Path) -> str:
 
 def delete_file(
     filepath: Path, folder: Path, configuration: cfg.Configuration, meta_update=1
-        ) -> bool:
+) -> bool:
     """Delete the requested file."""
     try:
         for file in os.listdir(str(folder)):  # prevent bytes error

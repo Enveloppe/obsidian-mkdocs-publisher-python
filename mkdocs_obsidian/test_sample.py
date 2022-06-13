@@ -28,7 +28,8 @@ def checking_file_contents(output_file: Path) -> bool:
     with open(output_file, 'r', encoding='utf-8') as f:
         output_file_data = f.read()
     attend_name = os.path.basename(output_file)
-    attend_file = Path(os.getcwd(), 'docs_tests', 'attended_results', attend_name)
+    attend_file = Path(os.getcwd(), 'docs_tests',
+                       'attended_results', attend_name)
     with open(attend_file, 'r', encoding='utf-8') as f:
         attend_file_data = f.read()
     return output_file_data == attend_file_data
@@ -41,7 +42,8 @@ class MyTestCase(unittest.TestCase):
         basedir = get_basedir_test('minimal_test')
         env_path = test_env_path('minimal_test', basedir)[0]
         env = (basedir, env_path)
-        configuration = cfg.open_value(actions=False, configuration_name='minimal', env_path=env)
+        configuration = cfg.open_value(
+            actions=False, configuration_name='minimal', env_path=env)
         test_output = Path(source_path.resolve().parent.parent,
                            'output', 'docs', 'notes', os.path.basename(source_path))
         one.overwrite_file(str(source_path), configuration, True)
@@ -149,7 +151,8 @@ class MyTestCase(unittest.TestCase):
         basedir = Path(basedir.parent)
         env_path = (basedir, config_test)
         config = cfg.open_value('actions-test', True, env_path=env_path)
-        file_source = Path('./docs_tests/output/source/github_actions_test.md').resolve()
+        file_source = Path(
+            './docs_tests/output/source/github_actions_test.md').resolve()
         config.output = Path(config.output, 'docs_tests', 'output')
         one.convert_one(Path(file_source), config, False, False)
         return True

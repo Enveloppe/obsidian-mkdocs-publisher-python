@@ -21,7 +21,7 @@ from mkdocs_obsidian.common import (
     convert_all as all,
     convert_one as one,
     file_checking as check,
-    )
+)
 
 
 def search_shortcuts(VAULT_FILE: list[str], file: str) -> str | bool:
@@ -40,7 +40,7 @@ def obsidian_shell(
     vault_share=0,
     git=True,
     delete_option=False,
-        ):
+):
     """Just run the CLI without python rich, for printing in Obsidian Shell."""
     VAULT_FILE = configuration.vault_file
     if file == '0':
@@ -63,7 +63,7 @@ def mobile_shortcuts(
     meta_update=0,
     vault_share=0,
     delete_option=False,
-        ):
+):
     """
     - Never use git
     - Can search a file in vault with the filename
@@ -88,7 +88,7 @@ def mobile_shortcuts(
 
 def keep(
     obsidian: bool, console: Console, configuration: Configuration, actions=False
-        ) -> int:
+) -> int:
     """Delete the file moved or removed from sharing."""
     info = check.delete_not_exist(configuration, actions)
     if len(info) > 1:
@@ -99,19 +99,19 @@ def keep(
                 ' 🗑️[u red bold]Delete from blog :[/]',
                 Markdown(info_str),
                 end='',
-                )
+            )
         else:
             print(
                 f'[{datetime.now().strftime("%H:%M:%Sf")}] 🗑️ Delete from blog:'
                 f' {info_str}'
-                )
+            )
     elif len(info) == 1:
         info_str = info[0]
         if not obsidian:
             console.print(
                 f'🗑️ [u red bold] Delete[/] [bold red i] {info_str}[/] [u red'
                 ' bold]from blog[/]'
-                )
+            )
         else:
             print(f'Delete {info_str} from blog.')
     return 1
@@ -155,8 +155,8 @@ def main():
             - --vault : Share all vault file, ignoring the share state.
         - file [file] : Share only one file
         """
-            ),
-        )
+        ),
+    )
 
     subparser = parser.add_subparsers(dest='cmd')
     config = subparser.add_parser(
@@ -164,23 +164,23 @@ def main():
         help=(
             'Configure the script : Add or edit your vault and blog absolute path,'
             ' change some keys.'
-            ),
-        )
+        ),
+    )
     config.add_argument(
         '--new',
         help='Create a new configuration',
         action='store',
         metavar='configuration_name',
-        )
+    )
     publish = subparser.add_parser('all', help='Publish multiple files')
     publish.add_argument(
         '--force', action='store_true', help='Force updating all files'
-        )
+    )
     publish.add_argument(
         '--vault',
         action='store_true',
         help='Publish all file in your vault, ignoring the share state. ',
-        )
+    )
 
     files_cmd = subparser.add_parser('file', help='Publish only one file')
     files_cmd.add_argument('filepath', action='store')
@@ -191,10 +191,10 @@ def main():
         '--shortcuts',
         help='Use mobile shortcuts, without push',
         action='store_true',
-        )
+    )
     group_git.add_argument(
         '--git', '--g', '--G', help='No commit and no push to git', action='store_false'
-        )
+    )
 
     parser.add_argument(
         '--meta',
@@ -202,27 +202,27 @@ def main():
         '--M',
         help='Update the frontmatter of the source file with the link to the note',
         action='store_false',
-        )
+    )
     parser.add_argument(
         '--keep',
         '--k',
         '--K',
         help='Keep deleted file from vault and removed shared file',
         action='store_true',
-        )
+    )
     parser.add_argument(
         '--use',
         '--config',
         help='Use a different config from default',
         action='store',
         metavar='configuration_name',
-        )
+    )
     parser.add_argument(
         '--obsidian', '--shell', help=argparse.SUPPRESS, action='store_true'
-        )
+    )
     parser.add_argument(
         '--GA', '--actions', help=argparse.SUPPRESS, action='store_true'
-        )
+    )
     parser.add_argument('--minimal', help=argparse.SUPPRESS,
                         action='store_true')
     console = Console()
@@ -249,7 +249,7 @@ def main():
                 configuration,
                 args.obsidian,
                 rmv_info='Clean all removed files',
-                )
+            )
     else:
         if args.minimal:
             configuration = setup.open_value('minimal', False)
@@ -280,7 +280,7 @@ def main():
             else:
                 console.print(
                     f"ERROR: {file_source} doesn't exist", style='bold white on red'
-                    )
+                )
                 sys.exit(1)
 
         elif cmd == 'all':
@@ -289,12 +289,12 @@ def main():
             if args.mobile:
                 mobile_shortcuts(
                     configuration, '0', meta_update, vault_share, delete_option
-                    )
+                )
             elif args.obsidian:
                 gitt.git_pull(configuration, no_git)
                 obsidian_shell(
                     configuration, '0', meta_update, vault_share, no_git, delete_option
-                    )
+                )
             else:
                 gitt.git_pull(configuration, no_git)
                 all.convert_all(
@@ -304,7 +304,7 @@ def main():
                     stop_share,
                     meta_update,
                     vault_share,
-                    )
+                )
         else:
             gitt.git_pull(configuration, no_git)
             all.convert_all(configuration, False, no_git,

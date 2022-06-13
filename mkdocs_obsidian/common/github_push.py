@@ -36,7 +36,7 @@ def git_push(
     rmv_info='',
     add_msg='',
     remove_msg='',
-        ):
+):
     """git push the modified files and print a message result."""
     console = Console()
     try:
@@ -59,7 +59,7 @@ def git_push(
                     Markdown('---'),
                     '🎉 Successful 🎉',
                     end=' ',
-                    )
+                )
             else:
                 if add_msg != '':
                     add_msg = ': ' + add_msg
@@ -70,7 +70,7 @@ def git_push(
                     f"[{datetime.now().strftime('%H:%M:%S')}]\n",
                     f'{add_info}{add_msg}',
                     f'{rmv_info}{remove_msg}',
-                    )
+                )
         except git.GitCommandError:
             if not obsidian:
                 console.print(
@@ -83,7 +83,7 @@ def git_push(
                     rmv_info,
                     Markdown(remove_msg),
                     end=' ',
-                    )
+                )
             else:
                 if remove_msg != '':
                     remove_msg = ': ' + remove_msg
@@ -93,7 +93,7 @@ def git_push(
                     '💡 Converted 💡\n',
                     f'{add_msg}',
                     f'{rmv_info}{remove_msg}',
-                    )
+                )
     except ImportError:
         if not obsidian:
             console.print(
@@ -101,9 +101,9 @@ def git_push(
                 Markdown(commit),
                 'changed\nPlease, use another way to push your change 😶',
                 end=' ',
-                )
+            )
         else:
             print(
                 f"[{datetime.now().strftime('%H:%M:%S')}] {commit} changed\n Please use"
                 ' another way to push your change 😶'
-                )
+            )
