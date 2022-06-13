@@ -6,10 +6,10 @@ from itertools import zip_longest
 from pathlib import Path
 
 
-def custom_callout(BASEDIR: Path):
+def custom_callout(basedir: Path):
     custom = []
     with open(
-        Path(BASEDIR, 'docs', 'assets', 'css', 'custom_attributes.css'),
+        Path(basedir, 'docs', 'assets', 'css', 'custom_attributes.css'),
         'r',
         encoding='utf-8',
             ) as s:

@@ -158,7 +158,7 @@ def right_path(vault: Path) -> bool:
     return False
 
 
-def create_env(BASEDIR: Path, config_name='0'):
+def create_env(basedir: Path, config_name='0'):
     """Main function to create environment ; Check if run on pyto (IOS),
     a-shell (ios) or computer (MacOS, linux, Windows)
 
@@ -185,12 +185,12 @@ def create_env(BASEDIR: Path, config_name='0'):
     except (RuntimeError, FileNotFoundError):
         ashell = False
     computer = False
-    if platform.architecture()[1] != '':
+    if platform.architecture()[1] != '' and config_name != 'test':
         computer = True
     console = Console()
     if config_name == '0':
         config_name = 'default'
-    env_path = Path(f'{BASEDIR}/configuration.yml')
+    env_path = Path(f'{basedir}/configuration.yml')
     print(
         f'[bold]Creating environnement in [u]{env_path}[/][/] for [u]{config_name}[/]\n')
     if pyto_check:
@@ -250,7 +250,7 @@ def create_env(BASEDIR: Path, config_name='0'):
         }
     if default_blog == '/':
         default_blog = ''
-    adding_configuration(config_name, BASEDIR, new_configuration)
+    adding_configuration(config_name, basedir, new_configuration)
     post = Path(f'{blog}/docs/{default_blog}')
     img = Path(f'{blog}/docs/assets/img/')
     try:
@@ -265,7 +265,7 @@ def create_env(BASEDIR: Path, config_name='0'):
     return
 
 
-def convert_to_YAML(BASEDIR: Path, ENV_PATH: Path, configuration: Configuration, type='default'):
+def convert_to_YAML(basedir: Path, env_path: Path, configuration: Configuration, configuration_name='default'):
     template = f'''
     weblink: {configuration.weblink}
     configuration:
@@ -279,9 +279,11 @@ def convert_to_YAML(BASEDIR: Path, ENV_PATH: Path, configuration: Configuration,
             default value: {configuration.default_folder}
     '''
     new_configuration = yaml.safe_load(template)
-    adding_configuration(configuration_name=type,
-                         basedir=BASEDIR, new_configuration=new_configuration)
-    os.remove(ENV_PATH)
+    adding_configuration(
+        configuration_name=configuration_name,
+        basedir=basedir, new_configuration=new_configuration
+    )
+    os.remove(env_path)
 
 
 def adding_configuration(configuration_name: str, basedir: Path, new_configuration: dict):
@@ -300,39 +302,38 @@ def adding_configuration(configuration_name: str, basedir: Path, new_configurati
 def checking_old_config(configuration_name: str, env_path: Path, basedir: Path):
     env = dotenv_values(env_path)
     try:
-        BASEDIR = Path(env['blog_path']).resolve(
-            ).expanduser() if env.get('blog_path') else ''
-        VAULT = Path(env['vault']).resolve(
-            ).expanduser() if env.get('vault') else ''
+        input_blog = Path(env['blog_path']).resolve(
+        ).expanduser() if env.get('blog_path') else ''
+        vault = Path(env['vault']).resolve(
+        ).expanduser() if env.get('vault') else ''
     except RuntimeError:
         print('[red blog] Please provide a valid path for all config items')
         sys.exit(3)
-    WEB = env.get('blog', '')
-    SHARE = env.get('share', 'share')
-    INDEX_KEY = env.get('index_key', '(i)')
-    DEFAULT_NOTES = env.get('default_blog', 'notes')
-    CATEGORY_KEY = env.get('category_key', 'category')
-    if DEFAULT_NOTES == '/':
-        DEFAULT_NOTES = ''
+    web = env.get('blog', '')
+    share = env.get('share', 'share')
+    index_key = env.get('index_key', '(i)')
+    default_notes = env.get('default_blog', 'notes')
+    category_key = env.get('category_key', 'category')
+    if default_notes == '/':
+        default_notes = ''
     new_config = Configuration(
-        BASEDIR, VAULT, WEB, SHARE, INDEX_KEY, DEFAULT_NOTES, '', '', [], CATEGORY_KEY)
+        input_blog, vault, web, share, index_key, default_notes, '', '', [], category_key
+    )
     convert_to_YAML(basedir, env_path, new_config, configuration_name)
 
 
 def get_obs2mk_dir(configuration_name='default', actions=False) -> Path:
-    BASEDIR = obs.__path__[0]
+    basedir = obs.__path__[0]
     try:
         import pyto
 
-        BASEDIR = Path(BASEDIR)
-        BASEDIR = BASEDIR.parent.absolute()
+        basedir = Path(basedir)
+        basedir = basedir.parent.absolute()
     except ModuleNotFoundError:
         pass
-    if actions or configuration_name == 'minimal' or 'test' in configuration_name:
-        BASEDIR = Path(os.getcwd())
-        if 'test' in configuration_name:
-            BASEDIR = Path(BASEDIR, 'docs_tests', 'output')
-    return BASEDIR
+    if actions or configuration_name == 'minimal':
+        basedir = Path(os.getcwd())
+    return basedir
 
 
 def open_value(configuration_name='default', actions=False) -> Configuration:
