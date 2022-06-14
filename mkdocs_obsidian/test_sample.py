@@ -38,7 +38,7 @@ def checking_file_contents(output_file: Path) -> bool:
 class MyTestCase(unittest.TestCase):
     def test_minimal(self) -> bool:
         print('Testing Minimal configuration')
-        source_path = Path('./docs_tests/input/source_file.md').resolve()
+        source_path = Path('./docs_tests/input/not_shared.md').resolve()
         basedir = get_basedir_test('minimal_test')
         env_path = test_env_path('minimal_test', basedir)[0]
         env = (basedir, env_path)
