@@ -311,7 +311,7 @@ def file_convert(
     lines = meta.content.splitlines(True)
     if force != 1 and not meta.get(share):
         return final
-    lines = adm.admonition_trad(configuration.output, lines)
+    lines = adm.admonition_trad(configuration.output, lines) if configuration.admonition else lines
     callout_state = False
     for line in lines:
         final_text = line
@@ -344,7 +344,7 @@ def file_convert(
                     )
                     final_text = re.sub(r'\\U\w+', convert_emojiz, final_text)
 
-                if final_text.startswith('> [!') or final_text.startswith('>[!'):
+                if configuration.admonition and (final_text.startswith('> [!') or final_text.startswith('>[!')):
                     callout_state = True
                     nb = final_text.count('>')
                     final_text = adm.parse_title(
@@ -352,15 +352,15 @@ def file_convert(
 
                 final_text, callout_state = adm.callout_conversion(
                     final_text, callout_state
-                )
+                ) if configuration.admonition else (final_text, False)
                 if index != '' and re.search(
                         rf"\[\[?(.*)" + re.escape(index) +
                         r'(.*)\]\]?', final_text
                 ):
                     final_text = index_citation(final_text, configuration)
-                if re.search('#\w+', final_text) and not re.search(
+                if configuration.hashtags and (re.search('#\w+', final_text) and not re.search(
                         '(`|\[{2}|\()(.*)#(.*)(`|\]{2}|\))', final_text
-                ):  # search hashtags not in link
+                )):  # search hashtags not in link
                     # Convert hashtags
                     final_text = convert_hashtags(configuration, final_text)
                 elif re.fullmatch(

@@ -20,7 +20,7 @@ def test_env_path(configuration_name: str, basedir: Path) -> tuple[Path, str]:
 def get_basedir_test(configuration_name: str) -> Path:
     basedir = Path(os.getcwd())
     if 'test' in configuration_name:
-        basedir = Path(basedir, 'docs_tests', 'output')
+        basedir = Path(basedir, 'tests', 'output')
     return basedir
 
 
@@ -28,7 +28,7 @@ def checking_file_contents(output_file: Path) -> bool:
     with open(output_file, 'r', encoding='utf-8') as f:
         output_file_data = f.read()
     attend_name = os.path.basename(output_file)
-    attend_file = Path(os.getcwd(), 'docs_tests',
+    attend_file = Path(os.getcwd(), 'tests',
                        'attended_results', attend_name)
     with open(attend_file, 'r', encoding='utf-8') as f:
         attend_file_data = f.read()
@@ -38,7 +38,7 @@ def checking_file_contents(output_file: Path) -> bool:
 class MyTestCase(unittest.TestCase):
     def test_minimal(self) -> bool:
         print('Testing Minimal configuration')
-        source_path = Path('./docs_tests/input/not_shared.md').resolve()
+        source_path = Path('./tests/input/source_file.md').resolve()
         basedir = get_basedir_test('minimal_test')
         env_path = test_env_path('minimal_test', basedir)[0]
         env = (basedir, env_path)
@@ -68,7 +68,7 @@ class MyTestCase(unittest.TestCase):
         env_path = test_env_path(configuration_name, basedir)[0]
         env = (basedir, env_path)
         configuration = cfg.open_value('default', env_path=env)
-        source_path = Path('./docs_tests/input/source_file.md').resolve()
+        source_path = Path('./tests/input/source_file.md').resolve()
         one.convert_one(source_path, configuration, False, 1)
         return True
 
@@ -152,8 +152,8 @@ class MyTestCase(unittest.TestCase):
         env_path = (basedir, config_test)
         config = cfg.open_value('actions-test', True, env_path=env_path)
         file_source = Path(
-            './docs_tests/output/source/github_actions_test.md').resolve()
-        config.output = Path(config.output, 'docs_tests', 'output')
+            './tests/output/source/github_actions_test.md').resolve()
+        config.output = Path(config.output, 'tests', 'output')
         one.convert_one(Path(file_source), config, False, False)
         return True
 

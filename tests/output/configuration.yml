@@ -42,3 +42,7 @@ test_mini_config:
     index: (i)
     share: share
   weblink: null
+minimal:
+  convert:
+    admonition: false
+    hashtags: false
