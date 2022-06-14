@@ -21,6 +21,8 @@ class Configuration:
             self,
             output: str | Path,
             input: str | Path,
+            hashtags: bool,
+            admonition: bool,
             weblink: str,
             share_key: str,
             index_key: str,
@@ -40,6 +42,8 @@ class Configuration:
         self.img = Path(img)
         self.vault_file = vault_file
         self.category_key = category_key
+        self.hashtags = hashtags if hashtags else True
+        self.admonition = admonition if admonition else True
 
 
 def pyto_environment(console: Console) -> tuple[str, str]:
@@ -236,6 +240,14 @@ def create_env(basedir: Path, config_name='0'):
             ' [bold]category[/])[/]: '
         )
     )
+    admonition = str(
+        console.input('Do you want to convert callout to admonition mkdocs? [i](default: [bold]True[/])[/]: \n1. True\n2. False')
+    )
+    admonition = True if len(admonition.strip()) == 0 or admonition.strip() == '1' else False
+    hashtags = str(
+        console.input('Do you want to convert inline hashtags? [i](default: [bold]True[/])[/]: \n1. True\n2. False')
+    )
+    hashtags = True if len(hashtags.strip()) == 0 or hashtags.strip() == '1' else False
     if category_key == '':
         category_key = 'category'
     if index_key == '':
@@ -254,6 +266,10 @@ def create_env(basedir: Path, config_name='0'):
                     'key': category_key,
                     'default value': default_blog
                 }
+        }, 'convert':
+            {
+            'admonition': admonition,
+            'hashtags': hashtags
         }
     }
     if default_blog == '/':
@@ -285,6 +301,9 @@ def convert_to_YAML(basedir: Path, env_path: Path, configuration: Configuration,
         category:
             key: {configuration.category_key}
             default value: {configuration.default_folder}
+    convert:
+        admonition: {configuration.admonition}
+        hashtags: {configuration.hashtags}
     '''
     new_configuration = yaml.safe_load(template)
     adding_configuration(
@@ -325,7 +344,7 @@ def checking_old_config(configuration_name: str, env_path: Path, basedir: Path):
     if default_notes == '/':
         default_notes = ''
     new_config = Configuration(
-        input_blog, vault, web, share, index_key, default_notes, '', '', [], category_key
+        input_blog, vault, True, True, web, share, index_key, default_notes, '', '', [], category_key
     )
     convert_to_YAML(basedir, env_path, new_config, configuration_name)
 
@@ -364,11 +383,14 @@ def open_value_default(configuration_name: str, basedir: Path, env_path: Path) -
     vault = Path(config['configuration']['input']).resolve(
     ).expanduser() if config['configuration'].get('input') else ''
 
+
     configuration = Configuration(
         Path(config['configuration']['output']).resolve(
         ).expanduser() if config['configuration'].get('output') else basedir,
         vault,
         config['weblink'],
+        config['convert']['admonition'] if config.get('convert') else True,
+        config['convert']['hashtags'] if config.get('convert') else True,
         config['frontmatter']['share'],
         config['frontmatter']['index'],
         default_note,
@@ -389,9 +411,12 @@ def open_minimal(basedir: Path) -> Configuration:
         for x in glob.iglob(str(Path(os.getcwd(), 'docs', '**')), recursive=True)
         if os.path.isfile(x)
     ]
+    env_path = Path(basedir, 'configuration.yml')
     configuration = Configuration(
         basedir,
         '',
+        True,
+        True,
         '',
         '',
         '',
@@ -401,6 +426,14 @@ def open_minimal(basedir: Path) -> Configuration:
         vault_files,
         '',
     )
+
+    if os.path.isfile(env_path):
+        with open(env_path, 'r', encoding='utf-8') as f:
+            config = yaml.safe_load(f)
+        if config.get('minimal'):
+            config = config['minimal']
+            configuration.admonition = config['convert']['admonition'] if config.get('convert') else True
+            configuration.hashtags = config['convert']['hashtags'] if config.get('convert') else True
     return configuration
 
 
