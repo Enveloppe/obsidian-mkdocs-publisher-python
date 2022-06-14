@@ -139,11 +139,15 @@ def convert_hashtags(configuration: cfg.Configuration, final_text: str) -> str:
     """Convert configured hashtags with inline attribute CSS from
     custom.css."""
     css = read_custom(configuration.output)
-    token = re.findall('#\w+', final_text)
+    token = re.findall('#\S+', final_text)
     token = list(set(token))
+    print(token)
     for i in range(0, len(token)):
-        if token[i] in css:
-            final_text = final_text.replace(token[i], '')
+        tags = token[i]
+        if '/' in tags:
+            print(tags)
+        if tags in css:
+            final_text = final_text.replace(tags, '')
             if final_text.startswith('#'):
                 heading = re.findall('#', final_text)
                 heading = ''.join(heading)
@@ -152,19 +156,19 @@ def convert_hashtags(configuration: cfg.Configuration, final_text: str) -> str:
                     + ' **'
                     + final_text.replace('#', '').strip()
                     + '**{: '
-                    + token[i]
-                    + '}\n'
+                    + tags
+                    + '}'
                 )
             else:
-                ial = '**' + final_text.strip() + '**{: ' + token[i] + '}  \n'
+                ial = '**' + final_text.strip() + '**{: ' + tags + '}'
             final_text = final_text.replace(final_text, ial)
         else:
             ial = (
                 '**'
-                + token[i].replace('#', ' ').strip()
+                + tags.replace('#', ' ').strip()
                 + '**{: '
-                + token[i].strip()
-                + ' .hash}  \n'
+                + tags.strip()
+                + ' .hash}'
             )
 
             final_text = final_text.replace(token[i], ial, 1)
