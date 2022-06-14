@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.5 (2022-06-14)
+### Fix
+* **conversion:** Tags generation splitted when using nesting tags ([`346707e`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/346707ed70fd6a4bba78e27f575ab79042b70e79))
+
 ## v4.0.4 (2022-06-13)
 ### Fix
 * **minimal:** File or directory not found ([`220c663`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/220c6636344ac00ca2b494ffea598d9da20568ac))
