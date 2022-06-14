@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.6 (2022-06-14)
+### Fix
+* **conversion:** Fix inline hashtags broken ([`1c06d70`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1c06d7005979d004f47c8e26ff71ec2e5f20e834))
+
 ## v4.0.5 (2022-06-14)
 ### Fix
 * **conversion:** Tags generation splitted when using nesting tags ([`346707e`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/346707ed70fd6a4bba78e27f575ab79042b70e79))
