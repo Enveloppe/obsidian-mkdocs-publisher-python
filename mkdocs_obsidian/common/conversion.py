@@ -343,7 +343,8 @@ def file_convert(
                         .decode('utf-16')
                     )
                     final_text = re.sub(r'\\U\w+', convert_emojiz, final_text)
-
+                if re.search('>\S+', final_text):
+                    final_text = re.sub('^>', '> ', final_text)
                 if configuration.admonition and (final_text.startswith('> [!') or final_text.startswith('>[!')):
                     callout_state = True
                     nb = final_text.count('>')
