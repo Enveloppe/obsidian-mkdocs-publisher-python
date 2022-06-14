@@ -400,14 +400,14 @@ def escape_metadata(meta: frontmatter.Post) -> list[str]:
     ]
     if meta.get('tag') or meta.get('tags'):
         tag = metadata.pop('tag', None) or metadata.pop('tags', None)
-        if '/' in tag:
-            tag = tag.split('/')
         metadata['tags'] = tag
     for k, v in metadata.items():
         try:
             if isinstance(v, str) and any(x in v for x in yaml_special_case):
-                metadata[k] = '"' + v + '"'
-            if isinstance(v, list):
+                metadata[k] = '"' + str(v) + '"'
+            elif isinstance(v, int):
+                metadata[k] = str(v)
+            elif isinstance(v, list):
                 metadata[k] = '\n- ' + '\n- '.join(v)
         except TypeError:
             metadata[k] = '"' + str(v) + '"'
