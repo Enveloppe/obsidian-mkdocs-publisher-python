@@ -11,8 +11,8 @@ actions:
   weblink: null
 default:
   configuration:
-    input: ./docs_tests/input
-    output: ./docs_tests/output
+    input: ./tests/input
+    output: ./tests/output
   frontmatter:
     category:
       default value: notes
@@ -22,8 +22,8 @@ default:
   weblink: cc
 test_config:
   configuration:
-    input: D:\Users\Lili\Documents\GitHub\mkdocs_obsidian_publish\docs_tests\output\input
-    output: D:\Users\Lili\Documents\GitHub\mkdocs_obsidian_publish\docs_tests\output\output
+    input: .\tests\output\input
+    output: .\mkdocs_obsidian_publish\tests\output\output
   frontmatter:
     category:
       default value: notes
