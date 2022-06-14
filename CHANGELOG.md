@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v4.1.0 (2022-06-14)
+### Feature
+* **callout:** Adding space after > if not ([`1ff8ff5`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1ff8ff5a4988c12dbca64de986b50d6e93c66b72))
+* **config:** Add way to disable callout and hashtags conversion ([`156649e`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/156649e5ea16a1d8248639ac307f62da47904efb))
+
 ## v4.0.6 (2022-06-14)
 ### Fix
 * **conversion:** Fix inline hashtags broken ([`1c06d70`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1c06d7005979d004f47c8e26ff71ec2e5f20e834))
