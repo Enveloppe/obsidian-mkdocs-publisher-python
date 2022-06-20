@@ -152,23 +152,23 @@ def convert_hashtags(configuration: cfg.Configuration, final_text: str) -> str:
                 heading = re.findall('#', final_text)
                 heading = ''.join(heading)
                 ial = (
-                    heading
-                    + ' **'
-                    + final_text.replace('#', '').strip()
-                    + '**{: '
-                    + tags
-                    + '}'
+                        heading
+                        + ' **'
+                        + final_text.replace('#', '').strip()
+                        + '**{: '
+                        + tags
+                        + '}'
                 )
             else:
                 ial = '**' + final_text.strip() + '**{: ' + tags + '}'
             final_text = final_text.replace(final_text, ial)
         else:
             ial = (
-                '**'
-                + tags.replace('#', ' ').strip()
-                + '**{: '
-                + tags.strip()
-                + ' .hash}'
+                    '**'
+                    + tags.replace('#', ' ').strip()
+                    + '**{: '
+                    + tags.strip()
+                    + ' .hash}'
             )
 
             final_text = final_text.replace(token[i], ial, 1)
@@ -406,6 +406,8 @@ def escape_metadata(meta: frontmatter.Post) -> list[str]:
     if meta.get('tag') or meta.get('tags'):
         tag = metadata.pop('tag', None) or metadata.pop('tags', None)
         metadata['tags'] = tag
+        if isinstance(tag, str):
+            metadata['tags'] = [tag]
     for k, v in metadata.items():
         try:
             if isinstance(v, str) and any(x in v for x in yaml_special_case):
