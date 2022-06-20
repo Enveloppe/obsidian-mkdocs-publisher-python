@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.1.1 (2022-06-20)
+### Fix
+* Tags exploded by material mkdocs ([`6f29283`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6f29283dc8fa33d35f500ed09de915ce0cfde102))
+
 ## v4.1.0 (2022-06-14)
 ### Feature
 * **callout:** Adding space after > if not ([`1ff8ff5`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1ff8ff5a4988c12dbca64de986b50d6e93c66b72))
