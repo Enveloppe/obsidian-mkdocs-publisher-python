@@ -31,13 +31,15 @@ body:
         3. Scroll down to '....'
         4. See error 
   - type: textarea
+    id: config-yaml
     attributes:
       label: Configuration
       description: |
         Please, send me the yml configuration. This text-area will render automatically in yaml, so no need to format. 
+     render: yml 
     validations:
       required: true   
-    render: yml 
+   
   - type: textarea
     id: logs
     attributes:
