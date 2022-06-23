@@ -36,7 +36,7 @@ body:
       label: Configuration
       description: |
         Please, send me the yml configuration. This text-area will render automatically in yaml, so no need to format. 
-     render: yml 
+      render: yml 
     validations:
       required: true   
    
