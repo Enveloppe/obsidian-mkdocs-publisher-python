@@ -2,6 +2,9 @@ actions:
   configuration:
     input: null
     output: .
+  convert:
+    admonition: true
+    hashtags: true
   frontmatter:
     category:
       default value: notes
@@ -20,10 +23,21 @@ default:
     index: (i)
     share: share
   weblink: cc
+minimal:
+  convert:
+    admonition: false
+    hashtags: false
+minimal admonition:
+  convert:
+    admonition: true
+    hashtags: false
 test_config:
   configuration:
-    input: .\tests\output\input
-    output: .\mkdocs_obsidian_publish\tests\output\output
+    input: D:\Users\Lili\Documents\GitHub\mkdocs_obsidian_publish\tests\output\input
+    output: D:\Users\Lili\Documents\GitHub\mkdocs_obsidian_publish\tests\output\output
+  convert:
+    admonition: true
+    hashtags: true
   frontmatter:
     category:
       default value: notes
@@ -35,6 +49,9 @@ test_mini_config:
   configuration:
     input: null
     output: .
+  convert:
+    admonition: true
+    hashtags: true
   frontmatter:
     category:
       default value: notes
@@ -42,7 +59,3 @@ test_mini_config:
     index: (i)
     share: share
   weblink: null
-minimal:
-  convert:
-    admonition: false
-    hashtags: false

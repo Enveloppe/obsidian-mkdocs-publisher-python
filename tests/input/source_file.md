@@ -1,13 +1,14 @@
 ---
 cssclass: cards
 share: true
+tag: oneline tag
 ---
 
 ## What is this place?
 
 This is a sandbox vault in which you can test various functionality of Obsidian.
 
-> [!Warning]
+>[!Warning]
 > Your changes will not be saved, so please don't take actual notes in this vault.
 
 > [!Note] Beta vault - contributions are welcome!

@@ -36,9 +36,9 @@ def checking_file_contents(output_file: Path) -> bool:
 
 
 class MyTestCase(unittest.TestCase):
-    def test_minimal(self) -> bool:
+    def test_minimal(self):
         print('Testing Minimal configuration')
-        source_path = Path('./tests/input/source_file.md').resolve()
+        source_path = Path('./tests/input/minimal.md').resolve()
         basedir = get_basedir_test('minimal_test')
         env_path = test_env_path('minimal_test', basedir)[0]
         env = (basedir, env_path)
@@ -47,10 +47,13 @@ class MyTestCase(unittest.TestCase):
         test_output = Path(source_path.resolve().parent.parent,
                            'output', 'docs', 'notes', os.path.basename(source_path))
         one.overwrite_file(str(source_path), configuration, True)
-        print(checking_file_contents(test_output))
-        return checking_file_contents(test_output)
+        with open(test_output, 'r', encoding='utf-8') as f:
+            test_output_data = f.read()
+        with open(Path('./tests/attended_results/minimal.md').resolve(), 'r', encoding='utf-8') as f:
+            source_data = f.read()
+        self.assertEqual(test_output_data, source_data)
 
-    def test_multiple_notes(self) -> bool:
+    def test_multiple_notes(self):
         print('testing multiple note without share state')
         configuration_name = 'test'
         basedir = get_basedir_test('test')
@@ -58,10 +61,20 @@ class MyTestCase(unittest.TestCase):
         env = (basedir, env_path)
         configuration = cfg.open_value('default', env_path=env)
         all.convert_all(configuration, True, False, 0, 0, 1)
+        files_convert = {
+            './tests/attended_results/github_actions_test.md': './tests/output/docs/notes/github_actions_test.md',
+            './tests/attended_results/source_file.md': './tests/output/docs/notes/source_file.md',
+            './tests/attended_results/second_file.md': './tests/output/docs/second_file/index.md',
+            './tests/attended_results/convert_admonition.md': './tests/output/docs/notes/convert_admonition.md',
+        }
+        for key, value in files_convert.items():
+            with open(Path(key).resolve(), 'r', encoding='utf-8') as f:
+                test_output_data = f.read()
+            with open(Path(value).resolve(), 'r', encoding='utf-8') as f:
+                source_data = f.read()
+            self.assertEqual(test_output_data, source_data)
 
-        return True
-
-    def test_one_file(self) -> bool:
+    def test_one_file(self):
         print('Testing one file with all configuration')
         configuration_name = 'test'
         basedir = get_basedir_test(configuration_name)
@@ -70,14 +83,13 @@ class MyTestCase(unittest.TestCase):
         configuration = cfg.open_value('default', env_path=env)
         source_path = Path('./tests/input/source_file.md').resolve()
         one.convert_one(source_path, configuration, False, 1)
-        return True
+        with open(Path('./tests/attended_results/source_file.md').resolve(), 'r', encoding='utf-8') as f:
+            attended_result = f.read()
+        with open(Path('./tests/output/docs/notes/source_file.md').resolve(), 'r', encoding='utf-8') as f:
+            convert_data = f.read()
+        self.assertEqual(attended_result, convert_data)
 
-    def test_multiple_share(self) -> bool:
-        """
-        Attended result : 🎉 Added to blog :
-        • second_file in [second_file]
-        • source_file in [notes]
-        """
+    def test_multiple_share(self):
         print('testing multiple note with share state')
         configuration_name = 'test'
         basedir = get_basedir_test(configuration_name)
@@ -85,10 +97,20 @@ class MyTestCase(unittest.TestCase):
         env = (basedir, env_path)
         configuration = cfg.open_value('default', env_path=env)
         all.convert_all(configuration, True, False, 0, 0, 0)
+        files_convert = {
+            './tests/attended_results/github_actions_test.md': './tests/output/docs/notes/github_actions_test.md',
+            './tests/attended_results/source_file.md': './tests/output/docs/notes/source_file.md',
+            './tests/attended_results/second_file.md': './tests/output/docs/second_file/index.md',
+            './tests/attended_results/convert_admonition.md': './tests/output/docs/notes/convert_admonition.md',
+        }
+        for key, value in files_convert.items():
+            with open(Path(key).resolve(), 'r', encoding='utf-8') as f:
+                test_output_data = f.read()
+            with open(Path(value).resolve(), 'r', encoding='utf-8') as f:
+                source_data = f.read()
+            self.assertEqual(test_output_data, source_data)
 
-        return True
-
-    def test_convert_big_config(self) -> bool:
+    def test_convert_big_config(self):
         print('convert an old configuration')
         basedir = get_basedir_test('test_config')
         config_test = Path(basedir, '.test_config')
@@ -116,13 +138,15 @@ class MyTestCase(unittest.TestCase):
                 key: category
             index: (i)
             share: share
+        convert:
+            admonition: true
+            hashtags: true
         weblink: https://www.mara-li.fr/
         '''
         attended_result_to_yaml = yaml.safe_load(attended_result)
-        if attended_result_to_yaml != new_config:
-            raise 'Error in the new configuration'
+        self.assertEqual(new_config, attended_result_to_yaml)
 
-    def test_convert_mini_config(self) -> bool:
+    def test_convert_mini_config(self):
         print('convert an old configuration')
         basedir = get_basedir_test('test_mini_config')
         config_test = Path(basedir, '.test_mini_config')
@@ -133,9 +157,28 @@ class MyTestCase(unittest.TestCase):
             category_key=category
             ''')
         cfg.checking_old_config('test_mini_config', config_test, basedir)
-        return True
+        with open(Path(basedir, 'configuration.yml'), 'r', encoding='utf-8') as config:
+            new_config = yaml.safe_load(config)
+        new_config = new_config['test_mini_config']
+        attended_result = f'''
+        configuration:
+            input: null
+            output: '.'
+        frontmatter:
+            category:
+                default value: notes
+                key: category
+            index: (i)
+            share: share
+        convert:
+            admonition: true
+            hashtags: true
+        weblink: null
+        '''
+        attended_result_to_yaml = yaml.safe_load(attended_result)
+        self.assertEqual(new_config, attended_result_to_yaml)
 
-    def test_github_actions(self) -> bool:
+    def test_github_actions(self):
         """
         Attended result : 🎉 Successfully converted github_actions_test.md
         """
@@ -155,7 +198,37 @@ class MyTestCase(unittest.TestCase):
             './tests/output/source/github_actions_test.md').resolve()
         config.output = Path(config.output, 'tests', 'output')
         one.convert_one(Path(file_source), config, False, False)
-        return True
+        with open(Path('./tests/attended_results/github_actions_test.md').resolve(), 'r', encoding='utf-8') as f:
+            attended_result = f.read()
+        with open(Path('./tests/output/docs/notes/github_actions_test.md').resolve(), 'r', encoding='utf-8') as f:
+            convert_data = f.read()
+        self.assertEqual(attended_result, convert_data)
+
+    def test_admonition(self):
+        """Attended result:
+        ---
+        share: True
+        ---
+        !!! notes
+            tests!!!!
+            !!! info "coucou"
+                warning
+        Text
+        Not admonition
+        """
+        attended_result = '---\nshare: True\n---\n!!! notes\n\ttests!!!!\n\t!!! info "coucou"\n\t\twarning\n\nText\nNot admonition'
+        source_path = Path('./tests/input/convert_admonition.md').resolve()
+        basedir = get_basedir_test('minimal_test')
+        env_path = test_env_path('minimal_test', basedir)[0]
+        env = (basedir, env_path)
+        configuration = cfg.open_value(
+            actions=False, configuration_name='minimal admonition', env_path=env)
+        test_output = Path(source_path.resolve().parent.parent,
+                           'output', 'docs', 'notes', os.path.basename(source_path))
+        one.overwrite_file(str(source_path), configuration, True)
+        with open(test_output, 'r', encoding='utf-8') as f:
+            test_output_data = f.read()
+        self.assertEqual(test_output_data, attended_result)
 
 
 if __name__ == '__main__':
