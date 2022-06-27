@@ -211,12 +211,12 @@ class MyTestCase(unittest.TestCase):
         ---
         !!! notes
             tests!!!!
-            !!! info "coucou"
+            !!! grid "coucou"
                 warning
         Text
         Not admonition
         """
-        attended_result = '---\nshare: True\n---\n!!! notes\n\ttests!!!!\n\t!!! info "coucou"\n\t\twarning\n\nText\nNot admonition'
+        attended_result = '---\nshare: True\n---\n!!! notes\n\ttests!!!!\n\t!!! grid "coucou"\n\t\twarning\n\nText\nNot admonition'
         source_path = Path('./tests/input/convert_admonition.md').resolve()
         basedir = get_basedir_test('minimal_test')
         env_path = test_env_path('minimal_test', basedir)[0]

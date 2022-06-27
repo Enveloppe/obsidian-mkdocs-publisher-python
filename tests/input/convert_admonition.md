@@ -4,7 +4,7 @@ share: true
 
 > [!notes]
 > tests!!!!
->> [!info] coucou
+>> [!grid] coucou
 >> warning
 
 Text
