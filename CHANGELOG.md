@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v4.1.2 (2022-06-27)
+### Fix
+* Admonition not converted well ([`085bccb`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/085bccbe654f3dc351d34cd0621e83fbf4968dc8))
+
+### Documentation
+* Fix fr ([`3ae33ce`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/3ae33ce3e66f19c017aecd5594e3e47a3eede107))
+* Update issue template ([`1fc4dd3`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/1fc4dd32d022fa42c9b186a6c4e56fae165297fe))
+
 ## v4.1.1 (2022-06-20)
 ### Fix
 * Tags exploded by material mkdocs ([`6f29283`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/6f29283dc8fa33d35f500ed09de915ce0cfde102))
