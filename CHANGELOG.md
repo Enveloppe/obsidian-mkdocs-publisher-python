@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v5.0.0 (2022-06-27)
+### Fix
+* **callout:** Removed admonition support ([`357c9e6`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/357c9e655341679524ec7d4fa98a2464dec006fd))
+
+### Breaking
+* Removed support of admonition code block. Use callouts instead.  ([`357c9e6`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/357c9e655341679524ec7d4fa98a2464dec006fd))
+
 ## v4.1.2 (2022-06-27)
 ### Fix
 * Admonition not converted well ([`085bccb`](https://github.com/Mara-Li/mkdocs_obsidian_publish/commit/085bccbe654f3dc351d34cd0621e83fbf4968dc8))
