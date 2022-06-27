@@ -241,7 +241,8 @@ def create_env(basedir: Path, config_name='0'):
         )
     )
     admonition = str(
-        console.input('Do you want to convert callout to admonition mkdocs? [i](default: [bold]True[/])[/]: \n1. True\n2. False')
+        console.input(
+            'Do you want to convert callout to admonition mkdocs? [i](default: [bold]True[/])[/]: \n1. True\n2. False')
     )
     admonition = True if len(admonition.strip()) == 0 or admonition.strip() == '1' else False
     hashtags = str(
@@ -266,11 +267,11 @@ def create_env(basedir: Path, config_name='0'):
                     'key': category_key,
                     'default value': default_blog
                 }
-        }, 'convert':
+            }, 'convert':
             {
-            'admonition': admonition,
-            'hashtags': hashtags
-        }
+                'admonition': admonition,
+                'hashtags': hashtags
+            }
     }
     if default_blog == '/':
         default_blog = ''
@@ -383,7 +384,6 @@ def open_value_default(configuration_name: str, basedir: Path, env_path: Path) -
     vault = Path(config['configuration']['input']).resolve(
     ).expanduser() if config['configuration'].get('input') else ''
 
-
     configuration = Configuration(
         Path(config['configuration']['output']).resolve(
         ).expanduser() if config['configuration'].get('output') else basedir,
@@ -405,7 +405,7 @@ def open_value_default(configuration_name: str, basedir: Path, env_path: Path) -
     return configuration
 
 
-def open_minimal(basedir: Path) -> Configuration:
+def open_minimal(basedir: Path, config_name: str="minimal") -> Configuration:
     vault_files = [
         x
         for x in glob.iglob(str(Path(os.getcwd(), 'docs', '**')), recursive=True)
@@ -430,8 +430,8 @@ def open_minimal(basedir: Path) -> Configuration:
     if os.path.isfile(env_path):
         with open(env_path, 'r', encoding='utf-8') as f:
             config = yaml.safe_load(f)
-        if config.get('minimal'):
-            config = config['minimal']
+        if config.get(config_name):
+            config = config[config_name]
             configuration.admonition = config['convert']['admonition'] if config.get('convert') else True
             configuration.hashtags = config['convert']['hashtags'] if config.get('convert') else True
     return configuration
@@ -440,13 +440,13 @@ def open_minimal(basedir: Path) -> Configuration:
 def open_value(configuration_name='default', actions=False, env_path: tuple[Path, Path] = None) -> Configuration:
     """Return the configuration value."""
     basedir = env_path[0] if env_path else get_obs2mk_dir(configuration_name=configuration_name, actions=actions)
-    if configuration_name == 'minimal':
-        return open_minimal(basedir)
+    if 'minimal' in configuration_name:
+        return open_minimal(basedir, configuration_name)
     env_path = env_path[1] if env_path else None
     if actions:
         env_path = Path(basedir, 'source', '.github-actions')
         configuration_name = 'actions'
-    elif not env_path and configuration_name != "minimal":
+    elif not env_path and 'minimal' not in configuration_name:
         if configuration_name == 'default':
             env_path = Path(f'{basedir}/.mkdocs_obsidian')
         else:

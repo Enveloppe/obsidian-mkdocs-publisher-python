@@ -171,10 +171,7 @@ def parse_title(line: str, basedir: Path, nb: int) -> str:
     callout = custom_callout(basedir)
     title = re.search('^( ?>*)*\[!(.*)\]', line)
     rest_line = re.sub('^( ?>*)*\[!(.*)\][\+\-]?', '', line)
-    if title.group(2).lower() not in callout:
-        title = 'NOTE'
-    else:
-        title = title.group(2)
+    title = title.group(2).lower()
     if ']-' in line:
         title = '??? ' + title
     elif ']+' in line:
@@ -184,7 +181,7 @@ def parse_title(line: str, basedir: Path, nb: int) -> str:
     if len(rest_line) > 1:
         title = title + ' "' + rest_line.strip() + '"'
     if nb > 1:
-        title = '\t' * nb + title
+        title = '\t' * (nb-1) + title
     return title + '\n'
 
 
@@ -192,10 +189,7 @@ def callout_conversion(line: str, callout_state: bool) -> tuple[str, bool | str]
     final_text = line
     if callout_state:
         if line.startswith('>'):
-            nb = line.count('>')
             final_text = re.sub('> ?', '\t', line)
-            if nb > 1:
-                final_text = '\t' + final_text
         else:
             callout_state = final_text
     return final_text, callout_state

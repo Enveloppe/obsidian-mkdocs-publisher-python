@@ -141,11 +141,8 @@ def convert_hashtags(configuration: cfg.Configuration, final_text: str) -> str:
     css = read_custom(configuration.output)
     token = re.findall('#\S+', final_text)
     token = list(set(token))
-    print(token)
     for i in range(0, len(token)):
         tags = token[i]
-        if '/' in tags:
-            print(tags)
         if tags in css:
             final_text = final_text.replace(tags, '')
             if final_text.startswith('#'):
@@ -297,6 +294,23 @@ def parsing_code(files_contents: list[str], line: str) -> bool:
             return False
 
 
+def emojize_me(final_text: str) -> str:
+    if (
+            re.search(
+                r'\\U\w+', final_text) and not 'Users' in final_text
+    ):  # Fix emoji if bug because of frontmatter
+        emojiz = re.search(r'\\U\w+', final_text)
+        emojiz = emojiz.group().strip().replace('"', '')
+        convert_emojiz = (
+            emojiz.encode('ascii')
+            .decode('unicode-escape')
+            .encode('utf-16', 'surrogatepass')
+            .decode('utf-16')
+        )
+        final_text = re.sub(r'\\U\w+', convert_emojiz, final_text)
+    return final_text
+
+
 def file_convert(
         configuration: cfg.Configuration, filepath: str | Path, force=0, image=True
 ):
@@ -330,22 +344,9 @@ def file_convert(
                     final_text = re.sub(
                         '%{2}(.*)%{2}', '', final_text
                     )  # remove obsidian comments
-                if (
-                        re.search(
-                            r'\\U\w+', final_text) and not 'Users' in final_text
-                ):  # Fix emoji if bug because of frontmatter
-                    emojiz = re.search(r'\\U\w+', final_text)
-                    emojiz = emojiz.group().strip().replace('"', '')
-                    convert_emojiz = (
-                        emojiz.encode('ascii')
-                        .decode('unicode-escape')
-                        .encode('utf-16', 'surrogatepass')
-                        .decode('utf-16')
-                    )
-                    final_text = re.sub(r'\\U\w+', convert_emojiz, final_text)
-                if re.search('>\S+', final_text):
-                    final_text = re.sub('^>', '> ', final_text)
-                if configuration.admonition and (final_text.startswith('> [!') or final_text.startswith('>[!')):
+                final_text = emojize_me(final_text)
+
+                if configuration.admonition and re.search(r'^( ?>*)*\[!(.*)\]', line):
                     callout_state = True
                     nb = final_text.count('>')
                     final_text = adm.parse_title(
