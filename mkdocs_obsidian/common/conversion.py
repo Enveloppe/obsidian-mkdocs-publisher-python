@@ -325,7 +325,6 @@ def file_convert(
     lines = meta.content.splitlines(True)
     if force != 1 and not meta.get(share):
         return final
-    lines = adm.admonition_trad(configuration.output, lines) if configuration.admonition else lines
     callout_state = False
     for line in lines:
         final_text = line
@@ -340,7 +339,7 @@ def file_convert(
                 # Check and copy image
                 if image:
                     copy_image(configuration, final_text)
-                if not '`' in final_text:
+                if '`' not in final_text:
                     final_text = re.sub(
                         '%{2}(.*)%{2}', '', final_text
                     )  # remove obsidian comments
@@ -348,9 +347,10 @@ def file_convert(
 
                 if configuration.admonition and re.search(r'^( ?>*)*\[!(.*)\]', line):
                     callout_state = True
-                    nb = final_text.count('>')
+                    c = re.findall('^>+', line)
+                    nb = len(c[0])
                     final_text = adm.parse_title(
-                        line, configuration.output, nb)
+                        line, nb)
 
                 final_text, callout_state = adm.callout_conversion(
                     final_text, callout_state
