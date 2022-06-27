@@ -733,4 +733,5 @@ perf.txt
 
 desktop.ini
 node_modules
-
+tests/output/docs/notes/**
+tests/output/docs/second_file/**
