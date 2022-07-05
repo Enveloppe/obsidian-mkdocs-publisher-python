@@ -8,8 +8,7 @@ body:
   - type: markdown
     id: info-user
     attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report.
+      value: "Thanks for taking the time to fill out this bug report."
   - type: checkboxes
     attributes: Issue validation
     description: "Thanks to check if your issue is relative to the repository. Any non relative or duplicate issue will closed."
@@ -17,10 +16,11 @@ body:
       - label: "My issue doesn't concern the [template](https://github.com/obsidianMkdocs/obsidian-mkdocs-publisher-template) (including workflow and mkdocs build) (*[Make a bug report here](https://github.com/obsidianMkdocs/obsidian-mkdocs-publisher-template/issues/new?assignees=Mara-Li&labels=bug%2Ctriage&template=bug_report.yml&title=%5BBug%5D%3A+)*)"
         required: true
       - label: "My issue doesn't concern the [Obsidian Plugin](https://github.com/obsidianMkdocs/obsidian-github-publisher) (*[Make a bug report here](https://github.com/obsidianMkdocs/obsidian-github-publisher/issues/new?assignees=Mara-Li&labels=bug%2Ctriage&template=bug_report.yml&title=%5BBug%5D%3A+)*)"
-        - label: "My issue is not a question relative to [Material Mkdocs](https://squidfunk.github.io/mkdocs-material/) nor [Mkdocs](https://www.mkdocs.org/) (*[You can open a discussion to get help!](https://github.com/squidfunk/mkdocs-material/discussions)*)"
-          required: true
-        - label: "I searched in the other issues to prevent duplicate"
-          required: true      
+        required: true
+      - label: "My issue is not a question relative to [Material Mkdocs](https://squidfunk.github.io/mkdocs-material/) nor [Mkdocs](https://www.mkdocs.org/) (*[You can open a discussion to get help!](https://github.com/squidfunk/mkdocs-material/discussions)*)"
+        required: true
+      - label: "I searched in the other issues to prevent duplicate"
+        required: true      
   - type: textarea
     id: describe-bug
     attributes:
