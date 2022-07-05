@@ -8,10 +8,7 @@ body:
   - type: markdown
     id: info-user
     attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report. Note :
-        - If your request concern the [template](https://github.com/obsidianMkdocs/obsidian-mkdocs-publisher-template) (including workflow and mkdocs build), create an [issue](https://github.com/obsidianMkdocs/obsidian-mkdocs-publisher-template/issues/new?assignees=Mara-Li&labels=enhancement&template=feature_request.yml&title=%5BFR%5D%3A+) here.
-        - If your request concern the [Obsidian Plugin](https://github.com/obsidianMkdocs/obsidian-github-publisher), create the issue [here](https://github.com/obsidianMkdocs/obsidian-github-publisher/issues/new?assignees=Mara-Li&labels=enhancement&template=request_form.yml&title=%5BFR%5D%3A+)  - type: textarea
+      value: "Thanks for taking the time to fill out this feature request!"
   - type: checkboxes
     attributes: 
       label: Issue validation
