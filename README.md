@@ -1,3 +1,9 @@
+THIS REPOSITORY IS ARCHIVED. 
+I DON'T PLAN TO UPDATE IT.
+
+PLEASE, USE THE OBSIDIAN PLUGIN INSTEAD OF THIS CRAP.
+
+---
 The script can be use :
 - Directly in Obsidian, using [Obsidian Shell Commands](https://github.com/Taitava/obsidian-shellcommands) (see [Obsidian shell configuration](https://obsidianmkdocs.github.io/obsidian_mkdocs_publisher_docs/documentation/obs2mk/obsidian%20shell/) )
 - In a [terminal](#commands).
